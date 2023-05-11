@@ -20,11 +20,14 @@ CREATE TABLE categories (
 -- Creación de la tabla products
 CREATE TABLE products (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  code VARCHAR(50) NOT NULL,
   name VARCHAR(100) NOT NULL,
   price DECIMAL(10, 2) NOT NULL,
   description TEXT NOT NULL,
   stock INT NOT NULL,
+  available BOOLEAN NOT NULL DEFAULT TRUE,
   is_featured BOOLEAN NOT NULL DEFAULT FALSE,
+  is_offer BOOLEAN NOT NULL DEFAULT FALSE,
   category_id INT NOT NULL,
   FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );

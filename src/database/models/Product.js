@@ -7,6 +7,10 @@ module.exports = (sequelize, dataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
+        code: {
+            type: dataTypes.STRING(50),
+            allowNull: false
+        },        
         name: {
             type: dataTypes.STRING(100),
             allowNull: false
@@ -22,8 +26,18 @@ module.exports = (sequelize, dataTypes) => {
         stock: {
             type: dataTypes.INTEGER(5),
             allowNull: false,
-        }, 
+        },
+        available: {
+            type: dataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true
+        },          
         is_featured: {
+            type: dataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },      
+        is_offer: {
             type: dataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false
