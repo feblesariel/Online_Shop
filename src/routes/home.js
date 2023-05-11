@@ -5,11 +5,11 @@ const router = express.Router();
 
 // ************ Controller Require ************
 
-const mainController = require ("../controllers/mainController")
+const homeController = require ("../controllers/home")
 
 // ************ Rutas ************
 
-router.get("/", mainController.index);
+router.get("/", homeController.home);
 
 
 module.exports = router;

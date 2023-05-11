@@ -1,6 +1,7 @@
 // ************ Require's ************
 
 const express = require('express');
+const session = require("express-session");
 const path = require('path');
 const methodOverride = require('method-override'); // Para poder usar los métodos PUT y DELETE
 
@@ -11,6 +12,11 @@ const app = express();
 // ************ Middlewares - (don't touch) ************
 
 const publicPath = path.resolve(__dirname, '../public');
+app.use(session({
+    secret: "Secreto",
+    resave: false,
+    saveUninitialized: false,
+}));
 app.use(express.static(publicPath));  // Indica donde estan los archivos estáticos /public
 app.use(express.urlencoded({ extended: false }));  // Captura la informacion enviada por POST
 app.use(express.json());
@@ -23,10 +29,21 @@ app.set('views', path.join(__dirname, '/views')); // Define la ubicación de la 
 
 // ************ Route System require and use() ************
 
-const mainRouter = require("./routes/mainRouter");
+const homeRouter = require("./routes/home");
+// const productsRouter = require("./routes/products");
+// const usersRouter = require("./routes/users");
+// const categoriesRouter = require("./routes/categories")
+// const cartsRouter = require("./routes/carts")
+// const paymentsRouter = require("./routes/payments");
+// const shipmetsRouter = require("./routes/shipments")
 
-app.use('/', mainRouter);
-
+app.use('/', homeRouter);
+// app.use('/products', productsRouter);
+// app.use('/users', usersRouter);
+// app.use('/categories',categoriesRouter);
+// app.use('/carts',cartsRouter);
+// app.use('/payments',paymentsRouter);
+// app.use('/shipments',shipmetsRouter);
 
 // ************ Run server ************
 
