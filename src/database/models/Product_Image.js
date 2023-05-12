@@ -14,11 +14,6 @@ module.exports = (sequelize, dataTypes) => {
         product_id: {
             type: dataTypes.INTEGER(5),
             allowNull: false,
-        },
-        is_primary: {
-            type: dataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false
         }
     };
     let config = {
