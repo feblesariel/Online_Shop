@@ -24,7 +24,31 @@ const Store_pickup = db.Store_pickup;
 const homeController = {
 
     home: function (req, res) {
-        return res.render("index");
+        Category.findAll({
+            include: [
+              { association: 'category_image' },
+              { association: 'products' }
+            ],
+            group: ['name']
+          })
+          .then(CategoriesResult => {
+            Product.findAll({
+              include: [
+                { association: 'product_image' }
+              ]
+            })
+            .then(ProductsResult => {
+              res.render('index', { CategoriesResult, ProductsResult });
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              // Manejo de errores
+            });
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            // Manejo de errores
+          });
     }
 }
 

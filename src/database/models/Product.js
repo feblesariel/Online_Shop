@@ -65,7 +65,12 @@ module.exports = (sequelize, dataTypes) => {
             as: 'category',
             foreignKey: 'category_id',
             onDelete: 'CASCADE'
-        });        
+        });
+        
+        Product.belongsTo(models.Product_image, { 
+            as: 'product_image',
+            foreignKey: 'id'
+        }); 
     }
 
     return Product;

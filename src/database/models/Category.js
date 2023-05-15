@@ -19,6 +19,18 @@ module.exports = (sequelize, dataTypes) => {
 
     const Category = sequelize.define(alias, cols, config);
 
+    Category.associate = function (models) {
+
+        Category.belongsTo(models.Category_image, {
+            as: "category_image",
+            foreignKey: "id"
+        });
+
+        Category.belongsTo(models.Product, {
+            as: "products",
+            foreignKey: "id"
+        });
+    }
     
     return Category;
 };
