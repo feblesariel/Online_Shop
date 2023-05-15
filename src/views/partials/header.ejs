@@ -46,11 +46,11 @@
                 <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
                     <div class="navbar-nav w-100">
 
-                        <% for (let i=0 ; i < CategoriesResult.length ; i ++) { %>
+                        <% CategoriesResult.forEach(category => {  %>
 
-                            <a href="" class="nav-item nav-link"><%=CategoriesResult[i].name%></a>
+                            <a href="" class="nav-item nav-link"><%=category.name%></a>
 
-                        <% } %>
+                        <% }) %>
                         
                     </div>
                 </nav>
