@@ -11,6 +11,7 @@ const User = db.User;
 const Cart = db.Cart;
 const Cart_item = db.Cart_item;
 const Category = db.Category;
+const Category_image = db.Category_image;
 const Product = db.Product;
 const Product_image = db.Product_image;
 const Payment = db.Payment;
