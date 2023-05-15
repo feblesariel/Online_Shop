@@ -49,10 +49,20 @@ const homeController = {
       const getCategories = Category.findAll({
         group: ['name']
       });
-    
-      Promise.all([getFeaturedProducts, getPopularProducts, getCategories])
-        .then(([FeaturedProducts, PopularProducts, CategoriesResult]) => {
-          res.render('index', { FeaturedProducts, PopularProducts, CategoriesResult });
+
+      const getProductCountInCart = Cart_item.count({
+        include: [
+          {
+            model: Cart,
+            as: 'cart',
+            where: { user_id: 1 } // ACA MODIFICAR SEGUN USER LOGUEADO
+          }
+        ]
+      });
+
+      Promise.all([getFeaturedProducts, getPopularProducts, getCategories, getProductCountInCart])
+        .then(([FeaturedProducts, PopularProducts, CategoriesResult, ProductCountInCart]) => {
+          res.render('index', { FeaturedProducts, PopularProducts, CategoriesResult, ProductCountInCart });
         })
         .catch(error => {
           console.error('Error:', error);
