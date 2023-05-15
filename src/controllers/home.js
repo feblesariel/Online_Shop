@@ -26,8 +26,7 @@ const homeController = {
     home: function (req, res) {
         Category.findAll({
             include: [
-              { association: 'category_image' },
-              { association: 'products' }
+              { association: 'category_image' }
             ],
             group: ['name']
           })
