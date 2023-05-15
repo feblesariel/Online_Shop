@@ -27,14 +27,6 @@ CREATE TABLE categories (
   name VARCHAR(100) NOT NULL
 );
 
--- Creación de la tabla categories_images
-CREATE TABLE categories_images (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  url VARCHAR(100) NOT NULL,
-  category_id INT NOT NULL,
-  FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
-);
-
 -- Creación de la tabla products
 CREATE TABLE products (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

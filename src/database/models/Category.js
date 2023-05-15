@@ -21,15 +21,11 @@ module.exports = (sequelize, dataTypes) => {
 
     Category.associate = function (models) {
 
-        Category.belongsTo(models.Category_image, {
-            as: "category_image",
-            foreignKey: "id"
-        });
-
         Category.belongsTo(models.Product, {
             as: "products",
             foreignKey: "id"
         });
+        
     }
     
     return Category;

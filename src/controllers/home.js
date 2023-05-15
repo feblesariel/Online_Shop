@@ -11,7 +11,6 @@ const User = db.User;
 const Cart = db.Cart;
 const Cart_item = db.Cart_item;
 const Category = db.Category;
-const Category_image = db.Category_image;
 const Product = db.Product;
 const Product_image = db.Product_image;
 const Payment = db.Payment;
@@ -25,9 +24,6 @@ const homeController = {
 
     home: function (req, res) {
         Category.findAll({
-            include: [
-              { association: 'category_image' }
-            ],
             group: ['name']
           })
           .then(CategoriesResult => {
