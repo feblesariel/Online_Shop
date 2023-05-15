@@ -105,12 +105,15 @@
     </div>
     <!-- Featured End -->
 
-    <!-- Products Start -->
+    <!-- Featured Products Start -->
+    
+    <% if (FeaturedProducts.length > 0 ) { %>
+
     <div class="container-fluid pt-5 pb-3">
         <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Productos Destacados</span></h2>
         <div class="row px-xl-5">
 
-            <% ProductsResult.forEach(product => { %>
+            <% FeaturedProducts.forEach(product => { %>
 
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                 <div class="product-item bg-light mb-4">
@@ -122,9 +125,9 @@
                         </div>
                     </div>
                     <div class="text-center py-4">
-                        <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
+                        <a class="h6 text-decoration-none text-truncate" href=""><%= product.name%></a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5>
+                            <h5>$<%= product.price%></h5>
                         </div>
                     </div>
                 </div>
@@ -133,8 +136,17 @@
             <% }) %>
 
         </div>
+    </div>    
+
+    <% } else { %>
+
+    <div class="container-fluid pt-5 pb-3">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><a class="" href=""><button class="btn btn-primary btn-lg">CONFIGURAR SECCIÓN PRODUCTOS DESTACADOS</button></a></h2>
     </div>
-    <!-- Products End -->
+
+    <% } %>
+
+    <!-- Featured Products End -->
 
     <!-- Offer Start -->
     <div class="container-fluid pt-5 pb-3">
@@ -168,7 +180,7 @@
         <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Mas vendidos</span></h2>
         <div class="row px-xl-5">
 
-            <% ProductsResult.forEach(product => { %>
+            <% PopularProducts.forEach(product => { %>
 
                 <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                     <div class="product-item bg-light mb-4">
@@ -180,9 +192,9 @@
                             </div>
                         </div>
                         <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
+                            <a class="h6 text-decoration-none text-truncate" href=""><%= product.name%></a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5>$123.00</h5>
+                                <h5>$<%= product.price%></h5>
                             </div>
                         </div>
                     </div>

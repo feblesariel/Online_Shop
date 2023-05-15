@@ -23,28 +23,44 @@ const Store_pickup = db.Store_pickup;
 const homeController = {
 
     home: function (req, res) {
-        Category.findAll({
-            group: ['name']
-          })
-          .then(CategoriesResult => {
-            Product.findAll({
-              include: [
-                { association: 'product_images' }
-              ]
-            })
-            .then(ProductsResult => {
-              res.render('index', { CategoriesResult, ProductsResult });
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              // Manejo de errores
-            });
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            // Manejo de errores
-          });
+      const getFeaturedProducts = Product.findAll({
+        where: {
+          is_featured: true
+        },
+        limit: 8,
+        order: [
+          ['name', 'DESC']
+        ],
+        include: [
+          { association: 'product_images' }
+        ]
+      });
+    
+      const getPopularProducts = Product.findAll({
+        limit: 8,
+        order: [
+          ['sold_count', 'DESC']
+        ],
+        include: [
+          { association: 'product_images' }
+        ]
+      });
+    
+      const getCategories = Category.findAll({
+        group: ['name']
+      });
+    
+      Promise.all([getFeaturedProducts, getPopularProducts, getCategories])
+        .then(([FeaturedProducts, PopularProducts, CategoriesResult]) => {
+          res.render('index', { FeaturedProducts, PopularProducts, CategoriesResult });
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Manejo de errores
+        });
     }
+    
+
 }
 
 module.exports = homeController;
