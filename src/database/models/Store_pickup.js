@@ -1,5 +1,5 @@
 module.exports = (sequelize, dataTypes) => {
-    let alias = 'Shipment';
+    let alias = 'Store_pickup';
     let cols = {
         id: {
             type: dataTypes.INTEGER(5),
@@ -23,61 +23,41 @@ module.exports = (sequelize, dataTypes) => {
             type: dataTypes.INTEGER(5),
             allowNull: false
         },
-        address: {
-            type: dataTypes.STRING(100),
-            allowNull: false
-        },
-        city: {
-            type: dataTypes.STRING(50),
-            allowNull: false
-        }, 
-        state: {
-            type: dataTypes.STRING(50),
-            allowNull: false
-        },
-        postal_code: {
-            type: dataTypes.STRING(10),
-            allowNull: false
-        },
-        total: {
-            type: dataTypes.DECIMAL(10,2),
-            allowNull: false
-        },
         status: {
-            type: dataTypes.ENUM('pending','shipped','delivered'),
+            type: dataTypes.ENUM('pending','retired'),
             allowNull: false,
             defaultValue: 'pending'
         }
     };
     let config = {
-        tableName: "shipments",
+        tableName: "store_pickups",
         timestamps: true
     }
 
-    const Shipment = sequelize.define(alias, cols, config); 
+    const Store_pickup = sequelize.define(alias, cols, config); 
 
-    Shipment.associate = function (models) {
+    Store_pickup.associate = function (models) {
 
-        Shipment.belongsTo(models.Store, { 
+        Store_pickup.belongsTo(models.Store, { 
             as: 'store',
             foreignKey: 'store_id'
         });
 
-        Shipment.belongsTo(models.Shipping_method,{
+        Store_pickup.belongsTo(models.Shipping_method,{
             as: 'method',
             foreignKey: 'shipping_method_id'
         }); 
 
-        Shipment.belongsTo(models.Cart, { 
+        Store_pickup.belongsTo(models.Cart, { 
             as: 'cart',
             foreignKey: 'cart_id'
         });
 
-        Shipment.belongsTo(models.User,{
+        Store_pickup.belongsTo(models.User,{
             as: 'user',
             foreignKey: 'user_id'
         });        
     }
 
-    return Shipment;
+    return Store_pickup;
 };

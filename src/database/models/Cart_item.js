@@ -31,12 +31,14 @@ module.exports = (sequelize, dataTypes) => {
 
         Cart_item.belongsTo(models.Cart, {
             as: 'cart',
-            foreignKey: 'cart_id'
+            foreignKey: 'cart_id',
+            onDelete: 'CASCADE'
         });
 
         Cart_item.belongsTo(models.Product, {
             as: 'product',
-            foreignKey: 'product_id'
+            foreignKey: 'product_id',
+            onDelete: 'CASCADE'
         });
     }
     
