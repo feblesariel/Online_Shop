@@ -27,6 +27,11 @@ module.exports = (sequelize, dataTypes) => {
             type: dataTypes.INTEGER(5),
             allowNull: false,
         },
+        sold_count: {
+            type: dataTypes.INTEGER(5),
+            allowNull: false,
+            defaultValue: 0
+        },        
         available: {
             type: dataTypes.BOOLEAN,
             allowNull: false,

@@ -35,6 +35,7 @@ CREATE TABLE products (
   price DECIMAL(10, 2) NOT NULL,
   description TEXT NOT NULL,
   stock INT NOT NULL,
+  sold_count INT NOT NULL DEFAULT 0,
   available BOOLEAN NOT NULL DEFAULT TRUE,
   is_featured BOOLEAN NOT NULL DEFAULT FALSE,
   is_offer BOOLEAN NOT NULL DEFAULT FALSE,
