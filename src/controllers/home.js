@@ -29,7 +29,7 @@ const homeController = {
         },
         limit: 8,
         order: [
-          ['name', 'DESC']
+          ['name', 'ASC']
         ],
         include: [
           { association: 'product_images' }
@@ -47,7 +47,9 @@ const homeController = {
       });
     
       const getCategories = Category.findAll({
-        group: ['name']
+        order: [
+          ['name', 'ASC']
+        ]
       });
 
       const getProductCountInCart = Cart_item.count({
