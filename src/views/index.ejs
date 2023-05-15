@@ -176,6 +176,9 @@
     <!-- Offer End -->
 
     <!-- Products Start -->
+
+    <% if (PopularProducts.length > 0 ) { %>
+
     <div class="container-fluid pt-5 pb-3">
         <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Mas vendidos</span></h2>
         <div class="row px-xl-5">
@@ -204,6 +207,15 @@
 
         </div>
     </div>
+
+    <% } else { %>
+
+        <div class="container-fluid pt-5 pb-3">
+            <div class="section-title position-relative text-uppercase mx-xl-5 mb-4"><a class="" href=""><button class="btn btn-primary btn-lg">CONFIGURAR SECCIÓN PRODUCTOS MAS VENDIDOS</button></a></div>
+        </div>
+    
+    <% } %>
+
     <!-- Products End -->
 
     <%-include("./partials/footer.ejs")%>
