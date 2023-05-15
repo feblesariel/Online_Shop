@@ -52,7 +52,7 @@ const homeController = {
         ]
       });
 
-      const getProductCountInCart = Cart_item.count({
+      const getProductCountInCart = Cart_item.sum( 'quantity' ,{
         include: [
           {
             model: Cart,
