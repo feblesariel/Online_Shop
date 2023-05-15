@@ -33,7 +33,7 @@ const homeController = {
           .then(CategoriesResult => {
             Product.findAll({
               include: [
-                { association: 'product_image' }
+                { association: 'product_images' }
               ]
             })
             .then(ProductsResult => {
