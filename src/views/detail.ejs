@@ -49,9 +49,22 @@
 
             <div class="col-lg-7 h-auto mb-30">
                 <div class="h-100 bg-light p-30">
+                    <small><%= ProductByPk.sold_count %> vendidos</small>
                     <h3><%= ProductByPk.name %></h3>
                     <h3 class="font-weight-semi-bold mb-4">$<%= ProductByPk.price %></h3>
                     <p class="mb-4"><%= ProductByPk.description %></p>
+                    <div class="d-flex mb-3">
+                        <span><strong class="text-dark mr-2">Marca:</strong><%= ProductByPk.brand %></span>
+                    </div>
+                    <div class="d-flex mb-3">
+                        <span><strong class="text-dark mr-2">Modelo:</strong><%= ProductByPk.model %></span>
+                    </div>
+                    <div class="d-flex mb-3">
+                        <span><strong class="text-dark mr-2">Codigo:</strong><%= ProductByPk.code %></span>
+                    </div>
+                    <div class="d-flex mb-4">
+                        <span><strong class="text-dark mr-2">Stock:</strong><%= ProductByPk.stock %></span>
+                    </div>
                     <div class="d-flex align-items-center mb-4 pt-2">
                         <div class="input-group quantity mr-3" style="width: 130px;">
                             <div class="input-group-btn">
@@ -88,6 +101,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
         <div class="row px-xl-5">
             <div class="col">

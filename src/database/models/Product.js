@@ -7,10 +7,18 @@ module.exports = (sequelize, dataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
+        brand: {
+            type: dataTypes.STRING(50),
+            allowNull: false
+        }, 
         code: {
             type: dataTypes.STRING(50),
             allowNull: false
         },        
+        model: {
+            type: dataTypes.STRING(100),
+            allowNull: false
+        },
         name: {
             type: dataTypes.STRING(100),
             allowNull: false
