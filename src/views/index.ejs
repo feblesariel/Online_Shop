@@ -121,11 +121,11 @@
                         <img class="img-fluid w-100" src="img/<%= product.product_images.url %>" alt="">
                         <div class="product-action">
                             <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                            <a class="btn btn-outline-dark btn-square" href="/products/detail/<%=product.id%>"><i class="fa fa-search"></i></a>
                         </div>
                     </div>
                     <div class="text-center py-4">
-                        <a class="h6 text-decoration-none text-truncate" href=""><%= product.name%></a>
+                        <a class="h6 text-decoration-none text-truncate" href="/products/detail/<%=product.id%>"><%= product.name%></a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
                             <h5>$<%= product.price%></h5>
                         </div>
@@ -191,11 +191,11 @@
                             <img class="img-fluid w-100" src="img/<%= product.product_images.url %>" alt="">
                             <div class="product-action">
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href="/products/detail/<%=product.id%>"><i class="fa fa-search"></i></a>
                             </div>
                         </div>
                         <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href=""><%= product.name%></a>
+                            <a class="h6 text-decoration-none text-truncate" href="/products/detail/<%=product.id%>"><%= product.name%></a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
                                 <h5>$<%= product.price%></h5>
                             </div>
@@ -220,21 +220,6 @@
 
     <%-include("./partials/footer.ejs")%>
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="js/easing.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
 </body>
 
 </html>
