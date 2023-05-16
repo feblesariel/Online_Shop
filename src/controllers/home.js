@@ -23,6 +23,9 @@ const Store_pickup = db.Store_pickup;
 const homeController = {
 
     home: function (req, res) {
+
+      // CONSULTO LOS PRODUCTOS DESTACADOS
+
       const getFeaturedProducts = Product.findAll({
         where: {
           is_featured: true
@@ -35,6 +38,8 @@ const homeController = {
           { association: 'product_images' }
         ]
       });
+
+      // CONSULTO LOS PRODUCTOS MAS VENDIDOS
     
       const getPopularProducts = Product.findAll({
         limit: 8,
@@ -45,12 +50,16 @@ const homeController = {
           { association: 'product_images' }
         ]
       });
+
+      // CONSULTO LAS CATEGORIAS
     
       const getCategories = Category.findAll({
         order: [
           ['name', 'ASC']
         ]
       });
+
+      // CALCULO CUANTSO ITEMS HAY EN CARRITO
 
       const getProductCountInCart = Cart_item.sum( 'quantity' ,{
         include: [

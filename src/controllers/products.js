@@ -32,7 +32,7 @@ const productsController = {
 
         const getImagesProduct = Product_image.findAll({
             where: { product_id: req.params.id }
-        });
+          })
 
         // CONSULTO LAS CATEGORIAS
 
@@ -56,6 +56,7 @@ const productsController = {
 
         Promise.all([getProductByPk, getImagesProduct ,getCategories, getProductCountInCart])
         .then(([ProductByPk, ImagesProduct ,CategoriesResult, ProductCountInCart]) => {
+            console.log(ImagesProduct)
             res.render('detail', {ProductByPk,ImagesProduct,CategoriesResult,ProductCountInCart});
         })
         .catch(error => {
