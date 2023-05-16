@@ -56,7 +56,6 @@ const productsController = {
 
         Promise.all([getProductByPk, getImagesProduct ,getCategories, getProductCountInCart])
         .then(([ProductByPk, ImagesProduct ,CategoriesResult, ProductCountInCart]) => {
-            console.log(ImagesProduct)
             res.render('detail', {ProductByPk,ImagesProduct,CategoriesResult,ProductCountInCart});
         })
         .catch(error => {
