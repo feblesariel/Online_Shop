@@ -13,6 +13,7 @@ const Cart_item = db.Cart_item;
 const Category = db.Category;
 const Product = db.Product;
 const Product_image = db.Product_image;
+const Favorite = db.Favorite;
 const Payment = db.Payment;
 const Shipping_method = db.Shipping_method;
 const Shipment = db.Shipment;
