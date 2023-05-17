@@ -36,10 +36,10 @@
                             <span class="badge border font-weight-normal"><%= TotalProductCount.totalProductCount %></span>
                         </div>
 
-                        <% CategoriesWithProductCount.forEach((category, index) => { %>
+                        <% CategoriesWithProductCount.forEach(category => { %>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="checkbox<%= index %>">
-                                <label class="custom-control-label" for="checkbox<%= index %>"><%= category.name %></label>
+                                <input type="checkbox" class="custom-control-input" id="<%= category.name %>">
+                                <label class="custom-control-label" for="<%= category.name %>"><%= category.name %></label>
                                 <span class="badge border font-weight-normal"><%= category.productCount %></span>
                             </div>
                         <% }); %>         
