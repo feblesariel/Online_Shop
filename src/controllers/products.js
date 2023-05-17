@@ -46,10 +46,12 @@ const productsController = {
 
         // consulto todos los productos con parametros de ordenamiento - productos
 
-        const order = req.query.order; // obtener el parámetro de consulta
-        
-        let orderOption = []; // definir la opción de ordenamiento para Sequelize
-        
+        const categoryFilter = req.query.categoryFilter ? JSON.parse(req.query.categoryFilter) : [];
+        const brandFilter = req.query.brandFilter ? JSON.parse(req.query.brandFilter) : [];
+        const order = req.query.order;
+      
+        let orderOption = [];
+      
         if (order === 'name') {
           orderOption = [['name', 'ASC']];
         } else if (order === 'popular') {
@@ -58,17 +60,23 @@ const productsController = {
           orderOption = [['price', 'ASC']];
         } else if (order === 'highPrice') {
           orderOption = [['price', 'DESC']];
-        }        
-
+        }
+      
+        // Aquí debes adaptar la consulta según tu modelo y estructura de datos
         const getAllProducts = Product.findAll({
-          order: orderOption,
-          include: [{ association: 'product_images' }]
-        });
+            where: {
+              ...(categoryFilter.length > 0 && { category_id: categoryFilter }),
+              ...(brandFilter.length > 0 && { brand: brandFilter })
+            },
+            order: orderOption,
+            include: [{ association: 'product_images' }]
+          });
 
         // consulto las categorias y la cantidad de productos que tienen - filtro categoria
 
         const getCategoriesWithProductCount = Category.findAll({
             attributes: [
+              'id',
               'name',
               [
                 sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
@@ -77,7 +85,8 @@ const productsController = {
             ],
             having: sequelize.literal('productCount > 0'),
             raw: true
-        });                 
+          });
+                        
           
         // consulto el total de productos que hay - se usa en ambos filtros
 

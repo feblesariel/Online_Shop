@@ -40,8 +40,8 @@
                 
                         <% CategoriesWithProductCount.forEach(category => { %>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="<%= category.name %>" name="categoryFilter[]" value="<%= category.name %>">
-                                <label class="custom-control-label" for="<%= category.name %>"><%= category.name %></label>
+                                <input type="checkbox" class="custom-control-input" id="<%= category.id %>" name="categoryFilter[]" value="<%= category.id %>">
+                                <label class="custom-control-label" for="<%= category.id %>"><%= category.name %></label>
                                 <span class="badge border font-weight-normal"><%= category.productCount %></span>
                             </div>
                         <% }); %>
