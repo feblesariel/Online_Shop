@@ -9,6 +9,7 @@ const productsController = require ("../controllers/products")
 
 // ************ Rutas ************
 
+router.get("/", productsController.products);
 router.get("/detail/:id/", productsController.detail);
 
 

@@ -22,6 +22,39 @@ const Store_pickup = db.Store_pickup;
 
 const productsController = {
 
+    products: function (req, res) {
+
+        // CONSULTO LAS CATEGORIAS
+
+        const getCategories = Category.findAll({
+            order: [
+                ['name', 'ASC']
+            ]
+        });
+
+        // CALCULO CUANTSO ITEMS HAY EN CARRITO
+    
+        const getProductCountInCart = Cart_item.sum( 'quantity' ,{
+        include: [
+            {
+            model: Cart,
+            as: 'cart',
+            where: { user_id: 1 } // ACA MODIFICAR SEGUN USER LOGUEADO
+            }
+        ]
+        });
+
+        Promise.all([getCategories, getProductCountInCart])
+        .then(([CategoriesResult, ProductCountInCart]) => {
+            res.render('shop', {CategoriesResult,ProductCountInCart});
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Manejo de errores
+        });
+
+    },
+
     detail: function (req, res) {    
         
         // CONSULTO PRODUCTO
