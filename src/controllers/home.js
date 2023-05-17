@@ -54,9 +54,16 @@ const homeController = {
       // consulto las categorias - navbar
     
       const getCategories = Category.findAll({
-        order: [
-          ['name', 'ASC']
-        ]
+        attributes: [
+            'id',
+            'name',
+            [
+              sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
+              'productCount'
+            ]
+        ],
+        having: sequelize.literal('productCount > 0'),
+        raw: true
       });
 
       // calculo cuantos items hay en el carrito - navbar
