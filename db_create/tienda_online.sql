@@ -30,7 +30,7 @@ CREATE TABLE categories (
 -- Creación de la tabla products
 CREATE TABLE products (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  code VARCHAR(50) NOT NULL,
+  code VARCHAR(50) NOT NULL UNIQUE,
   brand VARCHAR(50) NOT NULL,
   model VARCHAR(50) NOT NULL,
   name VARCHAR(50) NOT NULL,

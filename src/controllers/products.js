@@ -60,17 +60,33 @@ const productsController = {
           
         // CONSULTO EL TOTAL DE PRODUCTOS DE TODAS LAS CATEGORIAS - FILTRO CATEGORIA
 
-        const getTotalProductCount = Product.findOne({
+        const getTotalProductCount = Product.count('category_id');
+
+        // CONSULTO EL TOTAL DE DISTINTAS MARCAS - FILTRO MARCA
+        
+        const getDistinctBrandCount = Product.findOne({
             attributes: [
-              [sequelize.fn('COUNT', sequelize.col('id')), 'totalProductCount']
+              [sequelize.literal('(SELECT COUNT(DISTINCT brand) FROM products)'), 'distinctBrandCount']
             ],
             raw: true
-        });          
+        });
+
+        // CONSULTO LAS MARCAS Y EL TOTAL DE PRODUCTOS - FILTRO MARCA
+
+        const getBrandProductCount = Product.findAll({
+            attributes: [
+              'brand',
+              [sequelize.fn('COUNT', sequelize.col('id')), 'productCount']
+            ],
+            group: 'brand',
+            raw: true
+        });         
+
                   
-        Promise.all([getCategories, getProductCountInCart, getCategoriesWithProductCount, getTotalProductCount])
-            .then(([CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount]) => {
-                console.log(TotalProductCount);
-                res.render('products', { CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount });
+        Promise.all([getCategories, getProductCountInCart, getCategoriesWithProductCount, getTotalProductCount, getDistinctBrandCount, getBrandProductCount])
+            .then(([CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, DistinctBrandCount, BrandProductCount]) => {
+                console.log(BrandProductCount);
+                res.render('products', { CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, DistinctBrandCount, BrandProductCount });
             })
             .catch(error => {
                 console.error('Error:', error);

@@ -33,7 +33,7 @@
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" checked id="size-all">
                             <label class="custom-control-label" for="size-all">Todas las categorias</label>
-                            <span class="badge border font-weight-normal"><%= TotalProductCount.totalProductCount %></span>
+                            <span class="badge border font-weight-normal"><%= TotalProductCount %></span>
                         </div>
 
                         <% CategoriesWithProductCount.forEach(category => { %>
@@ -52,21 +52,21 @@
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filtrar por marca</span></h5>
                 <div class="bg-light p-4 mb-30">
                     <form>
+
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" checked id="size-all">
                             <label class="custom-control-label" for="size-all">Todas las marcas</label>
-                            <span class="badge border font-weight-normal">1000</span>
+                            <span class="badge border font-weight-normal"><%= DistinctBrandCount.distinctBrandCount %></span>
                         </div>
+                        
+                        <% BrandProductCount.forEach(brand => { %>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-1">
-                            <label class="custom-control-label" for="size-1">XS</label>
-                            <span class="badge border font-weight-normal">150</span>
+                            <input type="checkbox" class="custom-control-input" id="<%= brand.brand %>">
+                            <label class="custom-control-label" for="<%= brand.brand %>"><%= brand.brand %></label>
+                            <span class="badge border font-weight-normal"><%= brand.productCount %></span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-2">
-                            <label class="custom-control-label" for="size-2">S</label>
-                            <span class="badge border font-weight-normal">295</span>
-                        </div>
+                        <% }); %>  
+
                     </form>
                 </div>
                 <!-- Size End -->

@@ -13,7 +13,8 @@ module.exports = (sequelize, dataTypes) => {
         }, 
         code: {
             type: dataTypes.STRING(50),
-            allowNull: false
+            allowNull: false,
+            unique: true
         },        
         model: {
             type: dataTypes.STRING(100),
