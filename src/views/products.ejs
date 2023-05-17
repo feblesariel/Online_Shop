@@ -30,7 +30,8 @@
                 <div class="bg-light p-4 mb-30">
 
 
-                    <form id="filterForm">
+
+                    <form id="filterFormCategory">
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="category-all" name="categoryFilter[]" value="category-all">
                             <label class="custom-control-label" for="category-all">Todas las categorías</label>
@@ -54,23 +55,23 @@
                 <!-- Size Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filtrar por marca</span></h5>
                 <div class="bg-light p-4 mb-30">
-                    <form>
 
+                    <form id="filterFormBrand">
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="size-all">
-                            <label class="custom-control-label" for="size-all">Todas las marcas</label>
+                            <input type="checkbox" class="custom-control-input" id="brand-all" name="brandFilter[]" value="brand-all">
+                            <label class="custom-control-label" for="brand-all">Todas las marcas</label>
                             <span class="badge border font-weight-normal"><%= TotalProductCount %></span>
                         </div>
-                        
+                
                         <% BrandProductCount.forEach(brand => { %>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="<%= brand.brand %>">
-                            <label class="custom-control-label" for="<%= brand.brand %>"><%= brand.brand %></label>
-                            <span class="badge border font-weight-normal"><%= brand.productCount %></span>
-                        </div>
-                        <% }); %>  
-
+                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                <input type="checkbox" class="custom-control-input" id="<%= brand.brand %>" name="brandFilter[]" value="<%= brand.brand %>">
+                                <label class="custom-control-label" for="<%= brand.brand %>"><%= brand.brand %></label>
+                                <span class="badge border font-weight-normal"><%= brand.productCount %></span>
+                            </div>
+                        <% }); %>
                     </form>
+
                 </div>
                 <!-- Size End -->
             </div>
@@ -142,34 +143,49 @@
     <script>
         // Función para actualizar la URL y recargar la página
         function updateURL() {
-            const checkboxes = document.querySelectorAll('input[name="categoryFilter[]"]');
+            const categoryCheckboxes = document.querySelectorAll('#filterFormCategory input[name="categoryFilter[]"]');
             const selectedCategories = [];
-
-            checkboxes.forEach(checkbox => {
+    
+            categoryCheckboxes.forEach(checkbox => {
                 if (checkbox.checked && checkbox.value !== 'category-all') {
                     selectedCategories.push(checkbox.value);
                 }
             });
-
+    
+            const brandCheckboxes = document.querySelectorAll('#filterFormBrand input[name="brandFilter[]"]');
+            const selectedBrands = [];
+    
+            brandCheckboxes.forEach(checkbox => {
+                if (checkbox.checked && checkbox.value !== 'brand-all') {
+                    selectedBrands.push(checkbox.value);
+                }
+            });
+    
             const url = new URL(window.location.href);
             const searchParams = new URLSearchParams(url.search);
-
+    
             if (selectedCategories.length > 0) {
                 searchParams.set('categoryFilter', JSON.stringify(selectedCategories));
             } else {
                 searchParams.delete('categoryFilter');
             }
-
+    
+            if (selectedBrands.length > 0) {
+                searchParams.set('brandFilter', JSON.stringify(selectedBrands));
+            } else {
+                searchParams.delete('brandFilter');
+            }
+    
             url.search = searchParams.toString();
             window.location.href = url.toString();
         }
-
-        // Evento para escuchar cambios en los checkboxes
-        const checkboxes = document.querySelectorAll('input[name="categoryFilter[]"]');
-        checkboxes.forEach(checkbox => {
+    
+        // Evento para escuchar cambios en los checkboxes del formulario de categorías
+        const categoryCheckboxes = document.querySelectorAll('#filterFormCategory input[name="categoryFilter[]"]');
+        categoryCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', () => {
                 if (checkbox.value === 'category-all' && checkbox.checked) {
-                    checkboxes.forEach(check => {
+                    categoryCheckboxes.forEach(check => {
                         if (check !== checkbox) {
                             check.checked = false;
                         }
@@ -177,25 +193,55 @@
                 } else if (!checkbox.checked && document.getElementById('category-all').checked) {
                     document.getElementById('category-all').checked = false;
                 }
-
+    
                 updateURL();
             });
         });
-
+    
+        // Evento para escuchar cambios en los checkboxes del formulario de marcas
+        const brandCheckboxes = document.querySelectorAll('#filterFormBrand input[name="brandFilter[]"]');
+        brandCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                if (checkbox.value === 'brand-all' && checkbox.checked) {
+                    brandCheckboxes.forEach(check => {
+                        if (check !== checkbox) {
+                            check.checked = false;
+                        }
+                    });
+                } else if (!checkbox.checked && document.getElementById('brand-all').checked) {
+                    document.getElementById('brand-all').checked = false;
+                }
+    
+                updateURL();
+            });
+        });
+    
         // Marcar los checkboxes seleccionados al cargar la página
         const urlParams = new URLSearchParams(window.location.search);
         const selectedCategories = JSON.parse(urlParams.get('categoryFilter') || '[]');
-
-        checkboxes.forEach(checkbox => {
+        categoryCheckboxes.forEach(checkbox => {
             if (selectedCategories.includes(checkbox.value)) {
                 checkbox.checked = true;
             }
         });
-
+    
+        const selectedBrands = JSON.parse(urlParams.get('brandFilter') || '[]');
+        brandCheckboxes.forEach(checkbox => {
+            if (selectedBrands.includes(checkbox.value)) {
+                checkbox.checked = true;
+            }
+        });
+    
         // Marcar el checkbox "Todas las categorías" al cargar la página si no hay otras categorías seleccionadas
         if (selectedCategories.length === 0) {
             document.getElementById('category-all').checked = true;
         }
+    
+        // Marcar el checkbox "Todas las marcas" al cargar la página si no hay otras marcas seleccionadas
+        if (selectedBrands.length === 0) {
+            document.getElementById('brand-all').checked = true;
+        }
+    
     </script>
 
 </body>
