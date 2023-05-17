@@ -44,6 +44,17 @@ const productsController = {
             ]
         });
 
+        // CONSULTO TODOS LOS PRODUCTOS - PRODUCTOS
+
+        const getAllProducts = Product.findAll({
+            order: [
+            ['name', 'ASC']
+            ],
+            include: [
+            { association: 'product_images' }
+            ]
+        });
+
         // CONSULTO LAS CATEGORIAS Y LA CANTIDAD DE PRODUCTOS - FILTRO CATEGORIA
 
         const getCategoriesWithProductCount = Category.findAll({
@@ -74,9 +85,9 @@ const productsController = {
             raw: true
         });
                   
-        Promise.all([getCategories, getProductCountInCart, getCategoriesWithProductCount, getTotalProductCount, getBrandProductCount])
-            .then(([CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount]) => {
-                res.render('products', { CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount });
+        Promise.all([getCategories, getProductCountInCart, getCategoriesWithProductCount, getTotalProductCount, getBrandProductCount, getAllProducts])
+            .then(([CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts]) => {
+                res.render('products', { CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts });
             })
             .catch(error => {
                 console.error('Error:', error);
