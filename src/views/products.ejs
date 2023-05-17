@@ -28,23 +28,26 @@
                 <!-- Color Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filtrar por categoria</span></h5>
                 <div class="bg-light p-4 mb-30">
-                    <form>
 
+
+                    <form id="filterForm">
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="size-all">
-                            <label class="custom-control-label" for="size-all">Todas las categorias</label>
+                            <input type="checkbox" class="custom-control-input" id="category-all" name="categoryFilter[]" value="category-all">
+                            <label class="custom-control-label" for="category-all">Todas las categorías</label>
                             <span class="badge border font-weight-normal"><%= TotalProductCount %></span>
                         </div>
-
+                
                         <% CategoriesWithProductCount.forEach(category => { %>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="<%= category.name %>">
+                                <input type="checkbox" class="custom-control-input" id="<%= category.name %>" name="categoryFilter[]" value="<%= category.name %>">
                                 <label class="custom-control-label" for="<%= category.name %>"><%= category.name %></label>
                                 <span class="badge border font-weight-normal"><%= category.productCount %></span>
                             </div>
-                        <% }); %>         
-
+                        <% }); %>
                     </form>
+                
+
+
                 </div>
                 <!-- Color End -->
 
@@ -135,6 +138,65 @@
     <!-- Shop End -->
 
     <%-include("./partials/footer.ejs")%>
+
+    <script>
+        // Función para actualizar la URL y recargar la página
+        function updateURL() {
+            const checkboxes = document.querySelectorAll('input[name="categoryFilter[]"]');
+            const selectedCategories = [];
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked && checkbox.value !== 'category-all') {
+                    selectedCategories.push(checkbox.value);
+                }
+            });
+
+            const url = new URL(window.location.href);
+            const searchParams = new URLSearchParams(url.search);
+
+            if (selectedCategories.length > 0) {
+                searchParams.set('categoryFilter', JSON.stringify(selectedCategories));
+            } else {
+                searchParams.delete('categoryFilter');
+            }
+
+            url.search = searchParams.toString();
+            window.location.href = url.toString();
+        }
+
+        // Evento para escuchar cambios en los checkboxes
+        const checkboxes = document.querySelectorAll('input[name="categoryFilter[]"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                if (checkbox.value === 'category-all' && checkbox.checked) {
+                    checkboxes.forEach(check => {
+                        if (check !== checkbox) {
+                            check.checked = false;
+                        }
+                    });
+                } else if (!checkbox.checked && document.getElementById('category-all').checked) {
+                    document.getElementById('category-all').checked = false;
+                }
+
+                updateURL();
+            });
+        });
+
+        // Marcar los checkboxes seleccionados al cargar la página
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedCategories = JSON.parse(urlParams.get('categoryFilter') || '[]');
+
+        checkboxes.forEach(checkbox => {
+            if (selectedCategories.includes(checkbox.value)) {
+                checkbox.checked = true;
+            }
+        });
+
+        // Marcar el checkbox "Todas las categorías" al cargar la página si no hay otras categorías seleccionadas
+        if (selectedCategories.length === 0) {
+            document.getElementById('category-all').checked = true;
+        }
+    </script>
 
 </body>
 
