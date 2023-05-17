@@ -107,6 +107,15 @@ const productsController = {
             where: { product_id: req.params.id }
         })
 
+        const getAllProducts = Product.findAll({
+            order: [
+            ['name', 'ASC']
+            ],
+            include: [
+            { association: 'product_images' }
+            ]
+        });
+
         // consulto las categorias - navbar
 
         const getCategories = Category.findAll({
@@ -127,9 +136,9 @@ const productsController = {
             ]
         });
 
-        Promise.all([getProductByPk, getImagesProduct, getCategories, getProductCountInCart])
-            .then(([ProductByPk, ImagesProduct, CategoriesResult, ProductCountInCart]) => {
-                res.render('detail', { ProductByPk, ImagesProduct, CategoriesResult, ProductCountInCart });
+        Promise.all([getProductByPk, getImagesProduct, getCategories, getProductCountInCart, getAllProducts])
+            .then(([ProductByPk, ImagesProduct, CategoriesResult, ProductCountInCart, AllProducts]) => {
+                res.render('detail', { ProductByPk, ImagesProduct, CategoriesResult, ProductCountInCart, AllProducts });
             })
             .catch(error => {
                 console.error('Error:', error);

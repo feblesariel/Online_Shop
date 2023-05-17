@@ -103,11 +103,11 @@
                                 <img class="img-fluid w-100" src="img/<%= product.product_images.url %>" alt="">
                                 <div class="product-action">
                                     <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                                    <a class="btn btn-outline-dark btn-square" href="/products/detail/<%=product.id%>"><i class="fa fa-search"></i></a>
                                 </div>
                             </div>
                             <div class="text-center py-4">
-                                <a class="h6 text-decoration-none text-truncate" href=""><%= product.name %></a>
+                                <a class="h6 text-decoration-none text-truncate" href="/products/detail/<%=product.id%>"><%= product.name %></a>
                                 <div class="d-flex align-items-center justify-content-center mt-2">
                                     <h5>$<%= product.price %></h5>
                                 </div>
