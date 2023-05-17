@@ -56,7 +56,7 @@
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" checked id="size-all">
                             <label class="custom-control-label" for="size-all">Todas las marcas</label>
-                            <span class="badge border font-weight-normal"><%= DistinctBrandCount.distinctBrandCount %></span>
+                            <span class="badge border font-weight-normal"><%= TotalProductCount %></span>
                         </div>
                         
                         <% BrandProductCount.forEach(brand => { %>
