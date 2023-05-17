@@ -29,21 +29,21 @@
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filtrar por categoria</span></h5>
                 <div class="bg-light p-4 mb-30">
                     <form>
+
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="color-all">
-                            <label class="custom-control-label" for="price-all">All Color</label>
-                            <span class="badge border font-weight-normal">1000</span>
+                            <input type="checkbox" class="custom-control-input" checked id="size-all">
+                            <label class="custom-control-label" for="size-all">Todas las categorias</label>
+                            <span class="badge border font-weight-normal"><%= TotalProductCount.totalProductCount %></span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-1">
-                            <label class="custom-control-label" for="color-1">Black</label>
-                            <span class="badge border font-weight-normal">150</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-2">
-                            <label class="custom-control-label" for="color-2">White</label>
-                            <span class="badge border font-weight-normal">295</span>
-                        </div>
+
+                        <% CategoriesWithProductCount.forEach((category, index) => { %>
+                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                <input type="checkbox" class="custom-control-input" id="checkbox<%= index %>">
+                                <label class="custom-control-label" for="checkbox<%= index %>"><%= category.name %></label>
+                                <span class="badge border font-weight-normal"><%= category.productCount %></span>
+                            </div>
+                        <% }); %>         
+
                     </form>
                 </div>
                 <!-- Color End -->

@@ -32,7 +32,7 @@ const productsController = {
             ]
         });
 
-        // CALCULO CUANTSO ITEMS HAY EN CARRITO
+        // CALCULO CUANTOS ITEMS HAY EN CARRITO
 
         const getProductCountInCart = Cart_item.sum('quantity', {
             include: [
@@ -44,47 +44,38 @@ const productsController = {
             ]
         });
 
+        // CONSULTO LAS CATEGORIAS CON LA CANTIDAD DE PRODUCTOS
 
-        const categoriesWithProductCount = Category.findAll({
-            attributes: ['id', 'name'],
-            include: [{
-                model: Product,
-                as: 'products',
-                attributes: [],
-            }],
-            group: ['Category.id', 'Category.name'],
-            having: {
-                '$Category.id$': {
-                    [Op.ne]: null
-                },
-                '$Category.name$': {
-                    [Op.ne]: null
-                },
-                '$products.id$': {
-                    [Op.ne]: null
-                }
-            }
-        }).then(categories => {
-            // Obtener la cantidad de productos por categoría
-            const categoriesWithCount = categories.map(category => ({
-                id: category.id,
-                name: category.name,
-                productCount: category.products.length
-            }));
-            console.log(categoriesWithCount)
-        })
+        const getCategoriesWithProductCount = Category.findAll({
+            attributes: [
+              'name',
+              [
+                sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
+                'productCount'
+              ]
+            ],
+            having: sequelize.literal('productCount > 0'),
+            raw: true
+        });                 
+          
+        // CONSULTO EL TOTAL DE PRODUCTOS DE TODAS LAS CATEGORIAS
 
-
-
-        Promise.all([getCategories, getProductCountInCart])
-            .then(([CategoriesResult, ProductCountInCart]) => {
-                res.render('products', { CategoriesResult, ProductCountInCart });
+        const getTotalProductCount = Product.findOne({
+            attributes: [
+              [sequelize.fn('COUNT', sequelize.col('id')), 'totalProductCount']
+            ],
+            raw: true
+        });          
+                  
+        Promise.all([getCategories, getProductCountInCart, getCategoriesWithProductCount, getTotalProductCount])
+            .then(([CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount]) => {
+                console.log(TotalProductCount);
+                res.render('products', { CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount });
             })
             .catch(error => {
                 console.error('Error:', error);
                 // Manejo de errores
-            });
-
+        });
     },
 
     detail: function (req, res) {
@@ -126,7 +117,7 @@ const productsController = {
             .catch(error => {
                 console.error('Error:', error);
                 // Manejo de errores
-            });
+        });
 
     }
 }
