@@ -24,7 +24,7 @@ const productsController = {
 
     products: function (req, res) {
 
-        // CONSULTO LAS CATEGORIAS - NAVBAR
+        // consulto las categorias - navbar
 
         const getCategories = Category.findAll({
             order: [
@@ -32,7 +32,7 @@ const productsController = {
             ]
         });
 
-        // CALCULO CUANTOS ITEMS HAY EN CARRITO - NAVBAR
+        // calculo cuantos items hay en el carrito - navbar
 
         const getProductCountInCart = Cart_item.sum('quantity', {
             include: [
@@ -44,7 +44,7 @@ const productsController = {
             ]
         });
 
-        // CONSULTO TODOS LOS PRODUCTOS - PRODUCTOS
+        // consulto todos los productos - productos
 
         const getAllProducts = Product.findAll({
             order: [
@@ -55,7 +55,7 @@ const productsController = {
             ]
         });
 
-        // CONSULTO LAS CATEGORIAS Y LA CANTIDAD DE PRODUCTOS - FILTRO CATEGORIA
+        // consulto las categorias y la cantidad de productos que tienen - filtro categoria
 
         const getCategoriesWithProductCount = Category.findAll({
             attributes: [
@@ -69,12 +69,12 @@ const productsController = {
             raw: true
         });                 
           
-        // CONSULTO EL TOTAL DE PRODUCTOS DE TODAS LAS CATEGORIAS - FILTRO CATEGORIA
+        // consulto el total de productos que hay - se usa en ambos filtros
 
         const getTotalProductCount = Product.count('category_id');
 
 
-        // CONSULTO LAS MARCAS Y EL TOTAL DE PRODUCTOS - FILTRO MARCA
+        // consulto las marcas y el total de productos que tienen - filtro marca
 
         const getBrandProductCount = Product.findAll({
             attributes: [
@@ -91,23 +91,23 @@ const productsController = {
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Manejo de errores
+                // manejo de errores
         });
     },
 
     detail: function (req, res) {
 
-        // CONSULTO PRODUCTO - DETAIL
+        // consulto producto - detail
 
         const getProductByPk = Product.findByPk(req.params.id);
 
-        // CONSULTO IMAGENES DE UN PRODUCTO - DETAIL
+        // consulto las imagenes del producto - detail
 
         const getImagesProduct = Product_image.findAll({
             where: { product_id: req.params.id }
         })
 
-        // CONSULTO LAS CATEGORIAS - NAVBAR
+        // consulto las categorias - navbar
 
         const getCategories = Category.findAll({
             order: [
@@ -115,7 +115,7 @@ const productsController = {
             ]
         });
 
-        // CALCULO CUANTOS ITEMS HAY EN CARRITO - NAVBAR
+        // calculo cuantos items hay en el carrito - navbar
 
         const getProductCountInCart = Cart_item.sum('quantity', {
             include: [
@@ -133,7 +133,7 @@ const productsController = {
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Manejo de errores
+                // manejo de errores
         });
 
     }

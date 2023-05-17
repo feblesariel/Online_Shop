@@ -24,7 +24,7 @@ const homeController = {
 
     home: function (req, res) {
 
-      // CONSULTO LOS PRODUCTOS DESTACADOS
+      // consulto los productos destacados - home
 
       const getFeaturedProducts = Product.findAll({
         where: {
@@ -39,7 +39,7 @@ const homeController = {
         ]
       });
 
-      // CONSULTO LOS PRODUCTOS MAS VENDIDOS
+      // consulto los productos mas vendidos - home
     
       const getPopularProducts = Product.findAll({
         limit: 8,
@@ -51,7 +51,7 @@ const homeController = {
         ]
       });
 
-      // CONSULTO LAS CATEGORIAS
+      // consulto las categorias - navbar
     
       const getCategories = Category.findAll({
         order: [
@@ -59,7 +59,7 @@ const homeController = {
         ]
       });
 
-      // CALCULO CUANTSO ITEMS HAY EN CARRITO
+      // calculo cuantos items hay en el carrito - navbar
 
       const getProductCountInCart = Cart_item.sum( 'quantity' ,{
         include: [
@@ -77,8 +77,8 @@ const homeController = {
         })
         .catch(error => {
           console.error('Error:', error);
-          // Manejo de errores
-        });
+          // manejo de errores
+      });
     }
     
 
