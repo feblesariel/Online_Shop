@@ -24,7 +24,7 @@ const productsController = {
 
     products: function (req, res) {
 
-        // CONSULTO LAS CATEGORIAS
+        // CONSULTO LAS CATEGORIAS - NAVBAR
 
         const getCategories = Category.findAll({
             order: [
@@ -32,7 +32,7 @@ const productsController = {
             ]
         });
 
-        // CALCULO CUANTOS ITEMS HAY EN CARRITO
+        // CALCULO CUANTOS ITEMS HAY EN CARRITO - NAVBAR
 
         const getProductCountInCart = Cart_item.sum('quantity', {
             include: [
@@ -44,7 +44,7 @@ const productsController = {
             ]
         });
 
-        // CONSULTO LAS CATEGORIAS CON LA CANTIDAD DE PRODUCTOS
+        // CONSULTO LAS CATEGORIAS Y LA CANTIDAD DE PRODUCTOS - FILTRO CATEGORIA
 
         const getCategoriesWithProductCount = Category.findAll({
             attributes: [
@@ -58,7 +58,7 @@ const productsController = {
             raw: true
         });                 
           
-        // CONSULTO EL TOTAL DE PRODUCTOS DE TODAS LAS CATEGORIAS
+        // CONSULTO EL TOTAL DE PRODUCTOS DE TODAS LAS CATEGORIAS - FILTRO CATEGORIA
 
         const getTotalProductCount = Product.findOne({
             attributes: [
@@ -80,17 +80,17 @@ const productsController = {
 
     detail: function (req, res) {
 
-        // CONSULTO PRODUCTO
+        // CONSULTO PRODUCTO - DETAIL
 
         const getProductByPk = Product.findByPk(req.params.id);
 
-        // CONSULTO IMAGENES DE UN PRODUCTO
+        // CONSULTO IMAGENES DE UN PRODUCTO - DETAIL
 
         const getImagesProduct = Product_image.findAll({
             where: { product_id: req.params.id }
         })
 
-        // CONSULTO LAS CATEGORIAS
+        // CONSULTO LAS CATEGORIAS - NAVBAR
 
         const getCategories = Category.findAll({
             order: [
@@ -98,7 +98,7 @@ const productsController = {
             ]
         });
 
-        // CALCULO CUANTSO ITEMS HAY EN CARRITO
+        // CALCULO CUANTOS ITEMS HAY EN CARRITO - NAVBAR
 
         const getProductCountInCart = Cart_item.sum('quantity', {
             include: [
