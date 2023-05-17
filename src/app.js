@@ -39,7 +39,7 @@ const productsRouter = require("./routes/products");
 // const contactRouter = require("./routes/contact")
 
 app.use('/', homeRouter);
-app.use('/products', productsRouter);
+app.use('/products/', productsRouter);
 // app.use('/users', usersRouter);
 // app.use('/categories',categoriesRouter);
 // app.use('/carts',cartsRouter);

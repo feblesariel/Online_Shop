@@ -46,7 +46,7 @@ const productsController = {
 
         Promise.all([getCategories, getProductCountInCart])
         .then(([CategoriesResult, ProductCountInCart]) => {
-            res.render('shop', {CategoriesResult,ProductCountInCart});
+            res.render('products', {CategoriesResult,ProductCountInCart});
         })
         .catch(error => {
             console.error('Error:', error);
