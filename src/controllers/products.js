@@ -44,15 +44,25 @@ const productsController = {
             ]
         });
 
-        // consulto todos los productos - productos
+        // consulto todos los productos con parametros de ordenamiento - productos
+
+        const order = req.query.order; // obtener el parámetro de consulta
+        
+        let orderOption = []; // definir la opción de ordenamiento para Sequelize
+        
+        if (order === 'name') {
+          orderOption = [['name', 'ASC']];
+        } else if (order === 'popular') {
+          orderOption = [['sold_count', 'DESC']];
+        } else if (order === 'lowPrice') {
+          orderOption = [['price', 'ASC']];
+        } else if (order === 'highPrice') {
+          orderOption = [['price', 'DESC']];
+        }        
 
         const getAllProducts = Product.findAll({
-            order: [
-            ['name', 'ASC']
-            ],
-            include: [
-            { association: 'product_images' }
-            ]
+          order: orderOption,
+          include: [{ association: 'product_images' }]
         });
 
         // consulto las categorias y la cantidad de productos que tienen - filtro categoria
