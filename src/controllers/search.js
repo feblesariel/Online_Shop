@@ -96,35 +96,30 @@ const searchController = {
           include: [{ association: 'product_images' }]
         });
 
-        // consulto el total de productos que hay - se usa en ambos filtros
-
-        const getTotalProductCount = Product.count('category_id');
-
         // consulto las categorias y la cantidad de productos que tienen - filtro categoria
 
-        const getCategoriesWithProductCount = getAllProducts.then(products => {
-          const categoryIds = products.map(product => product.category_id);
-        
-          return Category.findAll({
-            attributes: [
-              'id',
-              'name',
-              [
-                sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
-                'productCount'
-              ]
-            ],
-            where: {
-              id: {
-                [Op.in]: categoryIds
-              }
-            },
-            having: sequelize.literal('productCount > 0'),
-            order: [['name', 'ASC']],
-            raw: true
-          });
+        const getCategoriesWithProductCount = Category.findAll({
+          attributes: [
+            'id',
+            'name',
+            [
+              sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
+              'productCount'
+            ]
+          ],
+          having: sequelize.literal('productCount > 0'),
+          order: [
+            ['name', 'ASC']
+          ],
+          raw: true
         });
 
+        // consulto el total de productos que hay - category
+
+
+        const getTotalProductCount = Product.count('category_id');
+                        
+          
         // consulto el total de productos que hay - brand
 
         const categoryFilterTotal = req.query.categoryFilter ? JSON.parse(req.query.categoryFilter) : [];
@@ -154,7 +149,7 @@ const searchController = {
           group: 'brand',
           order: [['brand', 'ASC']],
           raw: true
-        });
+        });  
         
         Promise.all([getCategories, getProductCountInCart ,getAllProducts, getTotalProductCount, getCategoriesWithProductCount, getBrandProductCount, getTotalProductCountBrand])
             .then(([CategoriesResult, ProductCountInCart ,AllProducts, TotalProductCount, CategoriesWithProductCount, BrandProductCount, TotalProductCountBrand]) => {
