@@ -90,11 +90,11 @@
                                 <div class="btn-group ml-2">
                                     <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Ordenar por</button>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="/products?order=name">Nombre</a>
-                                        <a class="dropdown-item" href="/products?order=popular">Mas vendidos</a>
-                                        <a class="dropdown-item" href="/products?order=lowPrice">Menor precio</a>
-                                        <a class="dropdown-item" href="/products?order=highPrice">Mayor precio</a>
-                                    </div>
+                                      <a class="dropdown-item" href="#" onclick="buildOrderURL('name')">Nombre</a>
+                                      <a class="dropdown-item" href="#" onclick="buildOrderURL('popular')">Mas vendidos</a>
+                                      <a class="dropdown-item" href="#" onclick="buildOrderURL('lowPrice')">Menor precio</a>
+                                      <a class="dropdown-item" href="#" onclick="buildOrderURL('highPrice')">Mayor precio</a>
+                                    </div>                                    
                                 </div>
                             </div>
                         </div>
@@ -243,6 +243,22 @@
         }
     
     </script>
+    <script>
+        function buildOrderURL(order) {
+        const url = new URL(window.location.href);
+        const searchParams = new URLSearchParams(url.search);
+
+        // Eliminar cualquier opción de ordenamiento existente
+        searchParams.delete('order');
+
+        // Establecer la nueva opción de ordenamiento en la URL
+        searchParams.set('order', order);
+
+        url.search = searchParams.toString();
+        window.location.href = url.toString();
+        }
+    </script>
+      
 
 </body>
 
