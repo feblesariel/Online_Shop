@@ -118,8 +118,15 @@ const productsController = {
           
         // consulto el total de productos que hay - se usa en ambos filtros
 
-        const getTotalProductCount = Product.count('category_id');
+        const categoryFilterTotal = req.query.categoryFilter ? JSON.parse(req.query.categoryFilter) : [];
 
+        const whereClauseTotal = {
+          ...(categoryFilter.length > 0 ? { category_id: categoryFilterTotal } : {})
+        };
+
+        const getTotalProductCount = Product.count({
+          where: whereClauseTotal
+        });
 
         // consulto las marcas y el total de productos que tienen - filtro marca
 
