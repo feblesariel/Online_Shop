@@ -123,15 +123,22 @@ const productsController = {
 
         // consulto las marcas y el total de productos que tienen - filtro marca
 
+        const categoryFilterBrand = req.query.categoryFilter ? JSON.parse(req.query.categoryFilter) : [];
+
+        const whereClauseBrand = {
+          ...(categoryFilter.length > 0 ? { category_id: categoryFilterBrand } : {})
+        };
+        
         const getBrandProductCount = Product.findAll({
           attributes: [
             'brand',
             [sequelize.fn('COUNT', sequelize.col('id')), 'productCount']
           ],
+          where: whereClauseBrand,
           group: 'brand',
           order: [['brand', 'ASC']],
           raw: true
-        });        
+        });    
                   
         Promise.all([getCategories, getProductCountInCart, getCategoriesWithProductCount, getTotalProductCount, getBrandProductCount, getAllProducts])
             .then(([CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts]) => {
