@@ -27,17 +27,20 @@ const productsController = {
         // consulto las categorias - navbar
 
         const getCategories = Category.findAll({
-            attributes: [
-                'id',
-                'name',
-                [
-                  sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
-                  'productCount'
-                ]
-            ],
-            having: sequelize.literal('productCount > 0'),
-            raw: true
-        });    
+          attributes: [
+            'id',
+            'name',
+            [
+              sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
+              'productCount'
+            ]
+          ],
+          having: sequelize.literal('productCount > 0'),
+          order: [
+            ['name', 'ASC']
+          ],
+          raw: true
+        });           
           
         // calculo cuantos items hay en el carrito - navbar
 
@@ -81,17 +84,20 @@ const productsController = {
         // consulto las categorias y la cantidad de productos que tienen - filtro categoria
 
         const getCategoriesWithProductCount = Category.findAll({
-            attributes: [
-              'id',
-              'name',
-              [
-                sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
-                'productCount'
-              ]
-            ],
-            having: sequelize.literal('productCount > 0'),
-            raw: true
-          });
+          attributes: [
+            'id',
+            'name',
+            [
+              sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
+              'productCount'
+            ]
+          ],
+          having: sequelize.literal('productCount > 0'),
+          order: [
+            ['name', 'ASC']
+          ],
+          raw: true
+        }); 
                         
           
         // consulto el total de productos que hay - se usa en ambos filtros
@@ -144,17 +150,20 @@ const productsController = {
         // consulto las categorias - navbar
 
         const getCategories = Category.findAll({
-            attributes: [
-                'id',
-                'name',
-                [
-                  sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
-                  'productCount'
-                ]
-            ],
-            having: sequelize.literal('productCount > 0'),
-            raw: true
-        }); 
+          attributes: [
+            'id',
+            'name',
+            [
+              sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
+              'productCount'
+            ]
+          ],
+          having: sequelize.literal('productCount > 0'),
+          order: [
+            ['name', 'ASC']
+          ],
+          raw: true
+        });  
 
         // calculo cuantos items hay en el carrito - navbar
 
