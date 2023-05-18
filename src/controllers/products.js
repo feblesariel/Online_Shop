@@ -108,13 +108,14 @@ const productsController = {
         // consulto las marcas y el total de productos que tienen - filtro marca
 
         const getBrandProductCount = Product.findAll({
-            attributes: [
-              'brand',
-              [sequelize.fn('COUNT', sequelize.col('id')), 'productCount']
-            ],
-            group: 'brand',
-            raw: true
-        });
+          attributes: [
+            'brand',
+            [sequelize.fn('COUNT', sequelize.col('id')), 'productCount']
+          ],
+          group: 'brand',
+          order: [['brand', 'ASC']],
+          raw: true
+        });        
                   
         Promise.all([getCategories, getProductCountInCart, getCategoriesWithProductCount, getTotalProductCount, getBrandProductCount, getAllProducts])
             .then(([CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts]) => {
