@@ -12,15 +12,15 @@ function buildOrderURL(order) {
     window.location.href = url.toString();
   }
   
-  // Leer la URL actual y agregar el icono a la opción de orden seleccionada
+  // Leer la URL actual y agregar la clase "text-primary" a la opción de orden seleccionada
   const currentURL = window.location.href;
 
   if (currentURL.includes('order=name')) {
-    document.getElementById('orderName').innerHTML += ' <i class="fas fa-check-circle fa-sm"></i>';
+    document.getElementById('orderName').classList.add('text-primary');
   } else if (currentURL.includes('order=popular')) {
-    document.getElementById('orderPopular').innerHTML += ' <i class="fas fa-check-circle fa-sm"></i>';
+    document.getElementById('orderPopular').classList.add('text-primary');
   } else if (currentURL.includes('order=lowPrice')) {
-    document.getElementById('orderLowPrice').innerHTML += ' <i class="fas fa-check-circle fa-sm"></i>';
+    document.getElementById('orderLowPrice').classList.add('text-primary');
   } else if (currentURL.includes('order=highPrice')) {
-    document.getElementById('orderHighPrice').innerHTML += ' <i class="fas fa-check-circle fa-sm"></i>';
+    document.getElementById('orderHighPrice').classList.add('text-primary');
   }
