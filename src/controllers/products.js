@@ -150,7 +150,7 @@ const productsController = {
           group: 'brand',
           order: [['brand', 'ASC']],
           raw: true
-        });    
+        });  
                   
         Promise.all([getCategories, getProductCountInCart, getCategoriesWithProductCount, getTotalProductCount, getBrandProductCount, getAllProducts, getTotalProductCountBrand])
             .then(([CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts, TotalProductCountBrand]) => {
