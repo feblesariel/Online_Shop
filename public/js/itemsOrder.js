@@ -16,11 +16,11 @@ function buildOrderURL(order) {
   const currentURL = window.location.href;
 
   if (currentURL.includes('order=name')) {
-    document.getElementById('orderName').innerHTML += ' <i class="fas fa-check-circle text-primary"></i>';
+    document.getElementById('orderName').innerHTML += ' <i class="fas fa-check-circle fa-sm"></i>';
   } else if (currentURL.includes('order=popular')) {
-    document.getElementById('orderPopular').innerHTML += ' <i class="fas fa-check-circle text-primary"></i>';
+    document.getElementById('orderPopular').innerHTML += ' <i class="fas fa-check-circle fa-sm"></i>';
   } else if (currentURL.includes('order=lowPrice')) {
-    document.getElementById('orderLowPrice').innerHTML += ' <i class="fas fa-check-circle text-primary"></i>';
+    document.getElementById('orderLowPrice').innerHTML += ' <i class="fas fa-check-circle fa-sm"></i>';
   } else if (currentURL.includes('order=highPrice')) {
-    document.getElementById('orderHighPrice').innerHTML += ' <i class="fas fa-check-circle text-primary"></i>';
+    document.getElementById('orderHighPrice').innerHTML += ' <i class="fas fa-check-circle fa-sm"></i>';
   }
