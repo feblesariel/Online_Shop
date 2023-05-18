@@ -109,6 +109,7 @@ const searchController = {
         
         const whereClause = {
           [Op.or]: [
+            { code: { [Op.like]: `%${searchTerm}%` } },
             { name: { [Op.like]: `%${searchTerm}%` } },
             { brand: { [Op.like]: `%${searchTerm}%` } },
             { model: { [Op.like]: `%${searchTerm}%` } }
