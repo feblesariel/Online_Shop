@@ -108,27 +108,27 @@ const searchController = {
         }
         
         const whereClause = {
-          [Op.or]: [
-            { code: { [Op.like]: `%${searchTerm}%` } },
-            { name: { [Op.like]: `%${searchTerm}%` } },
-            { brand: { [Op.like]: `%${searchTerm}%` } },
-            { model: { [Op.like]: `%${searchTerm}%` } }
+          [Op.and]: [
+            {
+              [Op.or]: [
+                { code: { [Op.like]: `%${searchTerm}%` } },
+                { name: { [Op.like]: `%${searchTerm}%` } },
+                { brand: { [Op.like]: `%${searchTerm}%` } },
+                { model: { [Op.like]: `%${searchTerm}%` } }
+              ]
+            },
+            ...(categoryFilter.length > 0 ? [{ category_id: categoryFilter }] : []),
+            ...(brandFilter.length > 0 ? [{ brand: brandFilter }] : [])
           ]
         };
         
-        if (categoryFilter.length > 0) {
-          whereClause.category_id = categoryFilter;
-        }
-        
-        if (brandFilter.length > 0) {
-          whereClause.brand = brandFilter;
-        }
-        
         const getAllProducts = Product.findAll({
-          where: whereClause,
+          where: {
+            [Op.and]: whereClause[Op.and]
+          },
           order: orderOption,
           include: [{ association: 'product_images' }]
-        });       
+        }); 
         
         Promise.all([getCategories, getProductCountInCart ,getAllProducts, getTotalProductCount, getCategoriesWithProductCount, getBrandProductCount])
             .then(([CategoriesResult, ProductCountInCart ,AllProducts, TotalProductCount, CategoriesWithProductCount, BrandProductCount]) => {

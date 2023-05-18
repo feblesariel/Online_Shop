@@ -73,19 +73,24 @@ const productsController = {
           orderOption = [['price', 'DESC']];
         }
         
+        const whereClause = {
+          [Op.and]: [
+            {
+              [Op.or]: [
+                { code: { [Op.like]: `%${searchTerm}%` } },
+                { name: { [Op.like]: `%${searchTerm}%` } },
+                { brand: { [Op.like]: `%${searchTerm}%` } },
+                { model: { [Op.like]: `%${searchTerm}%` } }
+              ]
+            },
+            ...(categoryFilter.length > 0 ? [{ category_id: categoryFilter }] : []),
+            ...(brandFilter.length > 0 ? [{ brand: brandFilter }] : [])
+          ]
+        };
+        
         const getAllProducts = Product.findAll({
           where: {
-            [Op.and]: [
-              {
-                [Op.or]: [
-                  { name: { [Op.like]: `%${searchTerm}%` } },
-                  { brand: { [Op.like]: `%${searchTerm}%` } },
-                  { model: { [Op.like]: `%${searchTerm}%` } }
-                ]
-              },
-              ...(categoryFilter.length > 0 && { category_id: categoryFilter }),
-              ...(brandFilter.length > 0 && { brand: brandFilter })
-            ]
+            [Op.and]: whereClause[Op.and]
           },
           order: orderOption,
           include: [{ association: 'product_images' }]
