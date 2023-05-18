@@ -102,20 +102,27 @@ const searchController = {
 
         // consulto las categorias y la cantidad de productos que tienen - filtro categoria
 
-        const getCategoriesWithProductCount = Category.findAll({
+        const getCategoriesWithProductCount = getAllProducts.then(products => {
+          const categoryIds = products.map(product => product.category_id);
+        
+          return Category.findAll({
             attributes: [
-                'id',
-                'name',
-                [
+              'id',
+              'name',
+              [
                 sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
                 'productCount'
-                ]
+              ]
             ],
+            where: {
+              id: {
+                [Op.in]: categoryIds
+              }
+            },
             having: sequelize.literal('productCount > 0'),
-            order: [
-                ['name', 'ASC']
-            ],
+            order: [['name', 'ASC']],
             raw: true
+          });
         });
 
         // consulto el total de productos que hay - brand
