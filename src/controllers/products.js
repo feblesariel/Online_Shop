@@ -56,12 +56,13 @@ const productsController = {
 
         // consulto todos los productos con parametros de ordenamiento - productos
 
+        const searchTerm = req.query.query || '';
         const categoryFilter = req.query.categoryFilter ? JSON.parse(req.query.categoryFilter) : [];
         const brandFilter = req.query.brandFilter ? JSON.parse(req.query.brandFilter) : [];
         const order = req.query.order;
-      
+        
         let orderOption = [];
-      
+        
         if (order === 'name') {
           orderOption = [['name', 'ASC']];
         } else if (order === 'popular') {
@@ -70,16 +71,26 @@ const productsController = {
           orderOption = [['price', 'ASC']];
         } else if (order === 'highPrice') {
           orderOption = [['price', 'DESC']];
-        }      
-
+        }
+        
         const getAllProducts = Product.findAll({
-            where: {
+          where: {
+            [Op.and]: [
+              {
+                [Op.or]: [
+                  { name: { [Op.like]: `%${searchTerm}%` } },
+                  { brand: { [Op.like]: `%${searchTerm}%` } },
+                  { model: { [Op.like]: `%${searchTerm}%` } }
+                ]
+              },
               ...(categoryFilter.length > 0 && { category_id: categoryFilter }),
               ...(brandFilter.length > 0 && { brand: brandFilter })
-            },
-            order: orderOption,
-            include: [{ association: 'product_images' }]
-          });
+            ]
+          },
+          order: orderOption,
+          include: [{ association: 'product_images' }]
+        });
+        
 
         // consulto las categorias y la cantidad de productos que tienen - filtro categoria
 
