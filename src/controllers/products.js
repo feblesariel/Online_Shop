@@ -113,10 +113,15 @@ const productsController = {
             ['name', 'ASC']
           ],
           raw: true
-        }); 
+        });
+
+        // consulto el total de productos que hay - category
+
+
+        const getTotalProductCount = Product.count('category_id');
                         
           
-        // consulto el total de productos que hay - se usa en ambos filtros
+        // consulto el total de productos que hay - brand
 
         const categoryFilterTotal = req.query.categoryFilter ? JSON.parse(req.query.categoryFilter) : [];
 
@@ -124,7 +129,7 @@ const productsController = {
           ...(categoryFilter.length > 0 ? { category_id: categoryFilterTotal } : {})
         };
 
-        const getTotalProductCount = Product.count({
+        const getTotalProductCountBrand = Product.count({
           where: whereClauseTotal
         });
 
@@ -147,9 +152,9 @@ const productsController = {
           raw: true
         });    
                   
-        Promise.all([getCategories, getProductCountInCart, getCategoriesWithProductCount, getTotalProductCount, getBrandProductCount, getAllProducts])
-            .then(([CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts]) => {
-                res.render('products', { CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts });
+        Promise.all([getCategories, getProductCountInCart, getCategoriesWithProductCount, getTotalProductCount, getBrandProductCount, getAllProducts, getTotalProductCountBrand])
+            .then(([CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts, TotalProductCountBrand]) => {
+                res.render('products', { CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts, TotalProductCountBrand});
             })
             .catch(error => {
                 console.error('Error:', error);

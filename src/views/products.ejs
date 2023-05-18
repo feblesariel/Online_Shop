@@ -28,9 +28,6 @@
                 <!-- Color Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filtrar por categoria</span></h5>
                 <div class="bg-light p-4 mb-30">
-
-
-
                     <form id="filterFormCategory">
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="category-all" name="categoryFilter[]" value="category-all">
@@ -45,24 +42,19 @@
                                 <span class="badge border font-weight-normal"><%= category.productCount %></span>
                             </div>
                         <% }); %>
-                    </form>
-                
-
-
+                    </form>             
                 </div>
                 <!-- Color End -->
 
                 <!-- Size Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filtrar por marca</span></h5>
                 <div class="bg-light p-4 mb-30">
-
                     <form id="filterFormBrand">
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="brand-all" name="brandFilter[]" value="brand-all">
                             <label class="custom-control-label" for="brand-all">Todas las marcas</label>
-                            <span class="badge border font-weight-normal"><%= TotalProductCount %></span>
-                        </div>
-                
+                            <span class="badge border font-weight-normal"><%= TotalProductCountBrand %></span>
+                        </div>                
                         <% BrandProductCount.forEach(brand => { %>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                 <input type="checkbox" class="custom-control-input" id="<%= brand.brand %>" name="brandFilter[]" value="<%= brand.brand %>">
@@ -71,7 +63,6 @@
                             </div>
                         <% }); %>
                     </form>
-
                 </div>
                 <!-- Size End -->
             </div>
