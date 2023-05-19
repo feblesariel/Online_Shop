@@ -48,7 +48,7 @@
                     </div>                    
                     <% if (AllProducts.length === 0) { %>
                         <!-- genero espacio en blanco que ocupe pantalla -->
-                        <div style="height: 50vh;"></div>
+                        <div style="height: 60vh;"></div>
                     <% } else { %>
                         <% AllProducts.forEach(product => { %>
                             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
@@ -70,17 +70,6 @@
                             </div>
                         <% }); %>
                     <% } %>
-                    <div class="col-12">
-                        <nav>
-                          <ul class="pagination justify-content-center">
-                            <li class="page-item disabled"><a class="page-link" href="#">Previous</span></a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                          </ul>
-                        </nav>
-                    </div>
                 </div>
             </div>
             <!-- Shop Product End -->
