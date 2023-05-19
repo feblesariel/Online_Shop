@@ -13,7 +13,8 @@
             <div class="col-12">
                 <nav class="breadcrumb bg-light mb-30">
                     <a class="breadcrumb-item text-dark text-decoration-none" href="/">Inicio</a>
-                    <span class="breadcrumb-item active">Productos</span>
+                    <a class="breadcrumb-item text-dark text-decoration-none" href="/products">Productos</a>
+                    <span class="breadcrumb-item active">Buscar</span>
                 </nav>
             </div>
         </div>
@@ -23,58 +24,15 @@
     <!-- Shop Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
-            <!-- Shop Sidebar Start -->
-            <div class="col-lg-3 col-md-4">                
-                <!-- Color Start -->
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filtrar por categoria</span></h5>
-                <div class="bg-light p-4 mb-30">
-                    <form id="filterFormCategory">
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="category-all" name="categoryFilter[]" value="category-all">
-                            <label class="custom-control-label" for="category-all">Todas las categorías</label>
-                            <span class="badge border font-weight-normal"><%= TotalProductCount %></span>
-                        </div>
-                
-                        <% CategoriesWithProductCount.forEach(category => { %>
-                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="<%= category.id %>" name="categoryFilter[]" value="<%= category.id %>">
-                                <label class="custom-control-label" for="<%= category.id %>"><%= category.name %></label>
-                                <span class="badge border font-weight-normal"><%= category.productCount %></span>
-                            </div>
-                        <% }); %>
-                    </form>             
-                </div>
-                <!-- Color End -->
-
-                <!-- Size Start -->
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filtrar por marca</span></h5>
-                <div class="bg-light p-4 mb-30">
-                    <form id="filterFormBrand">
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="brand-all" name="brandFilter[]" value="brand-all">
-                            <label class="custom-control-label" for="brand-all">Todas las marcas</label>
-                            <span class="badge border font-weight-normal"><%= TotalProductCountBrand %></span>
-                        </div>                
-                        <% BrandProductCount.forEach(brand => { %>
-                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="<%= brand.brand %>" name="brandFilter[]" value="<%= brand.brand %>">
-                                <label class="custom-control-label" for="<%= brand.brand %>"><%= brand.brand %></label>
-                                <span class="badge border font-weight-normal"><%= brand.productCount %></span>
-                            </div>
-                        <% }); %>
-                    </form>
-                </div>
-                <!-- Size End -->
-            </div>
-            <!-- Shop Sidebar End -->
-
+            
             <!-- Shop Product Start -->
-            <div class="col-lg-9 col-md-8">
+            <div class="col-lg-12 col-md-8">
                 <div class="row pb-3">
                     <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <div>
-                                <a href="/products" class="btn btn-sm btn-light">Limpiar filtros <i class="fas fa-times-circle"></i></a>
+                                <h5 class="text-uppercase m-0">resultados de busqueda</h5>
+                                <!-- <span>Resultados de la busqueda</span> -->
                             </div>
                             <div class="ml-2">
                                 <div class="btn-group ml-2">
@@ -91,7 +49,7 @@
                     </div>                   
 
                     <% AllProducts.forEach(product => { %>
-                    <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                         <div class="product-item bg-light mb-4">
                             <div class="product-img position-relative overflow-hidden">
                                 <img class="img-fluid w-100" src="img/<%= product.product_images.url %>" alt="">
@@ -129,9 +87,7 @@
     <!-- Shop End -->
 
     <%-include("./partials/footer.ejs")%>
-
-    <!-- Script de filtrado -->
-    <script src="/js/itemsFilter.js"></script>
+    
     <!-- Script de ordenamiento -->
     <script src="/js/itemsOrder.js"></script>      
 

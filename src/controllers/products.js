@@ -153,8 +153,8 @@ const productsController = {
         });  
                   
         Promise.all([getCategories, getProductCountInCart, getCategoriesWithProductCount, getTotalProductCount, getBrandProductCount, getAllProducts, getTotalProductCountBrand])
-            .then(([CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts, TotalProductCountBrand]) => {
-                res.render('products', { CategoriesResult, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts, TotalProductCountBrand});
+            .then(([Categories, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts, TotalProductCountBrand]) => {
+                res.render('products', { Categories, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts, TotalProductCountBrand});
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -214,8 +214,8 @@ const productsController = {
         });
 
         Promise.all([getProductByPk, getImagesProduct, getCategories, getProductCountInCart, getAllProducts])
-            .then(([ProductByPk, ImagesProduct, CategoriesResult, ProductCountInCart, AllProducts]) => {
-                res.render('detail', { ProductByPk, ImagesProduct, CategoriesResult, ProductCountInCart, AllProducts });
+            .then(([ProductByPk, ImagesProduct, Categories, ProductCountInCart, AllProducts]) => {
+                res.render('detail', { ProductByPk, ImagesProduct, Categories, ProductCountInCart, AllProducts });
             })
             .catch(error => {
                 console.error('Error:', error);

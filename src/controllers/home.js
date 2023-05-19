@@ -82,8 +82,8 @@ const homeController = {
       });  
 
       Promise.all([getFeaturedProducts, getPopularProducts, getCategories, getProductCountInCart])
-        .then(([FeaturedProducts, PopularProducts, CategoriesResult, ProductCountInCart]) => {
-          res.render('index', { FeaturedProducts, PopularProducts, CategoriesResult, ProductCountInCart});
+        .then(([FeaturedProducts, PopularProducts, Categories, ProductCountInCart]) => {
+          res.render('index', { FeaturedProducts, PopularProducts, Categories, ProductCountInCart});
         })
         .catch(error => {
           console.error('Error:', error);
