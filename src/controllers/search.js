@@ -56,7 +56,7 @@ const searchController = {
 
         // barra de busqueda
 
-        const searchTerm = req.query.query || '';
+        const searchTerm = req.query.query || null;
         const categoryFilter = req.query.categoryFilter ? JSON.parse(req.query.categoryFilter) : [];
         const brandFilter = req.query.brandFilter ? JSON.parse(req.query.brandFilter) : [];
         const order = req.query.order;
