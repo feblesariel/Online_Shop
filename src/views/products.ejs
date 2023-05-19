@@ -25,7 +25,7 @@
         <div class="row px-xl-5">
             <!-- Shop Sidebar Start -->
             <div class="col-lg-3 col-md-4">                
-                <!-- Color Start -->
+                <!-- Category Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filtrar por categoria</span></h5>
                 <div class="bg-light p-4 mb-30">
                     <form id="filterFormCategory">
@@ -33,8 +33,7 @@
                             <input type="checkbox" class="custom-control-input" id="category-all" name="categoryFilter[]" value="category-all">
                             <label class="custom-control-label" for="category-all">Todas las categorías</label>
                             <span class="badge border font-weight-normal"><%= TotalProductCount %></span>
-                        </div>
-                
+                        </div>                
                         <% CategoriesWithProductCount.forEach(category => { %>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                 <input type="checkbox" class="custom-control-input" id="<%= category.id %>" name="categoryFilter[]" value="<%= category.id %>">
@@ -44,9 +43,9 @@
                         <% }); %>
                     </form>             
                 </div>
-                <!-- Color End -->
+                <!-- Category End -->
 
-                <!-- Size Start -->
+                <!-- Brand Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filtrar por marca</span></h5>
                 <div class="bg-light p-4 mb-30">
                     <form id="filterFormBrand">
@@ -64,7 +63,7 @@
                         <% }); %>
                     </form>
                 </div>
-                <!-- Size End -->
+                <!-- Brand End -->
             </div>
             <!-- Shop Sidebar End -->
 

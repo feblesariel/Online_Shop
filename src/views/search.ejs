@@ -24,7 +24,7 @@
     <!-- Shop Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
-            
+
             <!-- Shop Product Start -->
             <div class="col-lg-12 col-md-12">
                 <div class="row pb-3">
@@ -41,14 +41,14 @@
                                       <a id="orderPopular" class="dropdown-item" href="#" onclick="buildOrderURL('popular')">Mas vendidos</a>
                                       <a id="orderLowPrice" class="dropdown-item" href="#" onclick="buildOrderURL('lowPrice')">Menor precio</a>
                                       <a id="orderHighPrice" class="dropdown-item" href="#" onclick="buildOrderURL('highPrice')">Mayor precio</a>
-                                    </div>                                                                      
+                                    </div>                                                              
                                 </div>
                             </div>
                         </div>
                     </div>                    
-                    
                     <% if (AllProducts.length === 0) { %>
-                        <div style="height: 50vh;"></div> 
+                        <!-- genero espacio en blanco que ocupe pantalla -->
+                        <div style="height: 50vh;"></div>
                     <% } else { %>
                         <% AllProducts.forEach(product => { %>
                             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
@@ -70,7 +70,6 @@
                             </div>
                         <% }); %>
                     <% } %>
-
                     <div class="col-12">
                         <nav>
                           <ul class="pagination justify-content-center">
@@ -85,6 +84,7 @@
                 </div>
             </div>
             <!-- Shop Product End -->
+            
         </div>
     </div>
     <!-- Shop End -->
