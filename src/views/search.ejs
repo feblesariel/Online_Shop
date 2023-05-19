@@ -31,19 +31,21 @@
                     <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <div>
-                                <h5 class="text-uppercase m-0"><%= AllProducts.length === 0 ? "sin resultados" : "resultados" %></h5>
+                                <h5 class="text-uppercase m-0"><%= AllProducts.length === 0 ? 'sin resultados en la búsqueda' : 'resultados' %></h5>
                             </div>
+                            <% if (AllProducts.length > 0) { %>
                             <div class="ml-2">
-                                <div class="btn-group ml-2">
+                                <div class="btn-group ml-2">                
                                     <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Ordenar por</button>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                      <a id="orderName" class="dropdown-item" href="#" onclick="buildOrderURL('name')">Nombre</a>
-                                      <a id="orderPopular" class="dropdown-item" href="#" onclick="buildOrderURL('popular')">Mas vendidos</a>
-                                      <a id="orderLowPrice" class="dropdown-item" href="#" onclick="buildOrderURL('lowPrice')">Menor precio</a>
-                                      <a id="orderHighPrice" class="dropdown-item" href="#" onclick="buildOrderURL('highPrice')">Mayor precio</a>
-                                    </div>                                                              
+                                        <a id="orderName" class="dropdown-item" href="#" onclick="buildOrderURL('name')">Nombre</a>
+                                        <a id="orderPopular" class="dropdown-item" href="#" onclick="buildOrderURL('popular')">Mas vendidos</a>
+                                        <a id="orderLowPrice" class="dropdown-item" href="#" onclick="buildOrderURL('lowPrice')">Menor precio</a>
+                                        <a id="orderHighPrice" class="dropdown-item" href="#" onclick="buildOrderURL('highPrice')">Mayor precio</a>
+                                    </div>                                                         
                                 </div>
                             </div>
+                            <% } %>                        
                         </div>
                     </div>                    
                     <% if (AllProducts.length === 0) { %>
