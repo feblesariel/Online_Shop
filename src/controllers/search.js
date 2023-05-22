@@ -22,90 +22,89 @@ const Store_pickup = db.Store_pickup;
 
 const searchController = {
 
-    search: function (req, res) {
+  search: function (req, res) {
 
-        // consulto las categorias - navbar
-        
-        const getCategories = Category.findAll({
-            attributes: [
-            'id',
-            'name',
-            [
-                sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
-                'productCount'
-            ]
-            ],
-            having: sequelize.literal('productCount > 0'),
-            order: [
-            ['name', 'ASC']
-            ],
-            raw: true
-        }); 
+    // consulto las categorias - navbar
 
-        // calculo cuantos items hay en el carrito - navbar
+    const getCategories = Category.findAll({
+      attributes: [
+        'id',
+        'name',
+        [
+          sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
+          'productCount'
+        ]
+      ],
+      having: sequelize.literal('productCount > 0'),
+      order: [
+        ['name', 'ASC']
+      ],
+      raw: true
+    });
 
-        const getProductCountInCart = Cart_item.sum( 'quantity' ,{
-            include: [
-            {
-                model: Cart,
-                as: 'cart',
-                where: { user_id: 1 } // ACA MODIFICAR SEGUN USER LOGUEADO
-            }
-            ]
-        });
+    // calculo cuantos items hay en el carrito - navbar
 
-        // barra de busqueda
-
-        const searchTerm = req.query.query || null;
-        const categoryFilter = req.query.categoryFilter ? JSON.parse(req.query.categoryFilter) : [];
-        const brandFilter = req.query.brandFilter ? JSON.parse(req.query.brandFilter) : [];
-        const order = req.query.order;
-        
-        let orderOption = [];
-        
-        if (order === 'name') {
-          orderOption = [['name', 'ASC']];
-        } else if (order === 'popular') {
-          orderOption = [['sold_count', 'DESC']];
-        } else if (order === 'lowPrice') {
-          orderOption = [['price', 'ASC']];
-        } else if (order === 'highPrice') {
-          orderOption = [['price', 'DESC']];
+    const getProductCountInCart = Cart_item.sum('quantity', {
+      include: [
+        {
+          model: Cart,
+          as: 'cart',
+          where: { user_id: 1 } // ACA MODIFICAR SEGUN USER LOGUEADO
         }
-        
-        const whereClause = {
-          [Op.and]: [
-            {
-              [Op.or]: [
-                { code: { [Op.like]: `%${searchTerm}%` } },
-                { name: { [Op.like]: `%${searchTerm}%` } },
-                { brand: { [Op.like]: `%${searchTerm}%` } },
-                { model: { [Op.like]: `%${searchTerm}%` } }
-              ]
-            },
-            ...(categoryFilter.length > 0 ? [{ category_id: categoryFilter }] : []),
-            ...(brandFilter.length > 0 ? [{ brand: brandFilter }] : [])
-          ]
-        };
-        
-        const getAllProducts = Product.findAll({
-          where: {
-            [Op.and]: whereClause[Op.and]
-          },
-          order: orderOption,
-          include: [{ association: 'product_images' }]
-        });
+      ]
+    });
 
-        Promise.all([getCategories, getProductCountInCart , getAllProducts])
-            .then(([Categories, ProductCountInCart , AllProducts]) => {
-            res.render('search', { Categories, ProductCountInCart , AllProducts });
-            })
-            .catch(error => {
-            console.error('Error:', error);
-            // Manejo de errores
-        });
+    // barra de busqueda
+
+    const searchTerm = req.query.query || null;
+    const categoryFilter = req.query.categoryFilter ? JSON.parse(req.query.categoryFilter) : [];
+    const brandFilter = req.query.brandFilter ? JSON.parse(req.query.brandFilter) : [];
+    const order = req.query.order;
+
+    let orderOption = [];
+
+    if (order === 'name') {
+      orderOption = [['name', 'ASC']];
+    } else if (order === 'popular') {
+      orderOption = [['sold_count', 'DESC']];
+    } else if (order === 'lowPrice') {
+      orderOption = [['price', 'ASC']];
+    } else if (order === 'highPrice') {
+      orderOption = [['price', 'DESC']];
     }
-    
+
+    const whereClause = {
+      [Op.and]: [
+        {
+          [Op.or]: [
+            { code: { [Op.like]: `%${searchTerm}%` } },
+            { name: { [Op.like]: `%${searchTerm}%` } },
+            { brand: { [Op.like]: `%${searchTerm}%` } },
+            { model: { [Op.like]: `%${searchTerm}%` } }
+          ]
+        },
+        ...(categoryFilter.length > 0 ? [{ category_id: categoryFilter }] : []),
+        ...(brandFilter.length > 0 ? [{ brand: brandFilter }] : [])
+      ]
+    };
+
+    const getAllProducts = Product.findAll({
+      where: {
+        [Op.and]: whereClause[Op.and]
+      },
+      order: orderOption,
+      include: [{ association: 'product_images' }]
+    });
+
+    Promise.all([getCategories, getProductCountInCart, getAllProducts])
+      .then(([Categories, ProductCountInCart, AllProducts]) => {
+        res.render('search', { Categories, ProductCountInCart, AllProducts });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Manejo de errores
+    });
+  }
 }
 
 module.exports = searchController;
