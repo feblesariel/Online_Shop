@@ -1,5 +1,11 @@
 // ************ Requires ************
 
+const fs = require("fs");
+const path = require("path");
+const { validationResult } = require("express-validator");
+const { stringify } = require("querystring");
+const bcrypt = require('bcryptjs');
+
 //--- DB
 
 const db = require('../database/models/index.js');
@@ -26,6 +32,27 @@ const usersController = {
 
     res.render("login");
 
+  },
+
+  loginProcess: function (req, res) {
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.render("login", { errors: errors.array(), old: req.body })
+    }
+
+    Usuario.findOne({ where: { email: req.body.email } }).then(function (usuario) {
+        if (usuario) {
+            let isOkPassword = bcrypt.compareSync(req.body.password, usuario.contraseña);
+            if (isOkPassword) {
+                req.session.userLogged = usuario;
+                return res.redirect("/users/profile");
+            } else {
+                return res.render("login", { errors: [{ msg: "Contraseña incorrecta." }], old: req.body });
+            }
+        }
+        return res.render("login", { errors: [{ msg: "Usuario no registrado." }], old: req.body });
+    })
   },
 
   register: function (req, res) {

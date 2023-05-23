@@ -13,17 +13,17 @@
         <div class="d-flex flex-column justify-content-center align-items-center shadow" style="width: 500px; height: 500px; background-color: white;">
             <h2 class="text-center mb-5">Ingresá</h2>
 
-            <form class="w-75">
+            <form class="w-75" action="/users/login/" method="post">
               <!-- Email input -->
               <div class="form-outline mb-4">
-                <input type="email" id="form1Example1" class="form-control" />
-                <label class="form-label small" for="form1Example1">Email</label>
+                <input class="form-control" type="email" name="email" id="email"/>
+                <label class="form-label small" for="email">Email</label>
               </div>
             
               <!-- Password input -->
               <div class="form-outline mb-4">
-                <input type="password" id="form1Example2" class="form-control" />
-                <label class="form-label small" for="form1Example2">Contraseña</label>
+                <input class="form-control" type="password" name="password" id="password"/>
+                <label class="form-label small" for="password">Contraseña</label>
               </div>
 
               <!-- Submit button -->
@@ -38,6 +38,7 @@
               </div>
 
             </form>
+
         </div>
     </div>
   </body>
