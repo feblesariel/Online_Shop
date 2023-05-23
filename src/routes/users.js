@@ -41,6 +41,7 @@ router.post("/login/", estasLogueadoMiddleware ,validationsLoginForm , usersCont
 router.get("/register/", estasLogueadoMiddleware ,usersController.register);
 router.post("/register/", estasLogueadoMiddleware ,validationsRegisterForm , usersController.registerProcess);
 
+router.get("/profile/",noEstasLogueadoMiddleware, usersController.profile);
 router.get("/logout/", noEstasLogueadoMiddleware, usersController.logout);
 
 

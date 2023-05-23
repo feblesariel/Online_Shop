@@ -46,7 +46,7 @@ const usersController = {
         let isOkPassword = bcrypt.compareSync(req.body.password, user.password);
         if (isOkPassword) {
           req.session.userLogged = user;
-          return res.redirect("/");
+          return res.redirect("/users/profile");
         } else {
           return res.render("login", { errors: [{ msg: "Contraseña incorrecta." }], old: req.body });
         }
@@ -101,6 +101,46 @@ const usersController = {
     });
   },
 
+  profile: function (req, res) {
+
+    const getCategories = Category.findAll({
+      attributes: [
+        'id',
+        'name',
+        [
+          sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
+          'productCount'
+        ]
+      ],
+      having: sequelize.literal('productCount > 0'),
+      order: [
+        ['name', 'ASC']
+      ],
+      raw: true
+    });
+
+    // calculo cuantos items hay en el carrito - navbar
+
+    const getProductCountInCart = Cart_item.sum('quantity', {
+      include: [
+        {
+          model: Cart,
+          as: 'cart',
+          where: { user_id: 1 } // ACA MODIFICAR SEGUN USER LOGUEADO
+        }
+      ]
+    });
+
+    Promise.all([getCategories, getProductCountInCart])
+    .then(([Categories, ProductCountInCart]) => {
+      res.render('profile', { Categories, ProductCountInCart, user: req.session.userLogged });
+    }).catch(error => {
+      console.error('Error:', error);
+      // Manejo de errores
+    });
+
+  },
+
   logout: function (req, res) {
 
     req.session.destroy();
@@ -108,7 +148,7 @@ const usersController = {
     res.redirect("/users/login")
 
   },
-  
+
 
 }
 
