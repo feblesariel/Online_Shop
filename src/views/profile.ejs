@@ -12,11 +12,11 @@
             <div class="col-md-6 text-center text-md-start d-flex d-sm-flex d-md-flex justify-content-center align-items-center justify-content-md-start align-items-md-center justify-content-xl-center">
                 <div style="max-width: 350px;">
                     <h2 class="text-uppercase fw-bold">Bienvenido <%= user.name %>!</h2>
-                    <p class="my-3">Este es tu perfil de usuario, desde aqui vas a poder gestionar tus datos y eliminar tu cuenta.</p>
+                    <p class="my-3">Este es tu perfil de usuario, desde aqui vas a poder gestionar tus datos o eliminar tu cuenta.</p>
                     <a class="btn btn-primary btn-lg" role="button" href="/users/edit">Editar</a><a class="btn btn-outline-danger btn-lg" role="button" href="/users/delete">Borrar</a>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 d-none d-md-block">
                 <div class="p-xl-5 m-xl-5"><img class="rounded img-fluid w-100 fit-cover" style="min-height: 300px;" src="/img/user-profile.png" /></div>
             </div>
         </div>
