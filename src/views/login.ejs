@@ -10,7 +10,7 @@
   </head>
   <body class="bg-primary">
     <div class="container d-flex justify-content-center align-items-center vh-100">        
-        <div class="d-flex flex-column justify-content-center align-items-center shadow" style="width: 500px; height: 500px; background-color: white;">
+        <div class="d-flex flex-column justify-content-center align-items-center shadow" style="width: 500px; height: 600px; background-color: white;">
             <h2 class="text-center mb-5">Ingresá</h2>
 
             <form class="w-75" action="/users/login/" method="post">
@@ -27,10 +27,10 @@
               </div>
 
               <!-- Submit button -->
-              <button type="submit" class="btn btn-primary btn-block">Ingrsar</button>
+              <button type="submit" class="btn btn-primary btn-block mb-4">Ingrsar</button>
 
               <% if (locals.errors) { errors.forEach (error=> { %>
-                <p class="errores"><%= error.msg %></p>
+                <div class="small" style="color: red;"><%= error.msg %></div>
               <% })} %>
 
               <!-- Others -->
