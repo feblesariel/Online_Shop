@@ -149,6 +149,46 @@ const usersController = {
 
   },
 
+  userEdit: function (req, res) {
+
+    let old = req.session.userLogged;
+
+    return res.render("userEdit", { old });
+
+  },
+
+  userEditProcces: function (req, res) {
+
+    let old = req.session.userLogged;
+
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.render("userEdit", { errors: errors.array(), old: req.body })
+    }
+
+    User.update(
+        {
+            name: req.body.name,
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password, 10)
+        },
+        {
+            where: { id: old.id }
+        })
+        .then(() => {
+          User.findByPk(old.id).then((user) => {
+                req.session.userLogged = user;
+                return res.redirect('/users/profile')
+            }).catch(error => {
+              console.error('Error:', error);
+              // Manejo de errores
+            });
+        }).catch(error => {
+          console.error('Error:', error);
+          // Manejo de errores
+        });
+  },
 
 }
 

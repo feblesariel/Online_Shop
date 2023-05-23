@@ -15,19 +15,18 @@ const validationsLoginForm = [
     body("password").notEmpty().withMessage("Debes ingresar una contraseña.").bail().isLength({ min: 8 }).withMessage("La contraseña debe tener un minimo 8 caracteres.")
 ];
 
- const validationsRegisterForm = [
-     body("name").notEmpty().withMessage("Debes ingresar un nombre de usuario.").bail().isLength({ min: 2}).withMessage("El nombre de usuario debe tener al menos 2 caracteres."),
-     body("email").notEmpty().withMessage("Debes ingresar un correo electronico.").bail().isEmail().withMessage("Debes usar un formato valido para el correo."),
-     body("password").notEmpty().withMessage("Debes ingresar una contraseña para el usuario.").bail().isLength({ min: 8 }).withMessage("La contraseña debe tener un minimo 8 caracteres.")
+const validationsRegisterForm = [
+    body("name").notEmpty().withMessage("Debes ingresar un nombre de usuario.").bail().isLength({ min: 2}).withMessage("El nombre de usuario debe tener al menos 2 caracteres."),
+    body("email").notEmpty().withMessage("Debes ingresar un correo electronico.").bail().isEmail().withMessage("Debes usar un formato valido para el correo."),
+    body("password").notEmpty().withMessage("Debes ingresar una contraseña para el usuario.").bail().isLength({ min: 8 }).withMessage("La contraseña debe tener un minimo 8 caracteres.")
 
 ];
 
-// const validationsEditUsersForm = [
-//     body("name").notEmpty().withMessage("Debes ingresar un nombre de usuario.").bail().isLength({ min: 2}).withMessage("El nombre de usuario debe tener al menos 2 caracteres."),
-//     body("password").notEmpty().withMessage("Debes ingresar una contraseña para el usuario.").bail().isLength({ min: 8 }).withMessage("La contraseña debe tener un minimo 8 caracteres."),
-//     body("domicilio").notEmpty().withMessage("Debes ingresar un domicilio."),
-//     body("zipcode").notEmpty().withMessage("Debes ingresar un codigo postal."),
-// ];
+const validationsEditUsersForm = [
+    body("name").notEmpty().withMessage("Debes ingresar un nombre de usuario.").bail().isLength({ min: 2}).withMessage("El nombre de usuario debe tener al menos 2 caracteres."),
+    body("email").notEmpty().withMessage("Debes ingresar un correo electronico.").bail().isEmail().withMessage("Debes usar un formato valido para el correo."),
+    body("password").notEmpty().withMessage("Debes ingresar una contraseña para el usuario.").bail().isLength({ min: 8 }).withMessage("La contraseña debe tener un minimo 8 caracteres.")
+];
 
 // ************ Controller Require ************
 
@@ -43,6 +42,9 @@ router.post("/register/", estasLogueadoMiddleware ,validationsRegisterForm , use
 
 router.get("/profile/",noEstasLogueadoMiddleware, usersController.profile);
 router.get("/logout/", noEstasLogueadoMiddleware, usersController.logout);
+
+router.get("/profile/edit/", noEstasLogueadoMiddleware ,usersController.userEdit);
+router.put("/profile/edit/", noEstasLogueadoMiddleware, validationsEditUsersForm , usersController.userEditProcces);
 
 
 module.exports = router;
