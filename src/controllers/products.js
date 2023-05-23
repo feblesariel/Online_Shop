@@ -24,6 +24,13 @@ const productsController = {
 
   products: function (req, res) {
 
+    let user = 0;
+
+    if (req.session.userLogged) {
+      let userLogged = req.session.userLogged;
+      user = userLogged.id;
+    }   
+
     // consulto las categorias - navbar
 
     const getCategories = Category.findAll({
@@ -49,7 +56,7 @@ const productsController = {
         {
           model: Cart,
           as: 'cart',
-          where: { user_id: 1 } // ACA MODIFICAR SEGUN USER LOGUEADO
+          where: { user_id: user } // ACA MODIFICAR SEGUN USER LOGUEADO
         }
       ]
     });
@@ -155,6 +162,13 @@ const productsController = {
 
   detail: function (req, res) {
 
+    let user = 0;
+
+    if (req.session.userLogged) {
+      let userLogged = req.session.userLogged;
+      user = userLogged.id;
+    }   
+
     // consulto las categorias - navbar
 
     const getCategories = Category.findAll({
@@ -180,7 +194,7 @@ const productsController = {
         {
           model: Cart,
           as: 'cart',
-          where: { user_id: 1 } // ACA MODIFICAR SEGUN USER LOGUEADO
+          where: { user_id: user } // ACA MODIFICAR SEGUN USER LOGUEADO
         }
       ]
     });

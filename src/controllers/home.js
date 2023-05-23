@@ -23,6 +23,13 @@ const Store_pickup = db.Store_pickup;
 const homeController = {
 
     home: function (req, res) {
+      
+      let user = 0;
+
+      if (req.session.userLogged) {
+        let userLogged = req.session.userLogged;
+        user = userLogged.id;
+      }    
 
       // consulto los productos destacados - home
 
@@ -76,7 +83,7 @@ const homeController = {
           {
             model: Cart,
             as: 'cart',
-            where: { user_id: 1 } // ACA MODIFICAR SEGUN USER LOGUEADO
+            where: { user_id: user } // ACA MODIFICAR SEGUN USER LOGUEADO
           }
         ]
       });  

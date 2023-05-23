@@ -103,6 +103,8 @@ const usersController = {
 
   profile: function (req, res) {
 
+    let user = req.session.userLogged;
+
     const getCategories = Category.findAll({
       attributes: [
         'id',
@@ -126,7 +128,7 @@ const usersController = {
         {
           model: Cart,
           as: 'cart',
-          where: { user_id: 1 } // ACA MODIFICAR SEGUN USER LOGUEADO
+          where: { user_id: user.id } // ACA MODIFICAR SEGUN USER LOGUEADO
         }
       ]
     });
