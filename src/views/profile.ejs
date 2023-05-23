@@ -7,42 +7,22 @@
 
     <%-include("./partials/header.ejs")%>
 
-
-    <div class="container-fluid">
-
-        <p class="h2 text-center p-3">Bienvenido <%=user.name%>!!</p>
-
-        <div class="container pb-5">
-
-            <div class="row">
-
-                <div class="mx-auto col-sm-12 col-md-12 col-lg-12 col-xl-12 p-3" style="width: 30rem;">
-
-                    <div class="card mx-auto shadow-lg" style="width: 25rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <%=user.email %>
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <a href="/users/profile/edit/"><button type="submit" href="/users/profile/edit/"
-                                    class="btn btn-outline-secondary w-25">Editar</button></a>
-                            <form action="/users/profile/delete/<%=user.id%>?_method=delete" method="post"
-                                style="display:contents">
-                                <button type="submit" class="btn btn-outline-danger w-25">Eliminar</button>
-                            </form>
-                        </div>
-                    </div>
-
+    <div class="container py-4 py-xl-5">
+        <div class="row gy-4 gy-md-0">
+            <div class="col-md-6 text-center text-md-start d-flex d-sm-flex d-md-flex justify-content-center align-items-center justify-content-md-start align-items-md-center justify-content-xl-center">
+                <div style="max-width: 350px;">
+                    <h2 class="text-uppercase fw-bold">Bienvenido <%= user.name %>!</h2>
+                    <p class="my-3">Este es tu perfil de usuario, desde aqui vas a poder gestionar tus datos y eliminar tu cuenta.</p>
+                    <a class="btn btn-primary btn-lg" role="button" href="/users/edit">Editar</a><a class="btn btn-outline-danger btn-lg" role="button" href="/users/delete">Borrar</a>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="p-xl-5 m-xl-5"><img class="rounded img-fluid w-100 fit-cover" style="min-height: 300px;" src="/img/user-profile.png" /></div>
+            </div>
         </div>
-
     </div>
 
-
-    <%-include("./partials/footer.ejs")%>    
-  
+    <%-include("./partials/footer.ejs")%>      
 
 </body>
 
