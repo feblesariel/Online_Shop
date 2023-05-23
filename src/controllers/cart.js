@@ -59,10 +59,12 @@ const cartController = {
     const getCartItems = Cart_item.findAll({
       where: { cart_id: user.id },
       include: [
-        { model: Product, as: 'product', include: { model: Product_image, as: 'product_images' } }
+        {
+          model: Product,
+          as: 'product'
+        }
       ]
-    });   
-    
+    });    
 
     Promise.all([getCategories, getProductCountInCart, getCartItems])
       .then(([Categories, ProductCountInCart, CartItems]) => {

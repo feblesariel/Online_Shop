@@ -39,7 +39,7 @@
                         <% if (CartItems) { CartItems.forEach (item=> { %>
 
                         <tr>
-                            <td class="align-middle"><img src="<%=item.product.product_images.url%>" alt="..." style="width: 50px;"> <%=item.product.name%></td>
+                            <td class="align-middle"><%=item.product.name%></td>
                             <td class="align-middle"><%=item.product.price%></td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
