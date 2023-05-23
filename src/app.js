@@ -37,11 +37,13 @@ const homeRouter = require("./routes/home");
 const productsRouter = require("./routes/products");
 const searchRouter = require("./routes/search");
 const usersRouter = require("./routes/users");
+const cartRouter = require("./routes/cart");
 
 app.use('/', homeRouter);
 app.use('/products/', productsRouter);
 app.use('/search/', searchRouter);
 app.use('/users/', usersRouter);
+app.use('/cart/', cartRouter);
 
 // ************ Run server ************
 
