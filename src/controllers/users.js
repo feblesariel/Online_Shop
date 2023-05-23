@@ -24,46 +24,16 @@ const usersController = {
 
   login: function (req, res) {
 
-    // consulto las categorias - navbar
+    res.render("login");
 
-    const getCategories = Category.findAll({
-      attributes: [
-        'id',
-        'name',
-        [
-          sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
-          'productCount'
-        ]
-      ],
-      having: sequelize.literal('productCount > 0'),
-      order: [
-        ['name', 'ASC']
-      ],
-      raw: true
-    });
+  },
 
-    // calculo cuantos items hay en el carrito - navbar
+  register: function (req, res) {
 
-    const getProductCountInCart = Cart_item.sum('quantity', {
-      include: [
-        {
-          model: Cart,
-          as: 'cart',
-          where: { user_id: 1 } // ACA MODIFICAR SEGUN USER LOGUEADO
-        }
-      ]
-    });
+    res.render("register");
 
-    Promise.all([getCategories, getProductCountInCart])
-    .then(([Categories, ProductCountInCart]) => {
-      res.render('login', { Categories, ProductCountInCart});
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      // Manejo de errores
-  });
+  },
 
-  }
 }
 
 module.exports = usersController;
