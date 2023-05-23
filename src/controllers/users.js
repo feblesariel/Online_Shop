@@ -100,6 +100,16 @@ const usersController = {
       return res.status(500).json({ error: "Error al crear el usuario" });
     });
   },
+
+  logout: function (req, res) {
+
+    req.session.destroy();
+
+    res.redirect("/users/login")
+
+  },
+  
+
 }
 
 module.exports = usersController;

@@ -5,8 +5,8 @@ const router = express.Router();
 // const multer = require("multer");
 // const path = require("path");
 const {body} = require("express-validator");
-// const estasLogueadoMiddleware = require("../middlewares/estasLogueadoMiddleware");
-// const noEstasLogueadoMiddleware = require("../middlewares/noEstasLogueadoMiddleware");
+const estasLogueadoMiddleware = require("../middlewares/estasLogueadoMiddleware");
+const noEstasLogueadoMiddleware = require("../middlewares/noEstasLogueadoMiddleware");
 
 // ************ Validations ************
 
@@ -35,11 +35,13 @@ const usersController = require ("../controllers/users")
 
 // ************ Rutas ************
 
-router.get("/login/", usersController.login);
-router.post("/login/", validationsLoginForm , usersController.loginProcess);
+router.get("/login/", estasLogueadoMiddleware, usersController.login);
+router.post("/login/", estasLogueadoMiddleware ,validationsLoginForm , usersController.loginProcess);
 
-router.get("/register/", usersController.register);
-router.post("/register/", validationsRegisterForm , usersController.registerProcess);
+router.get("/register/", estasLogueadoMiddleware ,usersController.register);
+router.post("/register/", estasLogueadoMiddleware ,validationsRegisterForm , usersController.registerProcess);
+
+router.get("/logout/", noEstasLogueadoMiddleware, usersController.logout);
 
 
 module.exports = router;
