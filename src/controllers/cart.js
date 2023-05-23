@@ -24,6 +24,8 @@ const cartController = {
 
   cart: function (req, res) {
 
+    let user = req.session.userLogged;
+
     // consulto las categorias - navbar
 
     const getCategories = Category.findAll({
@@ -49,14 +51,22 @@ const cartController = {
         {
           model: Cart,
           as: 'cart',
-          where: { user_id: 1 } // ACA MODIFICAR SEGUN USER LOGUEADO
+          where: { user_id: user.id } // ACA MODIFICAR SEGUN USER LOGUEADO
         }
       ]
     });
 
-    Promise.all([getCategories, getProductCountInCart])
-      .then(([Categories, ProductCountInCart]) => {
-        res.render('cart', { Categories, ProductCountInCart});
+    const getCartItems = Cart_item.findAll({
+      where: { cart_id: user.id },
+      include: [
+        { model: Product, as: 'product', include: { model: Product_image, as: 'product_images' } }
+      ]
+    });   
+    
+
+    Promise.all([getCategories, getProductCountInCart, getCartItems])
+      .then(([Categories, ProductCountInCart, CartItems]) => {
+        res.render('cart', { Categories, ProductCountInCart, CartItems});
       })
       .catch(error => {
         console.error('Error:', error);
