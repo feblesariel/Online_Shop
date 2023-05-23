@@ -38,20 +38,20 @@ const usersController = {
     let errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        return res.render("login", { errors: errors.array(), old: req.body })
+      return res.render("login", { errors: errors.array(), old: req.body })
     }
 
     User.findOne({ where: { email: req.body.email } }).then(function (user) {
-        if (user) {
-            let isOkPassword = bcrypt.compareSync(req.body.password, user.contraseña);
-            if (isOkPassword) {
-                req.session.userLogged = user;
-                return res.redirect("/users/profile");
-            } else {
-                return res.render("login", { errors: [{ msg: "Contraseña incorrecta." }], old: req.body });
-            }
+      if (user) {
+        let isOkPassword = bcrypt.compareSync(req.body.password, user.password);
+        if (isOkPassword) {
+          req.session.userLogged = user;
+          return res.redirect("/");
+        } else {
+          return res.render("login", { errors: [{ msg: "Contraseña incorrecta." }], old: req.body });
         }
-        return res.render("login", { errors: [{ msg: "Usuario no registrado." }], old: req.body });
+      }
+      return res.render("login", { errors: [{ msg: "Usuario no registrado." }], old: req.body });
     })
   },
 
@@ -61,6 +61,42 @@ const usersController = {
 
   },
 
+  registerProcess: function (req, res) {
+
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.render("register", { errors: errors.array(), old: req.body })
+    }
+
+    User.findOne({ where: { email: req.body.email } }).then(function (user) {
+      if (user) {
+        return res.render("register", { errors: [{ msg: "Email ya registrado." }], old: req.body })
+      }
+    })
+
+    User.create(
+      {
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, 10),
+        name: req.body.name
+      }
+    ).then(function (user) {
+
+      Cart.create({
+        user_id: user.id
+      }).then(function () {
+        return res.redirect("/users/login");
+      }).catch(function (error) {
+        console.log(error);
+        return res.status(500).json({ error: "Error al crear el carrito" });
+      });
+
+    }).catch(function (error) {
+      console.log(error);
+      return res.status(500).json({ error: "Error al crear el usuario" });
+    });
+  },
 }
 
 module.exports = usersController;

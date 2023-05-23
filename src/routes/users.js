@@ -15,13 +15,12 @@ const validationsLoginForm = [
     body("password").notEmpty().withMessage("Debes ingresar una contraseña.").bail().isLength({ min: 8 }).withMessage("La contraseña debe tener un minimo 8 caracteres.")
 ];
 
-// const validationsRegisterForm = [
-//     body("name").notEmpty().withMessage("Debes ingresar un nombre de usuario.").bail().isLength({ min: 2}).withMessage("El nombre de usuario debe tener al menos 2 caracteres."),
-//     body("password").notEmpty().withMessage("Debes ingresar una contraseña para el usuario.").bail().isLength({ min: 8 }).withMessage("La contraseña debe tener un minimo 8 caracteres."),
-//     body("domicilio").notEmpty().withMessage("Debes ingresar un domicilio."),
-//     body("zipcode").notEmpty().withMessage("Debes ingresar un codigo postal."),
-//     body("email").notEmpty().withMessage("Debes ingresar un correo electronico.").bail().isEmail().withMessage("Debes usar un formato valido para el correo."),
-// ];
+ const validationsRegisterForm = [
+     body("name").notEmpty().withMessage("Debes ingresar un nombre de usuario.").bail().isLength({ min: 2}).withMessage("El nombre de usuario debe tener al menos 2 caracteres."),
+     body("email").notEmpty().withMessage("Debes ingresar un correo electronico.").bail().isEmail().withMessage("Debes usar un formato valido para el correo."),
+     body("password").notEmpty().withMessage("Debes ingresar una contraseña para el usuario.").bail().isLength({ min: 8 }).withMessage("La contraseña debe tener un minimo 8 caracteres.")
+
+];
 
 // const validationsEditUsersForm = [
 //     body("name").notEmpty().withMessage("Debes ingresar un nombre de usuario.").bail().isLength({ min: 2}).withMessage("El nombre de usuario debe tener al menos 2 caracteres."),
@@ -37,9 +36,10 @@ const usersController = require ("../controllers/users")
 // ************ Rutas ************
 
 router.get("/login/", usersController.login);
-router.post("/login/", validationsLoginForm ,usersController.loginProcess);
+router.post("/login/", validationsLoginForm , usersController.loginProcess);
 
-router.get("/register", usersController.register);
+router.get("/register/", usersController.register);
+router.post("/register/", validationsRegisterForm , usersController.registerProcess);
 
 
 module.exports = router;
