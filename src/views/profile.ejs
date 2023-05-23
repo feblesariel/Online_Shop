@@ -15,7 +15,7 @@
                     <p class="my-3">Este es tu perfil de usuario, desde aqui vas a poder gestionar tus datos o eliminar tu cuenta.</p>
                     <div class="d-flex justify-content-center">
                         <a class="btn btn-primary btn-lg" role="button" href="/users/profile/edit/">Editar</a>                    
-                        <form action="/users/profile/delete/<%=user.id%>?_method=delete" method="post"><button type="submit" class="btn btn-outline-danger btn-lg">Borrar</button></form>
+                        <form action="/users/profile/delete/<%=user.id%>?_method=delete" method="post" onsubmit="return confirm('¿Estás seguro de querer borrar tu cuenta?')"><button type="submit" class="btn btn-outline-danger btn-lg">Borrar</button></form>
                     </div>
                 </div>
             </div>
