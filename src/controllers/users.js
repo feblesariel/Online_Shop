@@ -190,6 +190,21 @@ const usersController = {
         });
   },
 
+  userDestroy: function (req, res) {
+
+    let userId = req.params.id;
+
+    req.session.destroy();
+
+    User.destroy({ where: { id: userId }, force: true })
+        .then(() => {
+            return res.redirect('/users/login')
+        }).catch(error => {
+          console.error('Error:', error);
+          // Manejo de errores
+        });
+  },
+
 }
 
 module.exports = usersController;

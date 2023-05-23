@@ -45,6 +45,7 @@ router.get("/logout/", noEstasLogueadoMiddleware, usersController.logout);
 
 router.get("/profile/edit/", noEstasLogueadoMiddleware ,usersController.userEdit);
 router.put("/profile/edit/", noEstasLogueadoMiddleware, validationsEditUsersForm , usersController.userEditProcces);
+router.delete("/profile/delete/:id/", noEstasLogueadoMiddleware,usersController.userDestroy);
 
 
 module.exports = router;

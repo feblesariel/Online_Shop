@@ -13,7 +13,10 @@
                 <div style="max-width: 350px;">
                     <h2 class="text-uppercase fw-bold">Bienvenido <%= user.name %>!</h2>
                     <p class="my-3">Este es tu perfil de usuario, desde aqui vas a poder gestionar tus datos o eliminar tu cuenta.</p>
-                    <a class="btn btn-primary btn-lg" role="button" href="/users/profile/edit/">Editar</a><a class="btn btn-outline-danger btn-lg" role="button" href="/users/profile/delete/<%=user.id%>">Borrar</a>
+                    <div class="d-flex justify-content-center">
+                        <a class="btn btn-primary btn-lg" role="button" href="/users/profile/edit/">Editar</a>                    
+                        <form action="/users/profile/delete/<%=user.id%>?_method=delete" method="post"><button type="submit" class="btn btn-outline-danger btn-lg">Borrar</button></form>
+                    </div>
                 </div>
             </div>
             <div class="col-md-6 d-none d-md-block">
