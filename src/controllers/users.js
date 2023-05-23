@@ -52,7 +52,10 @@ const usersController = {
         }
       }
       return res.render("login", { errors: [{ msg: "Usuario no registrado." }], old: req.body });
-    })
+    }).catch(function (error) {
+      console.log(error);
+      return res.status(500).json({ error: "Error al buscar el usuario" });
+    });
   },
 
   register: function (req, res) {
