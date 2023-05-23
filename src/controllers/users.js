@@ -132,13 +132,13 @@ const usersController = {
     });
 
     Promise.all([getCategories, getProductCountInCart])
-    .then(([Categories, ProductCountInCart]) => {
-      res.render('profile', { Categories, ProductCountInCart, user: req.session.userLogged });
-    }).catch(error => {
-      console.error('Error:', error);
-      // Manejo de errores
+      .then(([Categories, ProductCountInCart]) => {
+        res.render('profile', { Categories, ProductCountInCart, user: req.session.userLogged });
+      }).catch(error => {
+        console.error('Error:', error);
+        // Manejo de errores
     });
-
+    
   },
 
   logout: function (req, res) {
@@ -164,30 +164,30 @@ const usersController = {
     let errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        return res.render("userEdit", { errors: errors.array(), old: req.body })
+      return res.render("userEdit", { errors: errors.array(), old: req.body })
     }
 
     User.update(
-        {
-            name: req.body.name,
-            email: req.body.email,
-            password: bcrypt.hashSync(req.body.password, 10)
-        },
-        {
-            where: { id: old.id }
-        })
-        .then(() => {
-          User.findByPk(old.id).then((user) => {
-                req.session.userLogged = user;
-                return res.redirect('/users/profile')
-            }).catch(error => {
-              console.error('Error:', error);
-              // Manejo de errores
-            });
+      {
+        name: req.body.name,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, 10)
+      },
+      {
+        where: { id: old.id }
+      })
+      .then(() => {
+        User.findByPk(old.id).then((user) => {
+          req.session.userLogged = user;
+          return res.redirect('/users/profile')
         }).catch(error => {
           console.error('Error:', error);
           // Manejo de errores
         });
+      }).catch(error => {
+        console.error('Error:', error);
+        // Manejo de errores
+      });
   },
 
   userDestroy: function (req, res) {
@@ -196,13 +196,12 @@ const usersController = {
 
     req.session.destroy();
 
-    User.destroy({ where: { id: userId }, force: true })
-        .then(() => {
-            return res.redirect('/users/login')
-        }).catch(error => {
-          console.error('Error:', error);
-          // Manejo de errores
-        });
+    User.destroy({ where: { id: userId }, force: true }).then(() => {
+      return res.redirect('/users/login')
+    }).catch(error => {
+      console.error('Error:', error);
+      // Manejo de errores
+    });
   },
 
 }
