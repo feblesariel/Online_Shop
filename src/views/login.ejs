@@ -16,7 +16,7 @@
             <form class="w-75" action="/users/login/" method="post">
               <!-- Email input -->
               <div class="form-outline mb-4">
-                <input class="form-control" type="email" name="email" id="email"/>
+                <input class="form-control" type="email" name="email" id="email" value="<%= locals.old && old.email ? old.email : "" %>"/>
                 <label class="form-label small" for="email">Email</label>
               </div>
             
@@ -28,6 +28,10 @@
 
               <!-- Submit button -->
               <button type="submit" class="btn btn-primary btn-block">Ingrsar</button>
+
+              <% if (locals.errors) { errors.forEach (error=> { %>
+                <p class="errores"><%= error.msg %></p>
+              <% })} %>
 
               <!-- Others -->
               <div class="row mt-5">

@@ -41,7 +41,7 @@ const usersController = {
         return res.render("login", { errors: errors.array(), old: req.body })
     }
 
-    Usuario.findOne({ where: { email: req.body.email } }).then(function (usuario) {
+    User.findOne({ where: { email: req.body.email } }).then(function (usuario) {
         if (usuario) {
             let isOkPassword = bcrypt.compareSync(req.body.password, usuario.contraseña);
             if (isOkPassword) {
