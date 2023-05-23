@@ -41,11 +41,11 @@ const usersController = {
         return res.render("login", { errors: errors.array(), old: req.body })
     }
 
-    User.findOne({ where: { email: req.body.email } }).then(function (usuario) {
-        if (usuario) {
-            let isOkPassword = bcrypt.compareSync(req.body.password, usuario.contraseña);
+    User.findOne({ where: { email: req.body.email } }).then(function (user) {
+        if (user) {
+            let isOkPassword = bcrypt.compareSync(req.body.password, user.contraseña);
             if (isOkPassword) {
-                req.session.userLogged = usuario;
+                req.session.userLogged = user;
                 return res.redirect("/users/profile");
             } else {
                 return res.render("login", { errors: [{ msg: "Contraseña incorrecta." }], old: req.body });
