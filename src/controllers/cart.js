@@ -64,17 +64,36 @@ const cartController = {
           as: 'product'
         }
       ]
-    });    
+    });
 
     Promise.all([getCategories, getProductCountInCart, getCartItems])
       .then(([Categories, ProductCountInCart, CartItems]) => {
-        res.render('cart', { Categories, ProductCountInCart, CartItems});
+        res.render('cart', { Categories, ProductCountInCart, CartItems });
       })
       .catch(error => {
         console.error('Error:', error);
         // Manejo de errores
+      });
+  },
+
+  cartDelete: function (req, res) {
+
+    Cart_item.findByPk(req.params.id).then((item) => {
+      Cart_item.destroy({ where: { id: item.id } })
+        .then(() => {
+          res.redirect("/cart")
+        }).catch(error => {
+          console.error('Error:', error);
+          // Manejo de errores
+        });
+    }).catch(error => {
+      console.error('Error:', error);
+      // Manejo de errores
     });
-  }
+
+  },
+
+
 }
 
 module.exports = cartController;
