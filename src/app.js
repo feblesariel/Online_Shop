@@ -4,8 +4,8 @@ const express = require('express');
 const session = require("express-session");
 const path = require('path');
 const methodOverride = require('method-override'); // Para poder usar los métodos PUT y DELETE
-const userLoggedMiddleware = require("./middlewares/userLoggedMiddleware"); // Usuario logueado false o true
-const userAdmin = require("./middlewares/userAdmin"); // User admin false o true
+const userIsLogged = require("./middlewares/userIsLogged"); // Usuario logueado false o true
+const userAdminIsLogged = require("./middlewares/userAdminIsLogged"); // User admin false o true
 
 // ************ express() - (don't touch) ************
 
@@ -19,8 +19,8 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
 }));
-app.use(userLoggedMiddleware);
-app.use(userAdmin);
+app.use(userIsLogged);
+app.use(userAdminIsLogged);
 app.use(express.static(publicPath));  // Indica donde estan los archivos estáticos /public
 app.use(express.urlencoded({ extended: false }));  // Captura la informacion enviada por POST
 app.use(express.json());

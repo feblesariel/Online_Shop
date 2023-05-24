@@ -2,9 +2,8 @@
 
 const express = require("express");
 const router = express.Router();
-const {body} = require("express-validator");
-const estasLogueadoMiddleware = require("../middlewares/estasLogueadoMiddleware");
-const noEstasLogueadoMiddleware = require("../middlewares/noEstasLogueadoMiddleware");
+const routesLoggedRequired = require("../middlewares/routesLoggedRequired");
+const routesAdminRequired = require("../middlewares/routesAdminRequired");
 
 // ************ Controller Require ************
 
@@ -12,7 +11,7 @@ const settingsController = require ("../controllers/settings")
 
 // ************ Rutas ************
 
-router.get("/", noEstasLogueadoMiddleware, settingsController.main);
+router.get("/", routesLoggedRequired, routesAdminRequired , settingsController.main);
 
 
 module.exports = router;

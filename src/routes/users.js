@@ -3,8 +3,8 @@
 const express = require("express");
 const router = express.Router();
 const {body} = require("express-validator");
-const estasLogueadoMiddleware = require("../middlewares/estasLogueadoMiddleware");
-const noEstasLogueadoMiddleware = require("../middlewares/noEstasLogueadoMiddleware");
+const routesNoLoggedRequired = require("../middlewares/routesNoLoggedRequired");
+const routesLoggedRequired = require("../middlewares/routesLoggedRequired");
 
 // ************ Validations ************
 
@@ -32,18 +32,18 @@ const usersController = require ("../controllers/users")
 
 // ************ Rutas ************
 
-router.get("/login/", estasLogueadoMiddleware, usersController.login);
-router.post("/login/", estasLogueadoMiddleware ,validationsLoginForm , usersController.loginProcess);
+router.get("/login/", routesNoLoggedRequired, usersController.login);
+router.post("/login/", routesNoLoggedRequired,validationsLoginForm , usersController.loginProcess);
 
-router.get("/register/", estasLogueadoMiddleware ,usersController.register);
-router.post("/register/", estasLogueadoMiddleware ,validationsRegisterForm , usersController.registerProcess);
+router.get("/register/", routesNoLoggedRequired ,usersController.register);
+router.post("/register/", routesNoLoggedRequired ,validationsRegisterForm , usersController.registerProcess);
 
-router.get("/profile/",noEstasLogueadoMiddleware, usersController.profile);
-router.get("/logout/", noEstasLogueadoMiddleware, usersController.logout);
+router.get("/profile/",routesLoggedRequired, usersController.profile);
+router.get("/logout/", routesLoggedRequired, usersController.logout);
 
-router.get("/profile/edit/", noEstasLogueadoMiddleware ,usersController.userEdit);
-router.put("/profile/edit/", noEstasLogueadoMiddleware, validationsEditUsersForm , usersController.userEditProcces);
-router.delete("/profile/delete/:id/", noEstasLogueadoMiddleware,usersController.userDestroy);
+router.get("/profile/edit/", routesLoggedRequired, usersController.userEdit);
+router.put("/profile/edit/", routesLoggedRequired, validationsEditUsersForm , usersController.userEditProcces);
+router.delete("/profile/delete/:id/", routesLoggedRequired, usersController.userDestroy);
 
 
 module.exports = router;
