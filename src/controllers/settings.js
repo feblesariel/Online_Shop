@@ -56,7 +56,7 @@ const settingsController = {
         {
           model: Cart,
           as: 'cart',
-          where: { user_id: user.id } // ACA MODIFICAR SEGUN USER LOGUEADO
+          where: { user_id: user } // ACA MODIFICAR SEGUN USER LOGUEADO
         }
       ]
     });
