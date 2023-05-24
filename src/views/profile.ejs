@@ -12,16 +12,37 @@
             <div class="col-md-6 text-center text-md-start d-flex d-sm-flex d-md-flex justify-content-center align-items-center justify-content-md-start align-items-md-center justify-content-xl-center">
                 <div style="max-width: 350px;">
                     <h2 class="text-uppercase fw-bold">Bienvenido <%= user.name %>!</h2>
-                    <p class="my-3">Este es tu perfil de usuario, desde aqui vas a poder gestionar tus datos o eliminar tu cuenta.</p>
+                    <p class="my-3">Este es tu perfil de usuario, desde aqui vas a poder editar tus datos o borrar tu cuenta.</p>
                     <div class="d-flex justify-content-center">
                         <a class="btn btn-primary btn-lg" role="button" href="/users/profile/edit/">Editar</a>                    
-                        <form action="/users/profile/delete/<%=user.id%>?_method=delete" method="post" onsubmit="return confirm('¿Estás seguro de querer borrar tu cuenta?')"><button type="submit" class="btn btn-outline-danger btn-lg">Borrar</button></form>
+                        <button type="submit" data-toggle="modal" data-target="#userDeleteModal" class="btn btn-outline-danger btn-lg">Borrar</button>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 d-none d-md-block">
                 <div class="p-xl-5 m-xl-5"><img class="rounded img-fluid w-100 fit-cover" style="min-height: 300px;" src="/img/user-profile.png" /></div>
             </div>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="userDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Atencion</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            ¿Esta seguro que desea borrar su cuenta?
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+            <form action="/users/profile/delete/<%=user.id%>?_method=DELETE" method="POST"><button type="submit" class="btn btn-danger">Borrar</button></form>
+            </div>
+        </div>
         </div>
     </div>
 
