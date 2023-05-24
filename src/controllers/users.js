@@ -147,7 +147,7 @@ const usersController = {
 
     req.session.destroy();
 
-    res.redirect("/users/login")
+    res.redirect("/")
 
   },
 

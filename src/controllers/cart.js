@@ -76,6 +76,44 @@ const cartController = {
       });
   },
 
+  cartDetailProcces: function (req, res) {
+
+    let user = req.session.userLogged;
+
+    Cart_item.create(
+      {
+        cart_id: user.id,
+        product_id: req.params.id,
+        quantity: req.body.quantity
+      }
+    ).then(() => {
+      return res.redirect("/cart")
+    }).catch(error => {
+      console.error('Error:', error);
+      // Manejo de errores
+    });
+
+  },
+
+  cartProcces: function (req, res) {
+
+    let user = req.session.userLogged;
+
+    Cart_item.create(
+      {
+        cart_id: user.id,
+        product_id: req.params.id,
+        quantity: 1
+      }
+    ).then(() => {
+      return res.redirect("/cart")
+    }).catch(error => {
+      console.error('Error:', error);
+      // Manejo de errores
+    });
+
+  },
+
   cartEdit: function (req, res) {
 
     Cart_item.findByPk(req.params.id).then((item) => {
