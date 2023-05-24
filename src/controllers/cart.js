@@ -62,7 +62,7 @@ const cartController = {
     });
 
     const getCartItems = Cart_item.findAll({
-      where: { cart_id: user.id },
+      where: { cart_id: user },
       include: [
         {
           model: Product,

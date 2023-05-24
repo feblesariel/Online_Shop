@@ -58,14 +58,14 @@
                     <div class="navbar-nav mr-auto py-0">
                         <a href="/" class="nav-item nav-link active">Inicio</a>
                         <a href="/products" class="nav-item nav-link">Productos</a>
-                        <a href="/" class="nav-item nav-link">Sale</a>
+                        <a href="/" class="nav-item nav-link">Ofertas</a>
                         <a href="/" class="nav-item nav-link">Contacto</a>
                         <div class="nav-item dropdown d-block d-lg-none">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Mi cuenta <i class="fa fa-angle-down"></i></a>
                             <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
                                 <% if (locals.isLogged) { %>
                                     <a href="/users/profile" class="dropdown-item">Perfil</a>
-                                    <a href="#" class="dropdown-item">Carrito</a>
+                                    <a href="/cart/" class="dropdown-item">Carrito</a>
                                     <% if (locals.isAdmin) { %><a href="#" class="dropdown-item">Ajustes</a><% } %>
                                     <a href="/users/logout" class="dropdown-item">Salir</a>
                                 <% } else { %>
