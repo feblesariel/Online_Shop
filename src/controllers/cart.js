@@ -76,12 +76,17 @@ const cartController = {
       });
   },
 
-  cartDelete: function (req, res) {
+  cartEdit: function (req, res) {
 
     Cart_item.findByPk(req.params.id).then((item) => {
-      Cart_item.destroy({ where: { id: item.id } })
-        .then(() => {
-          res.redirect("/cart")
+      Cart_item.update(
+        {
+          quantity: req.body.quantity
+        },
+        {
+          where: { id: item.id }
+        }).then(() => {
+          return res.redirect('/cart')
         }).catch(error => {
           console.error('Error:', error);
           // Manejo de errores
@@ -93,6 +98,22 @@ const cartController = {
 
   },
 
+  cartDelete: function (req, res) {
+
+    Cart_item.findByPk(req.params.id).then((item) => {
+      Cart_item.destroy({ where: { id: item.id } })
+        .then(() => {
+          return res.redirect("/cart")
+        }).catch(error => {
+          console.error('Error:', error);
+          // Manejo de errores
+        });
+    }).catch(error => {
+      console.error('Error:', error);
+      // Manejo de errores
+    });
+
+  }
 
 }
 

@@ -13,6 +13,7 @@ const cartController = require ("../controllers/cart")
 // ************ Rutas ************
 
 router.get("/", noEstasLogueadoMiddleware, cartController.cart);
+router.put("/edit/:id/", noEstasLogueadoMiddleware ,cartController.cartEdit);
 router.delete("/delete/:id/", noEstasLogueadoMiddleware ,cartController.cartDelete);
 
 

@@ -44,21 +44,23 @@
                             <td class="align-middle"><%=item.product.name%></td>
                             <td class="align-middle"><%=item.product.price%></td>
                             <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
+                                <form action="/cart/edit/<%=item.id%>?_method=PUT" method="POST">
+                                    <div class="input-group quantity mx-auto" style="width: 100px;">                                    
+                                        <div class="input-group-btn">
+                                            <button type="submit" class="btn btn-sm btn-primary btn-minus">
+                                            <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>                                    
+                                        <input type="text" name="quantity" id="quantity" class="form-control form-control-sm bg-secondary border-0 text-center" value="<%=item.quantity%>">
+                                        <div class="input-group-btn">
+                                            <button type="submit" class="btn btn-sm btn-primary btn-plus">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>                                    
                                     </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="<%=item.quantity%>">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                                </form>
                             </td>
-                            <td class="align-middle"><%= (item.product.price * item.quantity)%></td>
+                            <td class="align-middle"><%= (item.product.price * item.quantity).toFixed(2)%></td>
                             <td class="align-middle">
                                 <form action="/cart/delete/<%=item.id%>?_method=delete" method="post">
                                     <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button> 
@@ -81,7 +83,7 @@
                     <div class="border-bottom pb-2">
                         <div class="d-flex justify-content-between mb-3">
                             <h6>Subtotal</h6>
-                            <h6>$<%=subtotal%></h6>
+                            <h6>$<%=subtotal.toFixed(2)%></h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Envio</h6>
@@ -91,7 +93,7 @@
                     <div class="pt-2">
                         <div class="d-flex justify-content-between mt-2">
                             <h5>Total</h5>
-                            <h5>$<%= total%></h5>
+                            <h5>$<%= total.toFixed(2)%></h5>
                         </div>
                         <button class="btn btn-block btn-primary font-weight-bold my-3 py-3">Finalizar compra</button>
                     </div>
