@@ -60,6 +60,12 @@ CREATE TABLE cart_items (
   FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
+-- Creación de la tabla shipments_cost
+CREATE TABLE shipments_cost (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  price DECIMAL(10, 2) NOT NULL
+);
+
 -- Creación de la tabla shipments
 CREATE TABLE shipments (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
