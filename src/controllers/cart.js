@@ -24,7 +24,12 @@ const cartController = {
 
   cart: function (req, res) {
 
-    let user = req.session.userLogged;
+    let user = 0;
+
+    if (req.session.userLogged) {
+      let userLogged = req.session.userLogged;
+      user = userLogged.id;
+    } 
 
     // consulto las categorias - navbar
 
