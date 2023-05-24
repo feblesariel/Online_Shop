@@ -6,15 +6,7 @@ module.exports = (sequelize, dataTypes) => {
             allowNull: false,
             primaryKey: true,
             autoIncrement: true
-        },
-        store_id: {
-            type: dataTypes.INTEGER(5),
-            allowNull: false
-        },
-        shipping_method_id: {
-            type: dataTypes.INTEGER(5),
-            allowNull: false
-        },        
+        },      
         cart_id: {
             type: dataTypes.INTEGER(5),
             allowNull: false
@@ -57,16 +49,6 @@ module.exports = (sequelize, dataTypes) => {
     const Shipment = sequelize.define(alias, cols, config); 
 
     Shipment.associate = function (models) {
-
-        Shipment.belongsTo(models.Store, { 
-            as: 'store',
-            foreignKey: 'store_id'
-        });
-
-        Shipment.belongsTo(models.Shipping_method,{
-            as: 'method',
-            foreignKey: 'shipping_method_id'
-        }); 
 
         Shipment.belongsTo(models.Cart, { 
             as: 'cart',

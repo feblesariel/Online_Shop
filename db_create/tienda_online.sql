@@ -2,16 +2,6 @@ CREATE DATABASE online_shop;
 
 USE online_shop;
 
--- Creación de la tabla stores
-CREATE TABLE stores (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  address VARCHAR(100) NOT NULL,
-  city VARCHAR(50) NOT NULL,
-  state VARCHAR(50) NOT NULL,
-  postal_code VARCHAR(10) NOT NULL
-);
-
 -- Creación de la tabla users
 CREATE TABLE users (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -70,17 +60,9 @@ CREATE TABLE cart_items (
   FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
--- Creación de la tabla shipping_methods
-CREATE TABLE shipping_methods (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100) NOT NULL
-);
-
 -- Creación de la tabla shipments
 CREATE TABLE shipments (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  store_id INT NOT NULL,
-  shipping_method_id INT NOT NULL,
   cart_id INT NOT NULL,
   user_id INT NOT NULL,
   address VARCHAR(100) NOT NULL,
@@ -91,24 +73,6 @@ CREATE TABLE shipments (
   status ENUM('pending', 'shipped', 'delivered') NOT NULL DEFAULT 'pending',
   createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (store_id) REFERENCES stores(id),
-  FOREIGN KEY (shipping_method_id) REFERENCES shipping_methods(id),
-  FOREIGN KEY (cart_id) REFERENCES carts(id),
-  FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
--- Creación de la tabla store_pickups
-CREATE TABLE store_pickups (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  store_id INT NOT NULL,
-  shipping_method_id INT NOT NULL,
-  cart_id INT NOT NULL,
-  user_id INT NOT NULL,
-  status ENUM('pending', 'retired') NOT NULL DEFAULT 'pending',
-  createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (store_id) REFERENCES stores(id),
-  FOREIGN KEY (shipping_method_id) REFERENCES shipping_methods(id),
   FOREIGN KEY (cart_id) REFERENCES carts(id),
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
