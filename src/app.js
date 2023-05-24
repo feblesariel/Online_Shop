@@ -38,12 +38,14 @@ const productsRouter = require("./routes/products");
 const searchRouter = require("./routes/search");
 const usersRouter = require("./routes/users");
 const cartRouter = require("./routes/cart");
+const settingsRouter = require("./routes/settings");
 
 app.use('/', homeRouter);
 app.use('/products/', productsRouter);
 app.use('/search/', searchRouter);
 app.use('/users/', usersRouter);
 app.use('/cart/', cartRouter);
+app.use('/settings/', settingsRouter);
 
 // ************ Run server ************
 

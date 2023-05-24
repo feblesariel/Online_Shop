@@ -89,7 +89,7 @@
                             <div class="dropdown-menu dropdown-menu-right">
                                 <% if (locals.isLogged) { %>
                                 <a class="dropdown-item" href="/users/profile">Perfil</a>
-                                <% if (locals.isAdmin) { %><a class="dropdown-item" href="#">Ajustes</a><% } %>
+                                <% if (locals.isAdmin) { %><a class="dropdown-item" href="/settings/">Ajustes</a><% } %>
                                 <a class="dropdown-item" href="/users/logout">Salir</a>
                                 <% } else { %>
                                 <a class="dropdown-item" href="/users/login">Ingresar</a>
