@@ -59,9 +59,23 @@ const settingsController = {
       ]
     });
 
-    Promise.all([getCategories, getProductCountInCart])
-      .then(([Categories, ProductCountInCart]) => {
-        res.render('settings', { Categories, ProductCountInCart});
+    // consulto los usuarios
+
+    const getUsers = User.findAll({
+      attributes: [
+        'name',
+        'email',
+        'role'
+      ],
+      order: [
+        ['id', 'ASC']
+      ],
+      raw: true
+    });
+
+    Promise.all([getCategories, getProductCountInCart, getUsers])
+      .then(([Categories, ProductCountInCart, Users]) => {
+        res.render('settings', { Categories, ProductCountInCart, Users});
       })
       .catch(error => {
         console.error('Error:', error);
