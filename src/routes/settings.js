@@ -12,6 +12,6 @@ const settingsController = require ("../controllers/settings")
 // ************ Rutas ************
 
 router.get("/", routesLoggedRequired, routesAdminRequired , settingsController.main);
-
+router.delete("/user/delete/:id/", routesLoggedRequired, routesAdminRequired , settingsController.userDestroy);
 
 module.exports = router;

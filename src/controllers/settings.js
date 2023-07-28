@@ -63,6 +63,7 @@ const settingsController = {
 
     const getUsers = User.findAll({
       attributes: [
+        'id',
         'name',
         'email',
         'role'
@@ -81,7 +82,24 @@ const settingsController = {
         console.error('Error:', error);
         // Manejo de errores
     });
+  },
+
+  userDestroy: function (req, res) {
+
+    let userId = req.params.id;
+
+    if (req.session.userLogged.id == userId){
+      req.session.destroy();
+    }
+
+    User.destroy({ where: { id: userId }, force: true }).then(() => {
+      return res.redirect('/settings/')
+    }).catch(error => {
+      console.error('Error:', error);
+      // Manejo de errores
+    });
   }
+
 }
 
 module.exports = settingsController;
