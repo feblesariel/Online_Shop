@@ -59,7 +59,7 @@ const settingsController = {
       ]
     });
 
-    // consulto los usuarios
+    // consulto los usuarios - listado de usuarios ajustes
 
     const getUsers = User.findAll({
       attributes: [

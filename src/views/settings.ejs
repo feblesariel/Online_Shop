@@ -142,9 +142,7 @@
                         <th class="border-0">Eliminar</th>
                       </tr>
                     </thead>
-                    <tbody>
-
-                    <% let itemDelete = 0;%>
+                    <tbody>                    
 
                     <% if (Users) { Users.forEach (item=> { %>
 
@@ -159,11 +157,9 @@
                           <span class="badge badge-success rounded-pill d-inline"><%=item.role%></span>
                         </td>
                         <td>
-                          <button type="submit" data-toggle="modal" data-target="#userDeleteModal" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
+                          <button type="submit" data-toggle="modal" data-target="#userDeleteModal" data-id="<%=item.id %>" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
                         </td>
-                      </tr>
-
-                    <% itemDelete = item.id%>
+                      </tr>                    
 
                     <% })} %>
 
@@ -193,13 +189,31 @@
               </div>
               <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
-              <form action="/settings/user/delete/<%=itemDelete%>?_method=DELETE" method="POST"><button type="submit" class="btn btn-danger">Borrar</button></form>
+              <form action="" method="POST"><button type="submit" class="btn btn-danger">Borrar</button></form>
               </div>
           </div>
         </div>
       </div>
 
       <%-include("./partials/footer.ejs")%>
+
+      <!-- script para que el modal importe el valor de la iteracion -->
+
+      <script>
+        $(document).ready(function() {
+          // Cuando se hace clic en un botón con la clase "btn-danger"
+          $('#userDeleteModal').on('show.bs.modal', function (event) {
+            // Capturamos el botón que activó el modal
+            var button = $(event.relatedTarget);
+            // Obtenemos el valor de data-id del botón
+            var userId = button.data('id');
+      
+            // Pasamos el valor al formulario de eliminación dentro del modal
+            var modal = $(this);
+            modal.find('form').attr('action', '/settings/user/delete/' + userId + '?_method=DELETE');
+          });
+        });
+      </script>     
 
   </body>
 
