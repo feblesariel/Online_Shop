@@ -59,6 +59,22 @@ const settingsController = {
       ]
     });
 
+    // consulto los productos - listado de productos ajustes
+
+    const getProducts = Product.findAll({
+      attributes: [
+        'id',
+        'code',
+        'name',
+        'price',
+        'stock'
+      ],
+      order: [
+        ['code', 'ASC']
+      ],
+      raw: true
+    });
+
     // consulto los usuarios - listado de usuarios ajustes
 
     const getUsers = User.findAll({
@@ -74,9 +90,9 @@ const settingsController = {
       raw: true
     });
 
-    Promise.all([getCategories, getProductCountInCart, getUsers])
-      .then(([Categories, ProductCountInCart, Users]) => {
-        res.render('settings', { Categories, ProductCountInCart, Users});
+    Promise.all([getCategories, getProductCountInCart, getProducts ,getUsers])
+      .then(([Categories, ProductCountInCart, Products, Users]) => {
+        res.render('settings', { Categories, ProductCountInCart, Products, Users});
       })
       .catch(error => {
         console.error('Error:', error);

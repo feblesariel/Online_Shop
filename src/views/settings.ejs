@@ -35,7 +35,7 @@
                 <div class="tab-pane fade show active" id="tab-pane-1">
 
                   <div class="pb-3">
-                    <span class="text-uppercase font-weight-bold">Productos cargados: 2</span>
+                    <span class="text-uppercase font-weight-bold">Productos cargados: <%=Products.length%></span>
                   </div>
 
                   <table class="table table-light table-hover text-center mb-0">
@@ -50,18 +50,21 @@
                       </tr>
                     </thead>
                     <tbody>
+
+                      <% if (Products) { Products.forEach (item=> { %>
+
                       <tr>
                         <td class="d-none d-lg-block">
-                          <p class="fw-bold mb-1">John Doe</p>
+                          <p class="fw-bold mb-1"><%=item.name%></p>
                         </td>
                         <td>
-                          <p class="fw-normal mb-1">C125</p>
+                          <p class="fw-normal mb-1"><%=item.code%></p>
                         </td>
                         <td>
-                          <p class="fw-normal mb-1">123.25</p>
+                          <p class="fw-normal mb-1"><%=item.price%></p>
                         </td>
                         <td class="d-none d-lg-block">
-                          <p class="fw-normal mb-1">100</p>
+                          <p class="fw-normal mb-1"><%=item.stock%></p>
                         </td>
                         <td>
                           <button type="submit" data-toggle="modal" data-target="" data-id="" class="btn btn-sm btn-success"><i class="fa fa-pen fa-sm"></i></button>
@@ -70,6 +73,9 @@
                           <button type="submit" data-toggle="modal" data-target="" data-id="" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
                         </td>
                       </tr>
+
+                      <% })} %>
+
                     </tbody>
                   </table>
                 </div>
@@ -85,8 +91,8 @@
                   <table class="table table-light table-hover text-center mb-0">
                     <thead class="thead-dark">
                       <tr>
-                        <th class="d-none d-lg-block border-0">Nombre</th>
-                        <th class="border-0">Email</th>
+                        <th class="border-0">Nombre</th>
+                        <th class="d-none d-lg-block border-0">Email</th>
                         <th class="border-0">Rol</th>
                         <th class="border-0">Eliminar</th>
                       </tr>
@@ -96,11 +102,11 @@
                     <% if (Users) { Users.forEach (item=> { %>
 
                       <tr>
-                        <td class="d-none d-lg-block">
-                          <p><%=item.name%></p>
-                        </td>                        
                         <td>
-                          <p><%=item.email%></p>
+                          <p class="fw-bold mb-1"><%=item.name%></p>
+                        </td>                        
+                        <td class="d-none d-lg-block">
+                          <p class="fw-normal mb-1"><%=item.email%></p>
                         </td>
                         <td>
                           <span class="badge badge-success rounded-pill d-inline"><%=item.role%></span>
