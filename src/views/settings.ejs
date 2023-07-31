@@ -8,15 +8,15 @@
     <%-include("./partials/header.ejs")%>
 
       <!-- Breadcrumb Start -->
-        <div class="container-fluid">
-          <div class="row px-xl-5">
-              <div class="col-12">
-                  <nav class="breadcrumb bg-light mb-30">
-                      <a class="breadcrumb-item text-dark text-decoration-none" href="/">Inicio</a>
-                      <span class="breadcrumb-item active">Ajustes</span>
-                  </nav>
-              </div>
+      <div class="container-fluid">
+        <div class="row px-xl-5">
+          <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+              <a class="breadcrumb-item text-dark text-decoration-none" href="/">Inicio</a>
+              <span class="breadcrumb-item active">Ajustes</span>
+            </nav>
           </div>
+        </div>
       </div>
       <!-- Breadcrumb End -->
 
@@ -37,11 +37,13 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="pb-3">
                       <span class="text-uppercase font-weight-bold">productos cargados: <%=Products.length%></span>
-                    </div>                  
-                    <div class="pb-3">
-                      <button class="btn btn-success"><span class="text-uppercase font-weight-bold">nuevo</span></button>
                     </div>
-                  </div>     
+                    <div class="pb-3">
+                      <button type="button" class="btn btn-success" data-toggle="modal"
+                        data-target="#modalProductCreate"><span
+                          class="text-uppercase font-weight-bold">nuevo</span></button>
+                    </div>
+                  </div>
 
                   <table class="table table-light table-hover text-center mb-0">
                     <thead class="thead-dark">
@@ -58,40 +60,50 @@
 
                       <% if (Products) { Products.forEach (item=> { %>
 
-                      <tr>
-                        <td class="d-none d-lg-block">
-                          <p class="fw-bold mb-1"><%=item.name%></p>
-                        </td>
-                        <td>
-                          <p class="fw-normal mb-1"><%=item.code%></p>
-                        </td>
-                        <td>
-                          <p class="fw-normal mb-1"><%=item.price%></p>
-                        </td>
-                        <td class="d-none d-lg-block">
-                          <p class="fw-normal mb-1"><%=item.stock%></p>
-                        </td>
-                        <td>
-                          <button type="submit" data-toggle="modal" data-target="" data-id="" class="btn btn-sm btn-success"><i class="fa fa-pen fa-sm"></i></button>
-                        </td>
-                        <td>
-                          <button type="submit" data-toggle="modal" data-target="" data-id="" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
-                        </td>
-                      </tr>
+                        <tr>
+                          <td class="d-none d-lg-block">
+                            <p class="fw-bold mb-1">
+                              <%=item.name%>
+                            </p>
+                          </td>
+                          <td>
+                            <p class="fw-normal mb-1">
+                              <%=item.code%>
+                            </p>
+                          </td>
+                          <td>
+                            <p class="fw-normal mb-1">
+                              <%=item.price%>
+                            </p>
+                          </td>
+                          <td class="d-none d-lg-block">
+                            <p class="fw-normal mb-1">
+                              <%=item.stock%>
+                            </p>
+                          </td>
+                          <td>
+                            <button type="submit" data-toggle="modal" data-target="" data-id=""
+                              class="btn btn-sm btn-success"><i class="fa fa-pen fa-sm"></i></button>
+                          </td>
+                          <td>
+                            <button type="submit" data-toggle="modal" data-target="" data-id=""
+                              class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
+                          </td>
+                        </tr>
 
-                      <% })} %>
+                        <% })} %>
 
                     </tbody>
                   </table>
                 </div>
-                
+
                 <!-- Users -->
 
                 <div class="tab-pane fade" id="tab-pane-2">
 
                   <div class="pb-3">
                     <span class="text-uppercase font-weight-bold">Usuarios registrados: <%=Users.length%></span>
-                  </div>                  
+                  </div>
 
                   <table class="table table-light table-hover text-center mb-0">
                     <thead class="thead-dark">
@@ -102,31 +114,38 @@
                         <th class="border-0">Eliminar</th>
                       </tr>
                     </thead>
-                    <tbody>                    
+                    <tbody>
 
-                    <% if (Users) { Users.forEach (item=> { %>
+                      <% if (Users) { Users.forEach (item=> { %>
 
-                      <tr>
-                        <td>
-                          <p class="fw-bold mb-1"><%=item.name%></p>
-                        </td>                        
-                        <td class="d-none d-lg-block">
-                          <p class="fw-normal mb-1"><%=item.email%></p>
-                        </td>
-                        <td>
-                          <span class="badge badge-success rounded-pill d-inline"><%=item.role%></span>
-                        </td>
-                        <td>
-                          <button type="submit" data-toggle="modal" data-target="#userDeleteModal" data-id="<%=item.id %>" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
-                        </td>
-                      </tr>                    
+                        <tr>
+                          <td>
+                            <p class="fw-bold mb-1">
+                              <%=item.name%>
+                            </p>
+                          </td>
+                          <td class="d-none d-lg-block">
+                            <p class="fw-normal mb-1">
+                              <%=item.email%>
+                            </p>
+                          </td>
+                          <td>
+                            <span class="badge badge-success rounded-pill d-inline">
+                              <%=item.role%>
+                            </span>
+                          </td>
+                          <td>
+                            <button type="submit" data-toggle="modal" data-target="#userDeleteModal"
+                              data-id="<%=item.id %>" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
+                          </td>
+                        </tr>
 
-                    <% })} %>
+                        <% })} %>
 
                     </tbody>
                   </table>
                 </div>
-                
+
               </div>
             </div>
           </div>
@@ -138,42 +157,110 @@
       <div class="modal fade" id="userDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-              <div class="modal-header">
+            <div class="modal-header">
               <h5 class="modal-title">Atencion</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                <span aria-hidden="true">&times;</span>
               </button>
-              </div>
-              <div class="modal-body">
+            </div>
+            <div class="modal-body">
               ¿Esta seguro que desea borrar el usuario?
-              </div>
-              <div class="modal-footer">
+            </div>
+            <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
               <form action="" method="POST"><button type="submit" class="btn btn-danger">Borrar</button></form>
-              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Crear Producto-->
+
+      <div class="modal fade" id="modalProductCreate" tabindex="-1" role="dialog"
+        aria-labelledby="modalCrearProductoLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalCrearProductoLabel">Formulario de Creación de Productos</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              <form action="/ruta_para_insertar_producto" method="POST">
+                <div class="mb-3">
+                  <label for="code" class="form-label">Código del producto</label>
+                  <input type="text" class="form-control" id="code" name="code" required>
+                </div>
+                <div class="mb-3">
+                  <label for="brand" class="form-label">Marca</label>
+                  <input type="text" class="form-control" id="brand" name="brand" required>
+                </div>
+                <div class="mb-3">
+                  <label for="model" class="form-label">Modelo</label>
+                  <input type="text" class="form-control" id="model" name="model" required>
+                </div>
+                <!-- Otros campos del formulario -->
+                <!-- ... -->
+
+                <!-- Select para elegir la categoría -->
+                <div class="mb-3">
+                  <label for="category" class="form-label">Categoría</label>
+                  <select class="form-control" id="category" name="category" required>
+                    <option value="">Seleccionar categoría</option>
+                    <!-- Agrega las opciones de categorías desde la base de datos -->
+                    <!-- Puedes usar un loop en tu lenguaje de backend para obtener las categorías y mostrarlas aquí -->
+                    <option value="otra">Otra categoría</option>
+                  </select>
+                </div>
+
+                <!-- Campo adicional para ingresar el nombre de la nueva categoría -->
+                <div class="mb-3 d-none" id="divNuevaCategoria">
+                  <label for="nuevaCategoria" class="form-label">Nueva categoría</label>
+                  <input type="text" class="form-control" id="nuevaCategoria" name="nuevaCategoria">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Guardar Producto</button>
+              </form>
+
+            </div>
           </div>
         </div>
       </div>
 
       <%-include("./partials/footer.ejs")%>
 
-      <!-- script para que el modal importe el valor de la iteracion -->
+        <!-- script para mostrar u ocultar el campo de nueva categoría en el formulario -->
 
-      <script>
-        $(document).ready(function() {
-          // Cuando se hace clic en un botón con la clase "btn-danger"
-          $('#userDeleteModal').on('show.bs.modal', function (event) {
-            // Capturamos el botón que activó el modal
-            var button = $(event.relatedTarget);
-            // Obtenemos el valor de data-id del botón
-            var userId = button.data('id');
-      
-            // Pasamos el valor al formulario de eliminación dentro del modal
-            var modal = $(this);
-            modal.find('form').attr('action', '/settings/user/delete/' + userId + '?_method=DELETE');
+        <script>
+          document.getElementById('category').addEventListener('change', function () {
+            var divNuevaCategoria = document.getElementById('divNuevaCategoria');
+            if (this.value === 'otra') {
+              divNuevaCategoria.classList.remove('d-none');
+            } else {
+              divNuevaCategoria.classList.add('d-none');
+            }
           });
-        });
-      </script>     
+        </script>
+
+        <!-- script para obtener el user id de la lista de users al momento de eliminar -->
+
+        <script>
+          $(document).ready(function () {
+            // Cuando se hace clic en un botón con la clase "btn-danger"
+            $('#userDeleteModal').on('show.bs.modal', function (event) {
+              // Capturamos el botón que activó el modal
+              var button = $(event.relatedTarget);
+              // Obtenemos el valor de data-id del botón
+              var userId = button.data('id');
+
+              // Pasamos el valor al formulario de eliminación dentro del modal
+              var modal = $(this);
+              modal.find('form').attr('action', '/settings/user/delete/' + userId + '?_method=DELETE');
+            });
+          });
+        </script>
 
   </body>
 
