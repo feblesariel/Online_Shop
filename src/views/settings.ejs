@@ -193,13 +193,13 @@
                   <select class="form-control" id="category" name="category">
                     <option value="">Seleccionar categoría</option>
                     <% if (Categories) { Categories.forEach(item => { %>
-                      <option value="<%= item.id %>">
+                      <option value="<%= item.name %>" <%= locals.old && locals.old.category === item.name ? 'selected' : '' %>>
                         <%= item.name %>
                       </option>
                     <% })} %>
-                    <option value="other">Otra categoría</option>
+                    <option value="other" <%= locals.old && locals.old.category === "other" ? 'selected' : '' %>>Otra categoría</option>
                   </select>
-                </div>                
+                </div>                              
 
                 <!-- Campo adicional para ingresar el nombre de la nueva categoría -->
                 <div class="mb-3 d-none" id="divNuevaCategoria">
@@ -254,8 +254,8 @@
                 </div>                
 
                 <div class="mb-3">
-                  <textarea class="form-control" id="description" name="description" placeholder="Descripción" value="<%= locals.old && old.description ? old.nadescriptionme : "" %>"></textarea>
-                </div>
+                  <textarea class="form-control" id="description" name="description" placeholder="Descripción"><%= locals.old && locals.old.description ? locals.old.description : "" %></textarea>
+                </div>                
 
                 <% if (locals.errors) { errors.forEach (error=> { %>
                   <div class="small" style="color: red;"><%= error.msg %></div>
@@ -275,7 +275,7 @@
 
       <%-include("./partials/footer.ejs")%>
 
-        <!-- Tu código JavaScript/jQuery para abrir automáticamente el modal si existen errores -->
+        <!-- Tu código JavaScript/jQuery para abrir automáticamente el modal de productos si existen errores -->
 
         <% if (locals.errors) { %>
           <script>
@@ -285,8 +285,14 @@
           </script>
         <% } %>
 
-        <!-- script para mostrar u ocultar el campo de nueva categoría en el formulario -->
+        <!-- Script para mostrar u ocultar el campo de nueva categoría en el formulario -->
 
+        <% if (locals.old && old.category && old.category === "other") { %>
+          <script>
+            var divNuevaCategoria = document.getElementById('divNuevaCategoria');
+            divNuevaCategoria.classList.remove('d-none');            
+          </script>
+        <% } else { %>
         <script>
           document.getElementById('category').addEventListener('change', function () {
             var divNuevaCategoria = document.getElementById('divNuevaCategoria');
@@ -298,7 +304,9 @@
           });
         </script>
 
-        <!-- script para obtener el user id de la lista de users al momento de eliminar -->
+        <% } %>
+
+        <!-- script para obtener el user id de la lista de users al momento de apretar el boton eliminar -->
 
         <script>
           $(document).ready(function () {

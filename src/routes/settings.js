@@ -59,13 +59,13 @@ const validateNewCategory = (value, { req }) => {
 const validationsCreateProductForm = [
     body("category").custom(validateCategory),
     body("newCategory").custom(validateNewCategory),
-    // body("newCategory").notEmpty().withMessage("Debes ingresar el nombre de la nueva categoria."),
     body("code").notEmpty().withMessage("Debes ingresar el codigo."),
     body("name").notEmpty().withMessage("Debes ingresar el nombre."),
     body("brand").notEmpty().withMessage("Debes ingresar la marca."),
     body("model").notEmpty().withMessage("Debes ingresar el modelo."),
     body("price").notEmpty().withMessage("Debes ingresar el precio.").bail().isNumeric().withMessage("El precio debe ser numérico."),
-    body("stock").notEmpty().withMessage("Debes ingresar el stock.").bail().isNumeric().withMessage("El stock debe ser numérico.")
+    body("stock").notEmpty().withMessage("Debes ingresar el stock.").bail().isNumeric().withMessage("El stock debe ser numérico."),
+    body("description").notEmpty().withMessage("Debes ingresar una descripción.").bail().isLength({ max: 200 }).withMessage("La descripción no puede exceder los 200 caracteres.")
 ];
 
 // ************ Controller Require ************
