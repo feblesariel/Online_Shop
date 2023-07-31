@@ -190,7 +190,7 @@
               <form action="/settings/product/create" method="POST">
                 
                 <div class="mb-3">
-                  <select class="form-control" id="category" name="category" required>
+                  <select class="form-control" id="category" name="category" value="<%= locals.old && old.category ? old.category : "" %>">
                     <option value="">Seleccionar categoría</option>
                     <% if (Categories) { Categories.forEach (item=> { %>
                     <option value="<%=item.id%>">
@@ -203,46 +203,46 @@
 
                 <!-- Campo adicional para ingresar el nombre de la nueva categoría -->
                 <div class="mb-3 d-none" id="divNuevaCategoria">
-                  <input type="text" class="form-control" id="newCategory" name="newCategory" placeholder="Nueva categoría">
+                  <input type="text" class="form-control" id="newCategory" name="newCategory" placeholder="Nueva categoría" value="<%= locals.old && old.newCategory ? old.newCategory : "" %>">
                 </div>
 
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <input type="text" class="form-control" id="code" name="code" required placeholder="Código">
+                    <input type="text" class="form-control" id="code" name="code" placeholder="Código" value="<%= locals.old && old.code ? old.code : "" %>">
                   </div>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" id="name" name="name" required placeholder="Nombre">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" value="<%= locals.old && old.name ? old.name : "" %>">
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <input type="text" class="form-control" id="brand" name="brand" required placeholder="Marca">
+                    <input type="text" class="form-control" id="brand" name="brand" placeholder="Marca" value="<%= locals.old && old.brand ? old.brand : "" %>">
                   </div>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" id="model" name="model" required placeholder="Modelo">
+                    <input type="text" class="form-control" id="model" name="model" placeholder="Modelo" value="<%= locals.old && old.model ? old.model : "" %>">
                   </div>
                 </div>               
               
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <input type="number" class="form-control" id="price" name="price" required placeholder="Precio">
+                    <input type="number" class="form-control" id="price" name="price" placeholder="Precio" value="<%= locals.old && old.price ? old.price : "" %>">
                   </div>
                   <div class="col-md-6">
-                    <input type="number" class="form-control" id="stock" name="stock" required placeholder="Stock">
+                    <input type="number" class="form-control" id="stock" name="stock" placeholder="Stock" value="<%= locals.old && old.stock ? old.stock : "" %>">
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <div class="col">
                     <div class="form-check form-check-inline">
-                      <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured">
+                      <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured" <% if (locals.old && locals.old.is_featured) { %> checked <% } %>>
                       Sección destacados
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-check form-check-inline">
-                      <input type="checkbox" class="form-check-input" id="is_offer" name="is_offer">
+                      <input type="checkbox" class="form-check-input" id="is_offer" name="is_offer" <% if (locals.old && locals.old.is_offer) { %> checked <% } %>>
                       Sección ofertas
                     </div>
                   </div>
@@ -250,12 +250,16 @@
 
                 <div class="mb-3">
                   <label for="images" class="form-label">Imágenes</label>
-                  <input type="file" class="form-control" id="images" name="images">
-                </div>
+                  <input type="file" class="form-control" id="images" name="images" multiple value="<%= locals.old && old.images ? old.images : "" %>">
+                </div>                
 
                 <div class="mb-3">
-                  <textarea class="form-control" id="description" name="description" required placeholder="Descripción"></textarea>
+                  <textarea class="form-control" id="description" name="description" placeholder="Descripción" value="<%= locals.old && old.description ? old.nadescriptionme : "" %>"></textarea>
                 </div>
+
+                <% if (locals.errors) { errors.forEach (error=> { %>
+                  <div class="small" style="color: red;"><%= error.msg %></div>
+                <% })} %>
 
                 <div class="d-flex justify-content-end">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
@@ -271,12 +275,22 @@
 
       <%-include("./partials/footer.ejs")%>
 
+        <!-- Tu código JavaScript/jQuery para abrir automáticamente el modal si existen errores -->
+
+        <% if (locals.errors) { %>
+          <script>
+            $(document).ready(function() {
+              $('#productCreateModal').modal('show');
+            });
+          </script>
+        <% } %>
+
         <!-- script para mostrar u ocultar el campo de nueva categoría en el formulario -->
 
         <script>
           document.getElementById('category').addEventListener('change', function () {
             var divNuevaCategoria = document.getElementById('divNuevaCategoria');
-            if (this.value === 'otra') {
+            if (this.value === 'other') {
               divNuevaCategoria.classList.remove('d-none');
             } else {
               divNuevaCategoria.classList.add('d-none');
