@@ -58,11 +58,11 @@ const validateNewCategory = (value, { req }) => {
 
 const validationsCreateProductForm = [
     body("category").custom(validateCategory),
-    body("newCategory").custom(validateNewCategory),
-    body("code").notEmpty().withMessage("Debes ingresar el codigo."),
-    body("name").notEmpty().withMessage("Debes ingresar el nombre."),
-    body("brand").notEmpty().withMessage("Debes ingresar la marca."),
-    body("model").notEmpty().withMessage("Debes ingresar el modelo."),
+    body("newCategory").custom(validateNewCategory).bail().isLength({ max: 20 }).withMessage("La nueva categoria no puede exceder los 20 caracteres."),
+    body("code").notEmpty().withMessage("Debes ingresar el codigo.").bail().isLength({ max: 20 }).withMessage("El codigo no puede exceder los 20 caracteres."),
+    body("name").notEmpty().withMessage("Debes ingresar el nombre.").bail().isLength({ max: 20 }).withMessage("El nombre no puede exceder los 20 caracteres."),
+    body("brand").notEmpty().withMessage("Debes ingresar la marca.").bail().isLength({ max: 20 }).withMessage("La marca no puede exceder los 20 caracteres."),
+    body("model").notEmpty().withMessage("Debes ingresar el modelo.").bail().isLength({ max: 20 }).withMessage("El modelo no puede exceder los 20 caracteres."),
     body("price").notEmpty().withMessage("Debes ingresar el precio.").bail().isNumeric().withMessage("El precio debe ser numérico."),
     body("stock").notEmpty().withMessage("Debes ingresar el stock.").bail().isNumeric().withMessage("El stock debe ser numérico."),
     body("description").notEmpty().withMessage("Debes ingresar una descripción.").bail().isLength({ max: 200 }).withMessage("La descripción no puede exceder los 200 caracteres.")
