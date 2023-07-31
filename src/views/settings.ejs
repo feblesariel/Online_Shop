@@ -190,7 +190,6 @@
               <form action="/ruta_para_insertar_producto" method="POST">
                 
                 <div class="mb-3">
-                  <label for="category" class="form-label">Categoría</label>
                   <select class="form-control" id="category" name="category" required>
                     <option value="">Seleccionar categoría</option>
                     <% if (Categories) { Categories.forEach (item=> { %>
@@ -204,40 +203,33 @@
 
                 <!-- Campo adicional para ingresar el nombre de la nueva categoría -->
                 <div class="mb-3 d-none" id="divNuevaCategoria">
-                  <label for="nuevaCategoria" class="form-label">Nueva categoría</label>
-                  <input type="text" class="form-control" id="nuevaCategoria" name="nuevaCategoria">
+                  <input type="text" class="form-control" id="nuevaCategoria" name="nuevaCategoria" placeholder="Nueva categoría">
                 </div>
 
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <label for="code" class="form-label">Código</label>
-                    <input type="text" class="form-control" id="code" name="code" required>
+                    <input type="text" class="form-control" id="code" name="code" required placeholder="Codigo">
                   </div>
                   <div class="col-md-6">
-                    <label for="name" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
+                    <input type="text" class="form-control" id="name" name="name" required placeholder="Nombre">
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <label for="code" class="form-label">Marca</label>
-                    <input type="text" class="form-control" id="code" name="code" required>
+                    <input type="text" class="form-control" id="code" name="code" required placeholder="Marca">
                   </div>
                   <div class="col-md-6">
-                    <label for="name" class="form-label">Modelo</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
+                    <input type="text" class="form-control" id="name" name="name" required placeholder="Modelo">
                   </div>
                 </div>               
               
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <label for="code" class="form-label">Precio</label>
-                    <input type="number" class="form-control" id="code" name="code" required>
+                    <input type="number" class="form-control" id="code" name="code" required placeholder="Precio">
                   </div>
                   <div class="col-md-6">
-                    <label for="name" class="form-label">Stock</label>
-                    <input type="number" class="form-control" id="name" name="name" required>
+                    <input type="number" class="form-control" id="name" name="name" required placeholder="Stock">
                   </div>
                 </div>
 
@@ -245,30 +237,29 @@
                   <div class="col">
                     <div class="form-check form-check-inline">
                       <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured">
-                      Destacado
+                      Seccion destacados
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-check form-check-inline">
                       <input type="checkbox" class="form-check-input" id="is_offer" name="is_offer">
-                      Oferta
+                      Seccion ofertas
                     </div>
                   </div>
                 </div>
 
                 <div class="mb-3">
-                  <label for="images" class="form-label">Imágenes</label>
-                  <input type="file" class="form-control" id="images" name="images" multiple>
+                  <label for="images" class="form-label">Imagenes</label>
+                  <input type="file" class="form-control" id="images" name="images">
                 </div>
 
                 <div class="mb-3">
-                  <label for="description" class="form-label">Descripción</label>
-                  <textarea class="form-control" id="description" name="description" required></textarea>
+                  <textarea class="form-control" id="description" name="description" required placeholder="Descripción"></textarea>
                 </div>
                 
-                <button type="submit" class="btn btn-primary">Guardar Producto</button>
+                <button type="submit" class="btn btn-primary">Confirmar</button>
 
-              </form>             
+              </form>
 
             </div>
           </div>
