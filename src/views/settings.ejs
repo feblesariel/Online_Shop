@@ -190,16 +190,16 @@
               <form action="/settings/product/create" method="POST">
                 
                 <div class="mb-3">
-                  <select class="form-control" id="category" name="category" value="<%= locals.old && old.category ? old.category : "" %>">
+                  <select class="form-control" id="category" name="category">
                     <option value="">Seleccionar categoría</option>
-                    <% if (Categories) { Categories.forEach (item=> { %>
-                    <option value="<%=item.id%>">
-                      <%=item.name%>
-                    </option>
+                    <% if (Categories) { Categories.forEach(item => { %>
+                      <option value="<%= item.id %>">
+                        <%= item.name %>
+                      </option>
                     <% })} %>
                     <option value="other">Otra categoría</option>
                   </select>
-                </div>
+                </div>                
 
                 <!-- Campo adicional para ingresar el nombre de la nueva categoría -->
                 <div class="mb-3 d-none" id="divNuevaCategoria">

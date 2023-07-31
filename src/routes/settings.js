@@ -40,15 +40,26 @@ const upload = multer({
 // ************ Validations ************
 
 const validateCategory = (value) => {
-    if (!value || value === "") {
+    if (value === "") {
       throw new Error("Debes seleccionar una categoria.");
     }
     return true;
   };
 
+const validateNewCategory = (value, { req }) => {
+    const category = req.body.category;
+    if (category === 'other') {
+        if (!value || value.trim() === '') {
+        throw new Error('Debes ingresar el nombre de la nueva categoria.');
+        }
+    }
+    return true;
+};
+
 const validationsCreateProductForm = [
     body("category").custom(validateCategory),
-    body("newCategory").notEmpty().withMessage("Debes ingresar el nombre de la nueva categoria."),
+    body("newCategory").custom(validateNewCategory),
+    // body("newCategory").notEmpty().withMessage("Debes ingresar el nombre de la nueva categoria."),
     body("code").notEmpty().withMessage("Debes ingresar el codigo."),
     body("name").notEmpty().withMessage("Debes ingresar el nombre."),
     body("brand").notEmpty().withMessage("Debes ingresar la marca."),
