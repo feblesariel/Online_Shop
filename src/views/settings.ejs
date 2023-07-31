@@ -187,7 +187,7 @@
             </div>
             <div class="modal-body">
 
-              <form action="/ruta_para_insertar_producto" method="POST">
+              <form action="/settings/product/create" method="POST">
                 
                 <div class="mb-3">
                   <select class="form-control" id="category" name="category" required>
@@ -197,18 +197,18 @@
                       <%=item.name%>
                     </option>
                     <% })} %>
-                    <option value="otra">Otra categoría</option>
+                    <option value="other">Otra categoría</option>
                   </select>
                 </div>
 
                 <!-- Campo adicional para ingresar el nombre de la nueva categoría -->
                 <div class="mb-3 d-none" id="divNuevaCategoria">
-                  <input type="text" class="form-control" id="nuevaCategoria" name="nuevaCategoria" placeholder="Nueva categoría">
+                  <input type="text" class="form-control" id="newCategory" name="newCategory" placeholder="Nueva categoría">
                 </div>
 
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <input type="text" class="form-control" id="code" name="code" required placeholder="Codigo">
+                    <input type="text" class="form-control" id="code" name="code" required placeholder="Código">
                   </div>
                   <div class="col-md-6">
                     <input type="text" class="form-control" id="name" name="name" required placeholder="Nombre">
@@ -217,19 +217,19 @@
 
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <input type="text" class="form-control" id="code" name="code" required placeholder="Marca">
+                    <input type="text" class="form-control" id="brand" name="brand" required placeholder="Marca">
                   </div>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" id="name" name="name" required placeholder="Modelo">
+                    <input type="text" class="form-control" id="model" name="model" required placeholder="Modelo">
                   </div>
                 </div>               
               
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <input type="number" class="form-control" id="code" name="code" required placeholder="Precio">
+                    <input type="number" class="form-control" id="price" name="price" required placeholder="Precio">
                   </div>
                   <div class="col-md-6">
-                    <input type="number" class="form-control" id="name" name="name" required placeholder="Stock">
+                    <input type="number" class="form-control" id="stock" name="stock" required placeholder="Stock">
                   </div>
                 </div>
 
@@ -237,19 +237,19 @@
                   <div class="col">
                     <div class="form-check form-check-inline">
                       <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured">
-                      Seccion destacados
+                      Sección destacados
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-check form-check-inline">
                       <input type="checkbox" class="form-check-input" id="is_offer" name="is_offer">
-                      Seccion ofertas
+                      Sección ofertas
                     </div>
                   </div>
                 </div>
 
                 <div class="mb-3">
-                  <label for="images" class="form-label">Imagenes</label>
+                  <label for="images" class="form-label">Imágenes</label>
                   <input type="file" class="form-control" id="images" name="images">
                 </div>
 
