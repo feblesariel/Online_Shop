@@ -21,21 +21,7 @@ const storage = multer.diskStorage({
     }
 });
 
-const fileFilter = function (req, file, cb) {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-      cb(null, true);
-    } else {
-      cb(new Error('Formato de archivo no válido. Solo se permiten imágenes jpg y png.'), false);
-    }
-};
-
-const upload = multer({
-    storage: storage,
-    limits: {
-      fileSize: 2 * 1024 * 1024,
-    },
-    fileFilter: fileFilter,
-  });
+const upload = multer({ storage });
 
 // ************ Validations ************
 
@@ -77,6 +63,6 @@ const settingsController = require ("../controllers/settings")
 router.get("/", routesLoggedRequired, routesAdminRequired , settingsController.main);
 router.delete("/user/delete/:id/", routesLoggedRequired, routesAdminRequired , settingsController.userDestroy);
 
-router.post("/product/create/", routesLoggedRequired, routesAdminRequired , upload.array("images", 5) , validationsCreateProductForm, settingsController.productCreate);
+router.post("/product/create/", routesLoggedRequired, routesAdminRequired , upload.single("images") , validationsCreateProductForm, settingsController.productCreate);
 
 module.exports = router;

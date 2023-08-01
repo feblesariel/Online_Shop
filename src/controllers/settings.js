@@ -194,12 +194,24 @@ const settingsController = {
 
     // creacion de producto y validaciones
 
-
     let errors = validationResult(req);
-    let defaultImage = "default-image.png";
 
-    if (!errors.isEmpty()) {
+    if (req.file) {
 
+      const maxFileSizeMB = 2;
+      const maxFileSizeBytes = maxFileSizeMB * (1024 * 1024);
+
+      if (req.file.size > maxFileSizeBytes) {
+        errors.errors.push({ msg: "El archivo supera el peso permitido de 2 MB." });
+      }
+
+      if (req.file.mimetype !== 'image/jpeg' && req.file.mimetype !== 'image/png') {
+        errors.errors.push({ msg: "El archivo debe ser una imagen valida." });
+      }
+
+    }
+
+    if (!errors.isEmpty()) {      
 
       Promise.all([getCategories, getProductCountInCart, getProducts ,getUsers])
       .then(([Categories, ProductCountInCart, Products, Users]) => {
