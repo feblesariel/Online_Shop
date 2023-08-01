@@ -1,5 +1,6 @@
 // ************ Requires ************
 
+const sharp = require('sharp');
 const fs = require("fs");
 const path = require("path");
 const { validationResult } = require("express-validator");
@@ -225,6 +226,30 @@ const settingsController = {
     } else {
       errors.errors.push({ msg: "Debes seleccionar una imagen." });
     }
+      // Redimension -----
+      
+      const destinationFolder = path.join(__dirname, '../../public/img/'); // Ruta de la carpeta donde se guardarán las imágenes redimensionadas
+
+      // Ruta completa de la imagen original y la redimensionada
+      const originalImagePath = req.file.path;
+      const resizedImagePath = destinationFolder + 'resized-' + req.file.filename;
+
+      // Redimensionar la imagen utilizando la libreria "sharp"
+      sharp(originalImagePath)
+        .resize(500, 500) // Ajusta el tamaño según tus necesidades
+        .toFile(resizedImagePath, (err) => {
+          if (err) {
+            console.error('Error al redimensionar la imagen:', err);
+          }
+          // Borra el archivo original que está en la carpeta temporal de Multer
+          fs.unlinkSync(originalImagePath);
+          // Actualiza el path del archivo para que apunte a la imagen redimensionada
+          req.file.path = resizedImagePath;
+          // Actualiza el nombre del archivo
+          req.file.filename = 'resized-' + req.file.filename;
+      });
+
+      // Fin Redimension ---
 
     // Fin Validaciones de la imagen -----
 
