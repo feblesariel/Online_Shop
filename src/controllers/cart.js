@@ -29,7 +29,7 @@ const cartController = {
       user = userLogged.id;
     } 
 
-    // consulto las categorias - navbar
+    // Consulto las categorias - navbar ---------------------------------------------------------------
 
     const getCategories = Category.findAll({
       attributes: [
@@ -47,7 +47,7 @@ const cartController = {
       raw: true
     });
 
-    // calculo cuantos items hay en el carrito - navbar
+    // Calculo cuantos items hay en el carrito - navbar ----------------------------------------------
 
     const getProductCountInCart = Cart_item.sum('quantity', {
       include: [

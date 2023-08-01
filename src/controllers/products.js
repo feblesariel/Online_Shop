@@ -29,7 +29,7 @@ const productsController = {
       user = userLogged.id;
     }   
 
-    // consulto las categorias - navbar
+    // Consulto las categorias - navbar ------------------------------------------------------------
 
     const getCategories = Category.findAll({
       attributes: [
@@ -47,7 +47,7 @@ const productsController = {
       raw: true
     });
 
-    // calculo cuantos items hay en el carrito - navbar
+    // Calculo cuantos items hay en el carrito - navbar --------------------------------------------
 
     const getProductCountInCart = Cart_item.sum('quantity', {
       include: [
@@ -59,7 +59,7 @@ const productsController = {
       ]
     });
 
-    // consulto todos los productos con parametros de ordenamiento - productos
+    // Consulto todos los productos con parametros de ordenamiento - productos ---------------------
 
     const categoryFilter = req.query.categoryFilter ? JSON.parse(req.query.categoryFilter) : [];
     const brandFilter = req.query.brandFilter ? JSON.parse(req.query.brandFilter) : [];
@@ -93,7 +93,7 @@ const productsController = {
     });
 
 
-    // consulto las categorias y la cantidad de productos que tienen - filtro categoria
+    // Consulto las categorias y la cantidad de productos que tienen - filtro categoria ------------
 
     const getCategoriesWithProductCount = Category.findAll({
       attributes: [
@@ -111,13 +111,13 @@ const productsController = {
       raw: true
     });
 
-    // consulto el total de productos que hay - category
+    // Consulto el total de productos que hay - category ------------------------------------------
 
 
     const getTotalProductCount = Product.count('category_id');
 
 
-    // consulto el total de productos que hay - brand
+    // consulto el total de productos que hay - brand ---------------------------------------------
 
     const categoryFilterTotal = req.query.categoryFilter ? JSON.parse(req.query.categoryFilter) : [];
 
@@ -129,7 +129,7 @@ const productsController = {
       where: whereClauseTotal
     });
 
-    // consulto las marcas y el total de productos que tienen - filtro marca
+    // Consulto las marcas y el total de productos que tienen - filtro marca ----------------------
 
     const categoryFilterBrand = req.query.categoryFilter ? JSON.parse(req.query.categoryFilter) : [];
 
@@ -167,7 +167,7 @@ const productsController = {
       user = userLogged.id;
     }   
 
-    // consulto las categorias - navbar
+    // Consulto las categorias - navbar ------------------------------------------------------------
 
     const getCategories = Category.findAll({
       attributes: [
@@ -185,7 +185,7 @@ const productsController = {
       raw: true
     });
 
-    // calculo cuantos items hay en el carrito - navbar
+    // Calculo cuantos items hay en el carrito - navbar --------------------------------------------
 
     const getProductCountInCart = Cart_item.sum('quantity', {
       include: [
@@ -197,17 +197,17 @@ const productsController = {
       ]
     });
 
-    // consulto producto - detail
+    // Consulto producto - detail ------------------------------------------------------------------
 
     const getProductByPk = Product.findByPk(req.params.id);
 
-    // consulto las imagenes del producto - detail
+    // Consulto las imagenes del producto - detail -------------------------------------------------
 
     const getImagesProduct = Product_image.findAll({
       where: { product_id: req.params.id }
     })
 
-    // consulto todos los productos - carrousel
+    // Consulto todos los productos - carrousel ----------------------------------------------------
 
     const getAllProducts = Product.findAll({
       order: [

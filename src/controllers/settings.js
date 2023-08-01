@@ -35,7 +35,7 @@ const settingsController = {
       user = userLogged.id;
     }
 
-    // consulto las categorias - navbar
+    // Consulto las categorias - navbar ---------------------------------------------------------------
 
     const getCategories = Category.findAll({
       attributes: [
@@ -53,7 +53,7 @@ const settingsController = {
       raw: true
     });
 
-    // calculo cuantos items hay en el carrito - navbar
+    // Calculo cuantos items hay en el carrito - navbar ----------------------------------------------
 
     const getProductCountInCart = Cart_item.sum('quantity', {
       include: [
@@ -65,7 +65,7 @@ const settingsController = {
       ]
     });
 
-    // consulto los productos - listado de productos ajustes
+    // Consulto los productos - listado de productos - AJUSTES ---------------------------------------
 
     const getProducts = Product.findAll({
       attributes: [
@@ -81,7 +81,7 @@ const settingsController = {
       raw: true
     });
 
-    // consulto los usuarios - listado de usuarios ajustes
+    // Consulto los usuarios - listado de usuarios - AJUSTES -----------------------------------------
 
     const getUsers = User.findAll({
       attributes: [
@@ -131,7 +131,7 @@ const settingsController = {
       user = userLogged.id;
     }
 
-    // consulto las categorias - navbar
+    // Consulto las categorias - navbar ---------------------------------------------------------------
 
     const getCategories = Category.findAll({
       attributes: [
@@ -149,7 +149,7 @@ const settingsController = {
       raw: true
     });
 
-    // calculo cuantos items hay en el carrito - navbar
+    // Calculo cuantos items hay en el carrito - navbar ----------------------------------------------
 
     const getProductCountInCart = Cart_item.sum('quantity', {
       include: [
@@ -161,7 +161,7 @@ const settingsController = {
       ]
     });
 
-    // consulto los productos - listado de productos ajustes
+    // Consulto los productos - listado de productos - AJUSTES ---------------------------------------
 
     const getProducts = Product.findAll({
       attributes: [
@@ -177,7 +177,7 @@ const settingsController = {
       raw: true
     });
 
-    // consulto los usuarios - listado de usuarios ajustes
+    // Consulto los usuarios - listado de usuarios - AJUSTES ----------------------------------------
 
     const getUsers = User.findAll({
       attributes: [
@@ -193,11 +193,11 @@ const settingsController = {
     });
 
 
-    // creacion de producto y validaciones
+    // Creacion de producto -------------------------------------------------------------------------
 
     let errors = validationResult(req);
 
-    // validaciones de la imagen
+    // Validaciones de la imagen -------
 
     if (req.file) {
 
@@ -226,7 +226,9 @@ const settingsController = {
       errors.errors.push({ msg: "Debes seleccionar una imagen." });
     }
 
-    
+    // Fin Validaciones de la imagen -----
+
+    // Valido si el codigo ya existe en otro producto, si es asi, hago un push al array de errores, si no, procedo a crear el producto.
 
     if (req.body.code) {
       Product.findOne({
@@ -234,104 +236,106 @@ const settingsController = {
           code: req.body.code
         }
       }).then((product) => {
+
         if (product) {
           errors.errors.push({ msg: "Ya existe un producto con ese codigo." });
         }
-      })
-    } 
 
+        if (!errors.isEmpty()) {
 
-
-    if (!errors.isEmpty()) {
-
-      Promise.all([getCategories, getProductCountInCart, getProducts, getUsers])
-        .then(([Categories, ProductCountInCart, Products, Users]) => {
-          res.render('settings', { Categories, ProductCountInCart, Products, Users, errors: errors.array(), old: req.body });
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          // Manejo de errores
-        });
-
-    } else {
-
-      // Función para convertir "on" y "off" a booleanos true o false
-      function convertToBoolean(value) {
-        return value === "on" ? true : false;
-      }
-
-      // En tu código, antes de insertar los valores en la base de datos
-      // asegúrate de convertir los valores "on" y "off" a booleanos true o false
-      let isFeatured = convertToBoolean(req.body.is_featured);
-      let isOffer = convertToBoolean(req.body.is_offer);
-
-      if (req.body.category === "other") {
-        Category.create({
-          name: req.body.newCategory,
-        }).then((newCategory) => {
-          Product.create({
-            code: req.body.code,
-            brand: req.body.brand,
-            model: req.body.model,
-            name: req.body.name,
-            price: req.body.price,
-            description: req.body.description,
-            stock: req.body.stock,
-            is_featured: isFeatured,
-            is_offer: isOffer,
-            category_id: newCategory.id,
-          }).then((newProduct) => {
-            Product_image.create({
-              url: req.file.filename,
-              product_id: newProduct.id,
-            }).then(() => {
-              return res.redirect('/settings/');
-            }).catch((error) => {
-              console.error('Error al crear la imagen del producto:', error);
+          Promise.all([getCategories, getProductCountInCart, getProducts, getUsers])
+            .then(([Categories, ProductCountInCart, Products, Users]) => {
+              res.render('settings', { Categories, ProductCountInCart, Products, Users, errors: errors.array(), old: req.body });
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              // Manejo de errores
             });
-          }).catch((error) => {
-            console.error('Error al crear el producto:', error);
-          });
-        }).catch((error) => {
-          console.error('Error al crear la nueva categoría:', error);
-        });
-
-      } else {
-
-        Category.findOne({
-          where: {
-            name: req.body.category
+    
+        } else {
+    
+          // Función para convertir "on" y "off" a booleanos true o false
+          function convertToBoolean(value) {
+            return value === "on" ? true : false;
           }
-        }).then((element) => {
-          Product.create({
-            code: req.body.code,
-            brand: req.body.brand,
-            model: req.body.model,
-            name: req.body.name,
-            price: req.body.price,
-            description: req.body.description,
-            stock: req.body.stock,
-            is_featured: isFeatured,
-            is_offer: isOffer,
-            category_id: element.id,
-          }).then((newProduct) => {
-            Product_image.create({
-              url: req.file.filename,
-              product_id: newProduct.id,
-            }).then(() => {
-              return res.redirect('/settings/');
+    
+          // En tu código, antes de insertar los valores en la base de datos
+          // asegúrate de convertir los valores "on" y "off" a booleanos true o false
+          let isFeatured = convertToBoolean(req.body.is_featured);
+          let isOffer = convertToBoolean(req.body.is_offer);
+    
+          if (req.body.category === "other") {
+            Category.create({
+              name: req.body.newCategory,
+            }).then((newCategory) => {
+              Product.create({
+                code: req.body.code,
+                brand: req.body.brand,
+                model: req.body.model,
+                name: req.body.name,
+                price: req.body.price,
+                description: req.body.description,
+                stock: req.body.stock,
+                is_featured: isFeatured,
+                is_offer: isOffer,
+                category_id: newCategory.id,
+              }).then((newProduct) => {
+                Product_image.create({
+                  url: req.file.filename,
+                  product_id: newProduct.id,
+                }).then(() => {
+                  return res.redirect('/settings/');
+                }).catch((error) => {
+                  console.error('Error al crear la imagen del producto:', error);
+                });
+              }).catch((error) => {
+                console.error('Error al crear el producto:', error);
+              });
             }).catch((error) => {
-              console.error('Error al crear la imagen del producto:', error);
+              console.error('Error al crear la nueva categoría:', error);
             });
-          }).catch((error) => {
-            console.error('Error al crear el producto:', error);
-          });
-        }).catch((error) => {
-          console.error('Error al buscar la categoria:', error);
-        });
-
-      }
-
+    
+          } else {
+    
+            Category.findOne({
+              where: {
+                name: req.body.category
+              }
+            }).then((element) => {
+              Product.create({
+                code: req.body.code,
+                brand: req.body.brand,
+                model: req.body.model,
+                name: req.body.name,
+                price: req.body.price,
+                description: req.body.description,
+                stock: req.body.stock,
+                is_featured: isFeatured,
+                is_offer: isOffer,
+                category_id: element.id,
+              }).then((newProduct) => {
+                Product_image.create({
+                  url: req.file.filename,
+                  product_id: newProduct.id,
+                }).then(() => {
+                  return res.redirect('/settings/');
+                }).catch((error) => {
+                  console.error('Error al crear la imagen del producto:', error);
+                });
+              }).catch((error) => {
+                console.error('Error al crear el producto:', error);
+              });
+            }).catch((error) => {
+              console.error('Error al buscar la categoria:', error);
+            });
+    
+          }
+    
+        }
+        
+      }).catch(error => {
+        console.error('Error al buscar el producto:', error);
+      });
     }
 
   }
