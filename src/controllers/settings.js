@@ -10,6 +10,7 @@ const { stringify } = require("querystring");
 const db = require('../database/models/index.js');
 const sequelize = db.sequelize;
 const { Op } = require("sequelize");
+const { error } = require("console");
 
 const User = db.User;
 const Category = db.Category;
@@ -32,7 +33,7 @@ const settingsController = {
     if (req.session.userLogged) {
       let userLogged = req.session.userLogged;
       user = userLogged.id;
-    } 
+    }
 
     // consulto las categorias - navbar
 
@@ -95,21 +96,21 @@ const settingsController = {
       raw: true
     });
 
-    Promise.all([getCategories, getProductCountInCart, getProducts ,getUsers])
+    Promise.all([getCategories, getProductCountInCart, getProducts, getUsers])
       .then(([Categories, ProductCountInCart, Products, Users]) => {
-        res.render('settings', { Categories, ProductCountInCart, Products, Users});
+        res.render('settings', { Categories, ProductCountInCart, Products, Users });
       })
       .catch(error => {
         console.error('Error:', error);
         // Manejo de errores
-    });
+      });
   },
 
   userDestroy: function (req, res) {
 
     let userId = req.params.id;
 
-    if (req.session.userLogged.id == userId){
+    if (req.session.userLogged.id == userId) {
       req.session.destroy();
     }
 
@@ -128,7 +129,7 @@ const settingsController = {
     if (req.session.userLogged) {
       let userLogged = req.session.userLogged;
       user = userLogged.id;
-    } 
+    }
 
     // consulto las categorias - navbar
 
@@ -203,7 +204,7 @@ const settingsController = {
       const maxFileSizeMB = 2;
       const maxFileSizeBytes = maxFileSizeMB * (1024 * 1024);
 
-      if ((!errors.isEmpty()) || (req.file.size > maxFileSizeBytes) || (req.file.mimetype !== 'image/jpeg' && req.file.mimetype !== 'image/png')){
+      if ((!errors.isEmpty()) || (req.file.size > maxFileSizeBytes) || (req.file.mimetype !== 'image/jpeg' && req.file.mimetype !== 'image/png')) {
         fs.unlink(req.file.path, (err) => {
           if (err) {
             console.error('Error al borrar el archivo:', err);
@@ -225,25 +226,111 @@ const settingsController = {
       errors.errors.push({ msg: "Debes seleccionar una imagen." });
     }
 
-    if (!errors.isEmpty()) {      
+    
 
-      Promise.all([getCategories, getProductCountInCart, getProducts ,getUsers])
-      .then(([Categories, ProductCountInCart, Products, Users]) => {
-        res.render('settings', { Categories, ProductCountInCart, Products, Users, errors: errors.array(), old: req.body });
+    if (req.body.code) {
+      Product.findOne({
+        where: {
+          code: req.body.code
+        }
+      }).then((product) => {
+        if (product) {
+          errors.errors.push({ msg: "Ya existe un producto con ese codigo." });
+        }
       })
-      .catch(error => {
-        console.error('Error:', error);
-        // Manejo de errores
-      });
+    } 
 
+
+
+    if (!errors.isEmpty()) {
+
+      Promise.all([getCategories, getProductCountInCart, getProducts, getUsers])
+        .then(([Categories, ProductCountInCart, Products, Users]) => {
+          res.render('settings', { Categories, ProductCountInCart, Products, Users, errors: errors.array(), old: req.body });
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Manejo de errores
+        });
 
     } else {
 
+      // Función para convertir "on" y "off" a booleanos true o false
+      function convertToBoolean(value) {
+        return value === "on" ? true : false;
+      }
 
-      // SEGUIR ACA
+      // En tu código, antes de insertar los valores en la base de datos
+      // asegúrate de convertir los valores "on" y "off" a booleanos true o false
+      let isFeatured = convertToBoolean(req.body.is_featured);
+      let isOffer = convertToBoolean(req.body.is_offer);
 
+      if (req.body.category === "other") {
+        Category.create({
+          name: req.body.newCategory,
+        }).then((newCategory) => {
+          Product.create({
+            code: req.body.code,
+            brand: req.body.brand,
+            model: req.body.model,
+            name: req.body.name,
+            price: req.body.price,
+            description: req.body.description,
+            stock: req.body.stock,
+            is_featured: isFeatured,
+            is_offer: isOffer,
+            category_id: newCategory.id,
+          }).then((newProduct) => {
+            Product_image.create({
+              url: req.file.filename,
+              product_id: newProduct.id,
+            }).then(() => {
+              return res.redirect('/settings/');
+            }).catch((error) => {
+              console.error('Error al crear la imagen del producto:', error);
+            });
+          }).catch((error) => {
+            console.error('Error al crear el producto:', error);
+          });
+        }).catch((error) => {
+          console.error('Error al crear la nueva categoría:', error);
+        });
 
+      } else {
 
+        Category.findOne({
+          where: {
+            name: req.body.category
+          }
+        }).then((element) => {
+          Product.create({
+            code: req.body.code,
+            brand: req.body.brand,
+            model: req.body.model,
+            name: req.body.name,
+            price: req.body.price,
+            description: req.body.description,
+            stock: req.body.stock,
+            is_featured: isFeatured,
+            is_offer: isOffer,
+            category_id: element.id,
+          }).then((newProduct) => {
+            Product_image.create({
+              url: req.file.filename,
+              product_id: newProduct.id,
+            }).then(() => {
+              return res.redirect('/settings/');
+            }).catch((error) => {
+              console.error('Error al crear la imagen del producto:', error);
+            });
+          }).catch((error) => {
+            console.error('Error al crear el producto:', error);
+          });
+        }).catch((error) => {
+          console.error('Error al buscar la categoria:', error);
+        });
+
+      }
 
     }
 

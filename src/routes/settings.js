@@ -12,7 +12,7 @@ const routesAdminRequired = require("../middlewares/routesAdminRequired");
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      let nombreCarpeta = path.join(__dirname, "../../public/img/products");
+      let nombreCarpeta = path.join(__dirname, "../../public/img/");
       cb(null, nombreCarpeta);
     },
     filename: function (req, file, cb) {
