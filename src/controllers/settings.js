@@ -228,7 +228,7 @@ const settingsController = {
 
     // Fin Validaciones de la imagen -----
 
-    // Valido si el codigo ya existe en otro producto, si es asi, hago un push al array de errores, si no, procedo a crear el producto.
+    // Si hay algo en el campo code valido si el codigo ya existe en otro producto, si es asi, hago un push al array de errores, si no, procedo a crear el producto.
 
     if (req.body.code) {
       Product.findOne({
@@ -331,11 +331,28 @@ const settingsController = {
     
           }
     
-        }
-        
+        }        
       }).catch(error => {
         console.error('Error al buscar el producto:', error);
       });
+
+    // Si no hay mada en el campo code se envian los errores a la vista.
+
+    } else {
+
+      if (!errors.isEmpty()) {
+
+        Promise.all([getCategories, getProductCountInCart, getProducts, getUsers])
+          .then(([Categories, ProductCountInCart, Products, Users]) => {
+            res.render('settings', { Categories, ProductCountInCart, Products, Users, errors: errors.array(), old: req.body });
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            // Manejo de errores
+          });
+            
+      }
+
     }
 
   }
