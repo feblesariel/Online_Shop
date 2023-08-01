@@ -226,7 +226,10 @@ const settingsController = {
     } else {
       errors.errors.push({ msg: "Debes seleccionar una imagen." });
     }
+    
       // Redimension -----
+
+      if (req.file) {
       
       const destinationFolder = path.join(__dirname, '../../public/img/'); // Ruta de la carpeta donde se guardarán las imágenes redimensionadas
 
@@ -248,6 +251,8 @@ const settingsController = {
           // Actualiza el nombre del archivo
           req.file.filename = 'resized-' + req.file.filename;
       });
+
+      }
 
       // Fin Redimension ---
 
