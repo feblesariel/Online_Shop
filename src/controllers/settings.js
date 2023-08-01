@@ -196,10 +196,22 @@ const settingsController = {
 
     let errors = validationResult(req);
 
+    // validaciones de la imagen
+
     if (req.file) {
 
       const maxFileSizeMB = 2;
       const maxFileSizeBytes = maxFileSizeMB * (1024 * 1024);
+
+      if ((!errors.isEmpty()) || (req.file.size > maxFileSizeBytes) || (req.file.mimetype !== 'image/jpeg' && req.file.mimetype !== 'image/png')){
+        fs.unlink(req.file.path, (err) => {
+          if (err) {
+            console.error('Error al borrar el archivo:', err);
+          } else {
+            console.log('Archivo borrado exitosamente');
+          }
+        });
+      }
 
       if (req.file.size > maxFileSizeBytes) {
         errors.errors.push({ msg: "El archivo supera el peso permitido de 2 MB." });
@@ -209,6 +221,8 @@ const settingsController = {
         errors.errors.push({ msg: "El archivo debe ser una imagen valida." });
       }
 
+    } else {
+      errors.errors.push({ msg: "Debes seleccionar una imagen." });
     }
 
     if (!errors.isEmpty()) {      
@@ -226,13 +240,12 @@ const settingsController = {
     } else {
 
 
+      // SEGUIR ACA
+
+
 
 
     }
-
-
-
-
 
   }
 
