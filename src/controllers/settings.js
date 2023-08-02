@@ -743,7 +743,7 @@ const settingsController = {
 
       // Fin Redimension ---
 
-    // Fin Validaciones de la imagen -----    
+    // Fin Validaciones de la imagen -----
 
     Product.findOne({
       where: {
@@ -757,9 +757,26 @@ const settingsController = {
           where: {
             code: req.body.code
           }
-        }).then(() => {
+        }).then((result) => {
 
-          errors.errors.push({ msg: "Ya existe un producto con ese codigo." });
+          if (result) {
+
+            errors.errors.push({ msg: "Ya existe un producto con ese codigo." });
+
+          }
+
+          if (!errors.isEmpty()) {
+
+            Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
+              .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
+                res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                // Manejo de errores
+              });
+      
+          }          
 
         })        
 
