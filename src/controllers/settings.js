@@ -529,7 +529,6 @@ const settingsController = {
 
     Promise.all([getCategories, getProductCountInCart, getProducts, getUsers, getOldProductToEdit])
     .then(([Categories, ProductCountInCart, Products, Users, old]) => {
-      console.log(old);
       res.render('settings', { Categories, ProductCountInCart, Products, Users, old });
     })
     .catch(error => {
