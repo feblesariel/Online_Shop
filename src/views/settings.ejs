@@ -313,7 +313,7 @@
                   <select class="form-control" id="e-category" name="category">
                     <option value="">Seleccionar categoría</option>
                     <% if (Categories) { Categories.forEach(item => { %>
-                      <option value="<%= item.name %>" <%= locals.ProductToEdit && locals.ProductToEdit.category_id === item.id ? 'selected' : '' %>>
+                      <option value="<%= item.name %>" <%= locals.old && locals.old.category_id === item.id ? 'selected' : '' %>>
                         <%= item.name %>
                       </option>
                     <% })} %>
@@ -328,54 +328,60 @@
 
                 <div class="row mb-3">
                   <div class="col-md-6 mb-3 mb-md-0">
-                    <input type="text" class="form-control" id="e-code" name="code" placeholder="Código" value="<%= locals.ProductToEdit && locals.ProductToEdit.code ? locals.ProductToEdit.code : "" %>">
+                    <input type="text" class="form-control" id="e-code" name="code" placeholder="Código" value="<%= locals.old && locals.old.code ? locals.old.code : "" %>">
                   </div>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" id="e-name" name="name" placeholder="Nombre" value="<%= locals.ProductToEdit && locals.ProductToEdit.name ? locals.ProductToEdit.name : "" %>">
+                    <input type="text" class="form-control" id="e-name" name="name" placeholder="Nombre" value="<%= locals.old && locals.old.name ? locals.old.name : "" %>">
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <div class="col-md-6 mb-3 mb-md-0">
-                    <input type="text" class="form-control" id="e-brand" name="brand" placeholder="Marca" value="<%= locals.ProductToEdit && locals.ProductToEdit.brand ? locals.ProductToEdit.brand : "" %>">
+                    <input type="text" class="form-control" id="e-brand" name="brand" placeholder="Marca" value="<%= locals.old && locals.old.brand ? locals.old.brand : "" %>">
                   </div>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" id="e-model" name="model" placeholder="Modelo" value="<%= locals.ProductToEdit && locals.ProductToEdit.model ? locals.ProductToEdit.model : "" %>">
+                    <input type="text" class="form-control" id="e-model" name="model" placeholder="Modelo" value="<%= locals.old && locals.old.model ? locals.old.model : "" %>">
                   </div>
                 </div>               
               
                 <div class="row mb-3">
                   <div class="col-md-6 mb-3 mb-md-0">
-                    <input type="text" class="form-control" id="e-price" name="price" placeholder="Precio" value="<%= locals.ProductToEdit && locals.ProductToEdit.price ? locals.ProductToEdit.price : "" %>">
+                    <input type="text" class="form-control" id="e-price" name="price" placeholder="Precio" value="<%= locals.old && locals.old.price ? locals.old.price : "" %>">
                   </div>
                   <div class="col-md-6">
-                    <input type="number" class="form-control" id="e-stock" name="stock" placeholder="Stock" value="<%= locals.ProductToEdit && locals.ProductToEdit.stock ? locals.ProductToEdit.stock : "" %>">
+                    <input type="number" class="form-control" id="e-stock" name="stock" placeholder="Stock" value="<%= locals.old && locals.old.stock ? locals.old.stock : "" %>">
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <div class="col-md-6 mb-3 mb-md-0">
                     <div class="form-check form-check-inline">
-                      <input type="checkbox" class="form-check-input" id="e-is_offer" name="is_offer" <% if (locals.ProductToEdit && locals.ProductToEdit.is_offer) { %> checked <% } %>>
+                      <input type="checkbox" class="form-check-input" id="e-is_offer" name="is_offer" <% if (locals.old && locals.old.is_offer) { %> checked <% } %>>
                       Oferta
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-check form-check-inline">
-                      <input type="checkbox" class="form-check-input" id="e-is_featured" name="is_featured" <% if (locals.ProductToEdit && locals.ProductToEdit.is_featured) { %> checked <% } %>>
+                      <input type="checkbox" class="form-check-input" id="e-is_featured" name="is_featured" <% if (locals.old && locals.old.is_featured) { %> checked <% } %>>
                       Destacado
                     </div>
                   </div>
                 </div>
 
                 <div class="mb-3">
-                  <label for="images" class="form-label">Imágenes (jpg o png hasta 2 mb).</label>
-                  <input type="file" class="form-control" id="e-images" name="images">
-                </div>                
+                  <textarea class="form-control" id="e-description" name="description" placeholder="Descripción"><%= locals.old && locals.old.description ? locals.old.description : "" %></textarea>
+                </div>
 
                 <div class="mb-3">
-                  <textarea class="form-control" id="e-description" name="description" placeholder="Descripción"><%= locals.ProductToEdit && locals.ProductToEdit.description ? locals.ProductToEdit.description : "" %></textarea>
-                </div>                
+                  <label for="images" class="form-label">Imágenes (jpg o png hasta 2 mb).</label>
+                  <input type="file" class="form-control" id="e-images" name="images">
+                </div>
+                
+                <div class="mb-3">
+                  <label for="images" class="form-label">Imagen actual</label>
+                  <input type="text" class="form-control" id="wachtImage" name="wachtImage" readonly value="<%= locals.old && locals.old.product_images.url ? locals.old.product_images.url : "" %>">
+                  <img class="my-3" src="/img/<%= locals.old && locals.old.product_images.url ? locals.old.product_images.url : "" %>" alt="..." style="height: 100px; width: 100px;">
+                </div>              
 
                 <% if (locals.errors) { errors.forEach (error=> { %>
                   <div class="small" style="color: red;"><%= error.msg %></div>
@@ -407,7 +413,7 @@
 
         <!-- Script para abrir automáticamente formulario modal si existen errores o si existe variable con un produto a editar -->
 
-        <% if (locals.editErrors || locals.ProductToEdit) { %>
+        <% if (locals.editErrors || locals.old) { %>
           <script>
             $(document).ready(function() {
               $('#productEditModal').modal('show');

@@ -511,7 +511,7 @@ const settingsController = {
 
     // Busqueda del producto a editar ----------------------------------------------------------------
 
-    const getProductToEdit = Product.findOne({
+    const getOldProductToEdit = Product.findOne({
       where: {
         id: req.query.id
       },
@@ -527,9 +527,10 @@ const settingsController = {
       ]
     });
 
-    Promise.all([getCategories, getProductCountInCart, getProducts, getUsers, getProductToEdit])
-    .then(([Categories, ProductCountInCart, Products, Users, ProductToEdit]) => {
-      res.render('settings', { Categories, ProductCountInCart, Products, Users, ProductToEdit });
+    Promise.all([getCategories, getProductCountInCart, getProducts, getUsers, getOldProductToEdit])
+    .then(([Categories, ProductCountInCart, Products, Users, old]) => {
+      console.log(old);
+      res.render('settings', { Categories, ProductCountInCart, Products, Users, old });
     })
     .catch(error => {
       console.error('Error:', error);
