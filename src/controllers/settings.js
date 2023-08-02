@@ -437,6 +437,105 @@ const settingsController = {
 
     }
 
+  },
+
+  productEdit: function (req, res) {
+
+    let user = 0;
+
+    if (req.session.userLogged) {
+      let userLogged = req.session.userLogged;
+      user = userLogged.id;
+    }
+
+    // Consulto las categorias - navbar ---------------------------------------------------------------
+
+    const getCategories = Category.findAll({
+      attributes: [
+        'id',
+        'name',
+        [
+          sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
+          'productCount'
+        ]
+      ],
+      having: sequelize.literal('productCount > 0'),
+      order: [
+        ['name', 'ASC']
+      ],
+      raw: true
+    });
+
+    // Calculo cuantos items hay en el carrito - navbar ----------------------------------------------
+
+    const getProductCountInCart = Cart_item.sum('quantity', {
+      include: [
+        {
+          model: Cart,
+          as: 'cart',
+          where: { user_id: user } // ACA MODIFICAR SEGUN USER LOGUEADO
+        }
+      ]
+    });
+
+    // Consulto los productos - listado de productos - AJUSTES ---------------------------------------
+
+    const getProducts = Product.findAll({
+      attributes: [
+        'id',
+        'code',
+        'name',
+        'price',
+        'stock'
+      ],
+      order: [
+        ['code', 'ASC']
+      ],
+      raw: true
+    });
+
+    // Consulto los usuarios - listado de usuarios - AJUSTES -----------------------------------------
+
+    const getUsers = User.findAll({
+      attributes: [
+        'id',
+        'name',
+        'email',
+        'role'
+      ],
+      order: [
+        ['id', 'ASC']
+      ],
+      raw: true
+    });
+
+    // Busqueda del producto a editar ----------------------------------------------------------------
+
+    const getProductToEdit = Product.findOne({
+      where: {
+        id: req.query.id
+      },
+      include: [
+        {
+          model: Product_image,
+          as: 'product_images'
+        },
+        {
+          model: Category,
+          as: 'category'
+        }
+      ]
+    });
+
+    Promise.all([getCategories, getProductCountInCart, getProducts, getUsers, getProductToEdit])
+    .then(([Categories, ProductCountInCart, Products, Users, ProductToEdit]) => {
+      res.render('settings', { Categories, ProductCountInCart, Products, Users, ProductToEdit });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      // Manejo de errores
+    });
+
   }
 
 }

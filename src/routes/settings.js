@@ -64,5 +64,6 @@ router.get("/", routesLoggedRequired, routesAdminRequired , settingsController.m
 router.delete("/user/delete/:id/", routesLoggedRequired, routesAdminRequired , settingsController.userDestroy);
 router.post("/product/create/", routesLoggedRequired, routesAdminRequired , upload.single("images") , validationsCreateProductForm, settingsController.productCreate);
 router.delete("/product/delete/:id/", routesLoggedRequired, routesAdminRequired , settingsController.productDestroy);
+router.get("/product/edit/", routesLoggedRequired, routesAdminRequired , settingsController.productEdit);
 
 module.exports = router;
