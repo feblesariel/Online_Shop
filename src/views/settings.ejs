@@ -379,8 +379,11 @@
                 
                 <div class="mb-3">
                   <label for="images" class="form-label">Imagen actual</label>
-
-                </div>              
+                </div>
+                
+                <div class="mb-3">
+                  <input type="text" class="form-control" id="id" name="id" readonly value="<%= locals.editOld && locals.editOld.id ? locals.editOld.id : "" %>">
+                </div>
 
                 <% if (locals.editErrors) { editErrors.forEach (error=> { %>
                   <div class="small" style="color: red;"><%= error.msg %></div>

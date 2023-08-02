@@ -683,9 +683,7 @@ const settingsController = {
 
     let hayImagen = false;
 
-    let cambioCode = false;
-
-    let productoToEdit = Product.findOne({where: { code: req.body.code }}).then((product) => { productoToEdit = product })
+    let idProductToEdit = req.body.id;
 
     // Validaciones de la imagen -------
 
@@ -745,156 +743,27 @@ const settingsController = {
 
       // Fin Redimension ---
 
-    // Fin Validaciones de la imagen -----
+    // Fin Validaciones de la imagen -----    
 
-    // Si hay algo en el campo code valido si el codigo ya existe en otro producto, si es asi, hago un push al array de errores, si no, procedo a crear el producto.
+    Product.findOne({
+      where: {
+        id: idProductToEdit
+      }
+    }).then((product) => {      
 
-    if (req.body.code) {
+      if (product.code !== req.body.code) {
 
-      Product.findOne({
-        where: {
-          code: req.body.code
-        }
-      }).then((product) => {
+        Product.findOne({
+          where: {
+            code: req.body.code
+          }
+        }).then(() => {
 
-        if (product.code != productoToEdit.code) {
           errors.errors.push({ msg: "Ya existe un producto con ese codigo." });
-        }
 
-        if (!errors.isEmpty()) {
+        })        
 
-          Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
-            .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
-              res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              // Manejo de errores
-            });
-    
-        } else {
-    
-          // Función para convertir "on" y "off" a booleanos true o false
-          function convertToBoolean(value) {
-            return value === "on" ? true : false;
-          }
-    
-          // En tu código, antes de insertar los valores en la base de datos
-          // asegúrate de convertir los valores "on" y "off" a booleanos true o false
-          let isFeatured = convertToBoolean(req.body.is_featured);
-          let isOffer = convertToBoolean(req.body.is_offer);
-    
-          if (req.body.category === "other") {
-            Category.create({
-              name: req.body.newCategory,
-            }).then((newCategory) => {
-
-              Product.update(
-                {
-                  code: req.body.code,
-                  brand: req.body.brand,
-                  model: req.body.model,
-                  name: req.body.name,
-                  price: req.body.price,
-                  description: req.body.description,
-                  stock: req.body.stock,
-                  is_featured: isFeatured,
-                  is_offer: isOffer,
-                  category_id: newCategory.id,
-                },
-                {
-                  where: { id: productoToEdit.id }
-                }).then(() => {
-
-                  if (hayImagen) {
-
-                    Product_image.update(
-                      {
-                        code: req.body.images,
-                      },
-                      {
-                        where: { product_id: productoToEdit.id }
-                      }).then(() => {
-                          return res.redirect('/settings/');                
-                      })
-                      .catch((error) => {
-                        console.error('Error al actualizar el producto:', error);
-                      });
-                  }
-
-                  return res.redirect('/settings/');   
-
-                })
-                .catch((error) => {
-                  console.error('Error al actualizar el producto:', error);
-                });
-            }).catch((error) => {
-              console.error('Error al crear la nueva categoría:', error);
-            });            
-    
-          } else {
-    
-            Category.findOne({
-              where: {
-                name: req.body.category
-              }
-            }).then((element) => {
-
-              Product.update(
-                {
-                  code: req.body.code,
-                  brand: req.body.brand,
-                  model: req.body.model,
-                  name: req.body.name,
-                  price: req.body.price,
-                  description: req.body.description,
-                  stock: req.body.stock,
-                  is_featured: isFeatured,
-                  is_offer: isOffer,
-                  category_id: element.id,
-                },
-                {
-                  where: { id: productoToEdit.id }
-                }).then(() => {
-
-                  if (hayImagen) {
-
-                    Product_image.update(
-                      {
-                        code: req.body.images,
-                      },
-                      {
-                        where: { product_id: productoToEdit.id }
-                      }).then(() => {
-                          return res.redirect('/settings/');                
-                      })
-                      .catch((error) => {
-                        console.error('Error al actualizar el producto:', error);
-                      });
-                  }
-
-                  return res.redirect('/settings/');
-
-                })
-                .catch((error) => {
-                  console.error('Error al actualizar el producto:', error);
-                });
-
-            }).catch((error) => {
-              console.error('Error al buscar la categoria:', error);
-            });
-    
-          }
-    
-        }
-
-      }).catch(error => {
-        console.error('Error al buscar el producto:', error);
-      });
-
-    // Si no hay mada en el campo code se envian los errores a la vista.
-
-    } else {
+      }
 
       if (!errors.isEmpty()) {
 
@@ -906,8 +775,139 @@ const settingsController = {
             console.error('Error:', error);
             // Manejo de errores
           });
-            
+  
+      } else {
+  
+        // Función para convertir "on" y "off" a booleanos true o false
+        function convertToBoolean(value) {
+          return value === "on" ? true : false;
+        }
+  
+        // En tu código, antes de insertar los valores en la base de datos
+        // asegúrate de convertir los valores "on" y "off" a booleanos true o false
+        let isFeatured = convertToBoolean(req.body.is_featured);
+        let isOffer = convertToBoolean(req.body.is_offer);
+  
+        if (req.body.category === "other") {
+          Category.create({
+            name: req.body.newCategory,
+          }).then((newCategory) => {
+
+            Product.update(
+              {
+                code: req.body.code,
+                brand: req.body.brand,
+                model: req.body.model,
+                name: req.body.name,
+                price: req.body.price,
+                description: req.body.description,
+                stock: req.body.stock,
+                is_featured: isFeatured,
+                is_offer: isOffer,
+                category_id: newCategory.id,
+              },
+              {
+                where: { id: idProductToEdit }
+              }).then(() => {
+
+                if (hayImagen) {
+
+                  Product_image.update(
+                    {
+                      url: req.body.images,
+                    },
+                    {
+                      where: { product_id: idProductToEdit }
+                    }).then(() => {
+                        return res.redirect('/settings/');                
+                    })
+                    .catch((error) => {
+                      console.error('Error al actualizar el producto:', error);
+                    });
+                }
+
+                return res.redirect('/settings/');   
+
+              })
+              .catch((error) => {
+                console.error('Error al actualizar el producto:', error);
+              });
+          }).catch((error) => {
+            console.error('Error al crear la nueva categoría:', error);
+          });            
+  
+        } else {
+  
+          Category.findOne({
+            where: {
+              name: req.body.category
+            }
+          }).then((element) => {
+
+            Product.update(
+              {
+                code: req.body.code,
+                brand: req.body.brand,
+                model: req.body.model,
+                name: req.body.name,
+                price: req.body.price,
+                description: req.body.description,
+                stock: req.body.stock,
+                is_featured: isFeatured,
+                is_offer: isOffer,
+                category_id: element.id,
+              },
+              {
+                where: { id: idProductToEdit }
+              }).then(() => {
+
+                if (hayImagen) {
+
+                  Product_image.update(
+                    {
+                      url: req.body.images,
+                    },
+                    {
+                      where: { product_id: idProductToEdit }
+                    }).then(() => {
+                        return res.redirect('/settings/');                
+                    })
+                    .catch((error) => {
+                      console.error('Error al actualizar el producto:', error);
+                    });
+                }
+
+                return res.redirect('/settings/');
+
+              })
+              .catch((error) => {
+                console.error('Error al actualizar el producto:', error);
+              });
+
+          }).catch((error) => {
+            console.error('Error al buscar la categoria:', error);
+          });
+  
+        }
+  
       }
+
+    }).catch(error => {
+      console.error('Error al buscar el producto:', error);
+    });
+
+  // Si no hay mada en el campo code se envian los errores a la vista.
+
+  if (!errors.isEmpty()) {
+
+    Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
+      .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
+        res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Manejo de errores
+      }); 
 
     }
 
