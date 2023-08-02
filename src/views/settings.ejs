@@ -313,7 +313,7 @@
                   <select class="form-control" id="e-category" name="category">
                     <option value="">Seleccionar categoría</option>
                     <% if (CategoriesModal) { CategoriesModal.forEach(item => { %>
-                      <option value="<%= item.name %>" <%= locals.editOld && locals.editOld.category_id === item.id ? 'selected' : '' %>>
+                      <option value="<%= item.name %>" <%= (locals.editOld && locals.editOld.category_id === item.id) || (locals.editOld && locals.editOld.category === item.name) ? 'selected' : '' %>>
                         <%= item.name %>
                       </option>
                     <% })} %>
