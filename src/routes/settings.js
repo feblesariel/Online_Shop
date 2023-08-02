@@ -62,7 +62,7 @@ const settingsController = require ("../controllers/settings")
 
 router.get("/", routesLoggedRequired, routesAdminRequired , settingsController.main);
 router.delete("/user/delete/:id/", routesLoggedRequired, routesAdminRequired , settingsController.userDestroy);
-
 router.post("/product/create/", routesLoggedRequired, routesAdminRequired , upload.single("images") , validationsCreateProductForm, settingsController.productCreate);
+router.delete("/product/delete/:id/", routesLoggedRequired, routesAdminRequired , settingsController.productDestroy);
 
 module.exports = router;

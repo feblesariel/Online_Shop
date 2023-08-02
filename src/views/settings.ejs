@@ -86,8 +86,8 @@
                               class="btn btn-sm btn-success"><i class="fa fa-pen fa-sm"></i></button>
                           </td>
                           <td>
-                            <button type="submit" data-toggle="modal" data-target="" data-id=""
-                              class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
+                            <button type="submit" data-toggle="modal" data-target="#productDeleteModal"
+                              data-id="<%=item.id %>" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
                           </td>
                         </tr>
 
@@ -165,6 +165,28 @@
             </div>
             <div class="modal-body">
               ¿Esta seguro que desea borrar el usuario?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+              <form action="" method="POST"><button type="submit" class="btn btn-danger">Borrar</button></form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Product Delete -->
+
+      <div class="modal fade" id="productDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Atencion</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ¿Esta seguro que desea borrar el producto?
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
@@ -275,7 +297,7 @@
 
       <%-include("./partials/footer.ejs")%>
 
-        <!-- Tu código JavaScript/jQuery para abrir automáticamente el modal de productos si existen errores -->
+        <!-- Script para abrir automáticamente formulario modal si existen errores en los input -->
 
         <% if (locals.errors) { %>
           <script>
@@ -306,7 +328,7 @@
 
         <% } %>
 
-        <!-- script para obtener el user id de la lista de users al momento de apretar el boton eliminar -->
+        <!-- Script para obtener el user id de la lista de users al momento de apretar el boton eliminar -->
 
         <script>
           $(document).ready(function () {
@@ -316,10 +338,26 @@
               var button = $(event.relatedTarget);
               // Obtenemos el valor de data-id del botón
               var userId = button.data('id');
-
               // Pasamos el valor al formulario de eliminación dentro del modal
               var modal = $(this);
               modal.find('form').attr('action', '/settings/user/delete/' + userId + '?_method=DELETE');
+            });
+          });
+        </script>
+
+        <!-- Script para obtener el product id de la lista de products al momento de apretar el boton eliminar -->
+
+        <script>
+          $(document).ready(function () {
+            // Cuando se hace clic en un botón con la clase "btn-danger"
+            $('#productDeleteModal').on('show.bs.modal', function (event) {
+              // Capturamos el botón que activó el modal
+              var button = $(event.relatedTarget);
+              // Obtenemos el valor de data-id del botón
+              var userId = button.data('id');
+              // Pasamos el valor al formulario de eliminación dentro del modal
+              var modal = $(this);
+              modal.find('form').attr('action', '/settings/product/delete/' + userId + '?_method=DELETE');
             });
           });
         </script>

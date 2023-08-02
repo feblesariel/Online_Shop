@@ -121,6 +121,58 @@ const settingsController = {
       console.error('Error:', error);
       // Manejo de errores
     });
+
+  },
+
+  productDestroy: function (req, res) {
+
+    const productId = req.params.id;
+
+    // Buscar la URL de la foto asociada al producto que se eliminará
+    Product_image.findOne({
+      where: { product_id: productId },
+      attributes: ['url'],
+      raw: true,
+    })
+    .then((productImage) => {
+
+        if (productImage) {
+          // Construir la ruta completa del archivo de la foto
+          const imagePath = path.join(__dirname, '../../public/img/', productImage.url);
+
+          // Eliminar el archivo de la foto
+          fs.unlink(imagePath, (err) => {
+            if (err) {
+              console.error('Error al eliminar el archivo de la foto:', err);
+            }
+
+            // Eliminar el registro del producto de la base de datos
+            Product.destroy({ where: { id: productId }, force: true })
+              .then(() => {
+                return res.redirect('/settings/');
+              })
+              .catch((error) => {
+                console.error('Error al eliminar el producto:', error);
+                // Manejo de errores
+              });
+          });
+        } else {
+          // No se encontró una foto asociada al producto, solo eliminar el registro del producto
+          Product.destroy({ where: { id: productId }, force: true })
+            .then(() => {
+              return res.redirect('/settings/');
+            })
+            .catch((error) => {
+              console.error('Error al eliminar el producto:', error);
+              // Manejo de errores
+            });
+        }
+      })
+      .catch((error) => {
+        console.error('Error al buscar la foto del producto:', error);
+        // Manejo de errores
+      });
+
   },
 
   productCreate: function (req, res) {
