@@ -54,6 +54,23 @@ const settingsController = {
       raw: true
     });
 
+    // Consulto las categorias - modal ---------------------------------------------------------------
+
+    const getCategoriesModal = Category.findAll({
+      attributes: [
+        'id',
+        'name',
+        [
+          sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
+          'productCount'
+        ]
+      ],
+      order: [
+        ['name', 'ASC']
+      ],
+      raw: true
+    });
+
     // Calculo cuantos items hay en el carrito - navbar ----------------------------------------------
 
     const getProductCountInCart = Cart_item.sum('quantity', {
@@ -97,9 +114,9 @@ const settingsController = {
       raw: true
     });
 
-    Promise.all([getCategories, getProductCountInCart, getProducts, getUsers])
-      .then(([Categories, ProductCountInCart, Products, Users]) => {
-        res.render('settings', { Categories, ProductCountInCart, Products, Users });
+    Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
+      .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
+        res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users });
       })
       .catch(error => {
         console.error('Error:', error);
@@ -196,6 +213,23 @@ const settingsController = {
         ]
       ],
       having: sequelize.literal('productCount > 0'),
+      order: [
+        ['name', 'ASC']
+      ],
+      raw: true
+    });
+
+    // Consulto las categorias - modal ---------------------------------------------------------------
+
+    const getCategoriesModal = Category.findAll({
+      attributes: [
+        'id',
+        'name',
+        [
+          sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
+          'productCount'
+        ]
+      ],
       order: [
         ['name', 'ASC']
       ],
@@ -325,9 +359,9 @@ const settingsController = {
 
         if (!errors.isEmpty()) {
 
-          Promise.all([getCategories, getProductCountInCart, getProducts, getUsers])
-            .then(([Categories, ProductCountInCart, Products, Users]) => {
-              res.render('settings', { Categories, ProductCountInCart, Products, Users, errors: errors.array(), old: req.body });
+          Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
+            .then(([Categories, CategoriesModal, ProductCountInCart, Products, Users]) => {
+              res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, errors: errors.array(), old: req.body });
             })
             .catch(error => {
               console.error('Error:', error);
@@ -424,9 +458,9 @@ const settingsController = {
 
       if (!errors.isEmpty()) {
 
-        Promise.all([getCategories, getProductCountInCart, getProducts, getUsers])
-          .then(([Categories, ProductCountInCart, Products, Users]) => {
-            res.render('settings', { Categories, ProductCountInCart, Products, Users, errors: errors.array(), old: req.body });
+        Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
+          .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
+            res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, errors: errors.array(), old: req.body });
           })
           .catch(error => {
             console.error('Error:', error);
@@ -460,6 +494,23 @@ const settingsController = {
         ]
       ],
       having: sequelize.literal('productCount > 0'),
+      order: [
+        ['name', 'ASC']
+      ],
+      raw: true
+    });
+
+    // Consulto las categorias - modal ---------------------------------------------------------------
+
+    const getCategoriesModal = Category.findAll({
+      attributes: [
+        'id',
+        'name',
+        [
+          sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
+          'productCount'
+        ]
+      ],
       order: [
         ['name', 'ASC']
       ],
@@ -527,14 +578,338 @@ const settingsController = {
       ]
     });
 
-    Promise.all([getCategories, getProductCountInCart, getProducts, getUsers, getOldProductToEdit])
-    .then(([Categories, ProductCountInCart, Products, Users, old]) => {
-      res.render('settings', { Categories, ProductCountInCart, Products, Users, old });
+    Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers, getOldProductToEdit])
+    .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users, editOld]) => {
+      res.render('settings', { Categories, CategoriesModal,ProductCountInCart, Products, Users, editOld });
     })
     .catch(error => {
       console.error('Error:', error);
       // Manejo de errores
     });
+
+  },
+
+  productEditProcces: function (req, res) {
+
+    let user = 0;
+
+    if (req.session.userLogged) {
+      let userLogged = req.session.userLogged;
+      user = userLogged.id;
+    }
+
+    // Consulto las categorias - navbar ---------------------------------------------------------------
+
+    const getCategories = Category.findAll({
+      attributes: [
+        'id',
+        'name',
+        [
+          sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
+          'productCount'
+        ]
+      ],
+      having: sequelize.literal('productCount > 0'),
+      order: [
+        ['name', 'ASC']
+      ],
+      raw: true
+    });
+
+    // Consulto las categorias - modal ---------------------------------------------------------------
+
+    const getCategoriesModal = Category.findAll({
+      attributes: [
+        'id',
+        'name',
+        [
+          sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
+          'productCount'
+        ]
+      ],
+      order: [
+        ['name', 'ASC']
+      ],
+      raw: true
+    });
+
+    // Calculo cuantos items hay en el carrito - navbar ----------------------------------------------
+
+    const getProductCountInCart = Cart_item.sum('quantity', {
+      include: [
+        {
+          model: Cart,
+          as: 'cart',
+          where: { user_id: user } // ACA MODIFICAR SEGUN USER LOGUEADO
+        }
+      ]
+    });
+
+    // Consulto los productos - listado de productos - AJUSTES ---------------------------------------
+
+    const getProducts = Product.findAll({
+      attributes: [
+        'id',
+        'code',
+        'name',
+        'price',
+        'stock'
+      ],
+      order: [
+        ['code', 'ASC']
+      ],
+      raw: true
+    });
+
+    // Consulto los usuarios - listado de usuarios - AJUSTES ----------------------------------------
+
+    const getUsers = User.findAll({
+      attributes: [
+        'id',
+        'name',
+        'email',
+        'role'
+      ],
+      order: [
+        ['id', 'ASC']
+      ],
+      raw: true
+    });
+
+
+    // Edicion de producto -------------------------------------------------------------------------
+
+    let errors = validationResult(req);
+
+    let hayImagen = false;
+
+    let cambioCode = false;
+
+    let productoToEdit = Product.findOne({where: { code: req.body.code }}).then((product) => { productoToEdit = product })
+
+    // Validaciones de la imagen -------
+
+    if (req.file) {
+
+      const maxFileSizeMB = 2;
+      const maxFileSizeBytes = maxFileSizeMB * (1024 * 1024);
+
+      if ((!errors.isEmpty()) || (req.file.size > maxFileSizeBytes) || (req.file.mimetype !== 'image/jpeg' && req.file.mimetype !== 'image/png')) {
+        fs.unlink(req.file.path, (err) => {
+          if (err) {
+            console.error('Error al borrar el archivo:', err);
+          } else {
+            console.log('Archivo borrado exitosamente');
+          }
+        });
+      }
+
+      if (req.file.size > maxFileSizeBytes) {
+        errors.errors.push({ msg: "El archivo supera el peso permitido de 2 MB." });
+      }
+
+      if (req.file.mimetype !== 'image/jpeg' && req.file.mimetype !== 'image/png') {
+        errors.errors.push({ msg: "El archivo debe ser una imagen valida." });
+      }
+
+      hayImagen = true;
+
+    }
+    
+      // Redimension -----
+
+      if (req.file) {
+      
+      const destinationFolder = path.join(__dirname, '../../public/img/'); // Ruta de la carpeta donde se guardarán las imágenes redimensionadas
+
+      // Ruta completa de la imagen original y la redimensionada
+      const originalImagePath = req.file.path;
+      const resizedImagePath = destinationFolder + 'resized-' + req.file.filename;
+
+      // Redimensionar la imagen utilizando la libreria "sharp"
+      sharp(originalImagePath)
+        .resize(500, 500) // Ajusta el tamaño según tus necesidades
+        .toFile(resizedImagePath, (err) => {
+          if (err) {
+            console.error('Error al redimensionar la imagen:', err);
+          }
+          // Borra el archivo original que está en la carpeta temporal de Multer
+          fs.unlinkSync(originalImagePath);
+          // Actualiza el path del archivo para que apunte a la imagen redimensionada
+          req.file.path = resizedImagePath;
+          // Actualiza el nombre del archivo
+          req.file.filename = 'resized-' + req.file.filename;
+      });
+
+      }
+
+      // Fin Redimension ---
+
+    // Fin Validaciones de la imagen -----
+
+    // Si hay algo en el campo code valido si el codigo ya existe en otro producto, si es asi, hago un push al array de errores, si no, procedo a crear el producto.
+
+    if (req.body.code) {
+
+      Product.findOne({
+        where: {
+          code: req.body.code
+        }
+      }).then((product) => {
+
+        if (product.code != productoToEdit.code) {
+          errors.errors.push({ msg: "Ya existe un producto con ese codigo." });
+        }
+
+        if (!errors.isEmpty()) {
+
+          Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
+            .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
+              res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              // Manejo de errores
+            });
+    
+        } else {
+    
+          // Función para convertir "on" y "off" a booleanos true o false
+          function convertToBoolean(value) {
+            return value === "on" ? true : false;
+          }
+    
+          // En tu código, antes de insertar los valores en la base de datos
+          // asegúrate de convertir los valores "on" y "off" a booleanos true o false
+          let isFeatured = convertToBoolean(req.body.is_featured);
+          let isOffer = convertToBoolean(req.body.is_offer);
+    
+          if (req.body.category === "other") {
+            Category.create({
+              name: req.body.newCategory,
+            }).then((newCategory) => {
+
+              Product.update(
+                {
+                  code: req.body.code,
+                  brand: req.body.brand,
+                  model: req.body.model,
+                  name: req.body.name,
+                  price: req.body.price,
+                  description: req.body.description,
+                  stock: req.body.stock,
+                  is_featured: isFeatured,
+                  is_offer: isOffer,
+                  category_id: newCategory.id,
+                },
+                {
+                  where: { id: productoToEdit.id }
+                }).then(() => {
+
+                  if (hayImagen) {
+
+                    Product_image.update(
+                      {
+                        code: req.body.images,
+                      },
+                      {
+                        where: { product_id: productoToEdit.id }
+                      }).then(() => {
+                          return res.redirect('/settings/');                
+                      })
+                      .catch((error) => {
+                        console.error('Error al actualizar el producto:', error);
+                      });
+                  }
+
+                  return res.redirect('/settings/');   
+
+                })
+                .catch((error) => {
+                  console.error('Error al actualizar el producto:', error);
+                });
+            }).catch((error) => {
+              console.error('Error al crear la nueva categoría:', error);
+            });            
+    
+          } else {
+    
+            Category.findOne({
+              where: {
+                name: req.body.category
+              }
+            }).then((element) => {
+
+              Product.update(
+                {
+                  code: req.body.code,
+                  brand: req.body.brand,
+                  model: req.body.model,
+                  name: req.body.name,
+                  price: req.body.price,
+                  description: req.body.description,
+                  stock: req.body.stock,
+                  is_featured: isFeatured,
+                  is_offer: isOffer,
+                  category_id: element.id,
+                },
+                {
+                  where: { id: productoToEdit.id }
+                }).then(() => {
+
+                  if (hayImagen) {
+
+                    Product_image.update(
+                      {
+                        code: req.body.images,
+                      },
+                      {
+                        where: { product_id: productoToEdit.id }
+                      }).then(() => {
+                          return res.redirect('/settings/');                
+                      })
+                      .catch((error) => {
+                        console.error('Error al actualizar el producto:', error);
+                      });
+                  }
+
+                  return res.redirect('/settings/');
+
+                })
+                .catch((error) => {
+                  console.error('Error al actualizar el producto:', error);
+                });
+
+            }).catch((error) => {
+              console.error('Error al buscar la categoria:', error);
+            });
+    
+          }
+    
+        }
+
+      }).catch(error => {
+        console.error('Error al buscar el producto:', error);
+      });
+
+    // Si no hay mada en el campo code se envian los errores a la vista.
+
+    } else {
+
+      if (!errors.isEmpty()) {
+
+        Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
+          .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
+            res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            // Manejo de errores
+          });
+            
+      }
+
+    }
 
   }
 
