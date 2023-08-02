@@ -912,22 +912,7 @@ const settingsController = {
     }).catch(error => {
       console.error('Error al buscar el producto:', error);
     });
-
-  // Si no hay mada en el campo code se envian los errores a la vista.
-
-  if (!errors.isEmpty()) {
-
-    Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
-      .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
-        res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        // Manejo de errores
-      }); 
-
-    }
-
+    
   }
 
 }
