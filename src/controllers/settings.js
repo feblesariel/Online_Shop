@@ -713,35 +713,31 @@ const settingsController = {
       } else {
 
       // Redimension -----
-
-      if (req.file) {
       
-        const destinationFolder = path.join(__dirname, '../../public/img/'); // Ruta de la carpeta donde se guardarán las imágenes redimensionadas
-  
-        // Ruta completa de la imagen original y la redimensionada
-        const originalImagePath = req.file.path;
-        const resizedImagePath = destinationFolder + 'resized-' + req.file.filename;
-  
-        // Redimensionar la imagen utilizando la libreria "sharp"
-        sharp(originalImagePath)
-          .resize(500, 500) // Ajusta el tamaño según tus necesidades
-          .toFile(resizedImagePath, (err) => {
-            if (err) {
-              console.error('Error al redimensionar la imagen:', err);
-            }
-            // Borra el archivo original que está en la carpeta temporal de Multer
-            fs.unlinkSync(originalImagePath);
-            // Actualiza el path del archivo para que apunte a la imagen redimensionada
-            req.file.path = resizedImagePath;
-            // Actualiza el nombre del archivo
-            req.file.filename = 'resized-' + req.file.filename;
-        });
+      const destinationFolder = path.join(__dirname, '../../public/img/'); // Ruta de la carpeta donde se guardarán las imágenes redimensionadas
 
-        hayImagen = true;
+      // Ruta completa de la imagen original y la redimensionada
+      const originalImagePath = req.file.path;
+      const resizedImagePath = destinationFolder + 'resized-' + req.file.filename;
+
+      // Redimensionar la imagen utilizando la libreria "sharp"
+      sharp(originalImagePath)
+        .resize(500, 500) // Ajusta el tamaño según tus necesidades
+        .toFile(resizedImagePath, (err) => {
+          if (err) {
+            console.error('Error al redimensionar la imagen:', err);
+          }
+          // Borra el archivo original que está en la carpeta temporal de Multer
+          fs.unlinkSync(originalImagePath);
+          // Actualiza el path del archivo para que apunte a la imagen redimensionada
+          req.file.path = resizedImagePath;
+          // Actualiza el nombre del archivo
+          req.file.filename = 'resized-' + req.file.filename;
+      });
+
+      hayImagen = true;
   
-        }
-  
-        // Fin Redimension ---
+      // Fin Redimension ---
 
       }      
 
@@ -755,7 +751,7 @@ const settingsController = {
       }
     }).then((product) => {
 
-      if (product.code !== req.body.code && req.body.code) {
+      if ((product.code !== req.body.code) && req.body.code) {
 
         Product.findOne({
           where: {
@@ -831,19 +827,17 @@ const settingsController = {
       
                         Product_image.update(
                           {
-                            url: req.body.images,
+                            url: req.file.filename,
                           },
                           {
                             where: { product_id: idProductToEdit }
                           }).then(() => {
-                              return res.redirect('/settings/');                
+                          
                           })
                           .catch((error) => {
-                            console.error('Error al actualizar el producto:', error);
+                            console.error('Error al actualizar la imagen:', error);
                           });
-                      }
-      
-                      return res.redirect('/settings/');   
+                      }                      
       
                     })
                     .catch((error) => {
@@ -851,7 +845,9 @@ const settingsController = {
                     });
                 }).catch((error) => {
                   console.error('Error al crear la nueva categoría:', error);
-                });            
+                });
+                
+                return res.redirect('/settings/');
         
               } else {
         
@@ -882,19 +878,17 @@ const settingsController = {
       
                         Product_image.update(
                           {
-                            url: req.body.images,
+                            url: req.file.filename,
                           },
                           {
                             where: { product_id: idProductToEdit }
                           }).then(() => {
-                              return res.redirect('/settings/');                
+                                      
                           })
                           .catch((error) => {
-                            console.error('Error al actualizar el producto:', error);
+                            console.error('Error al actualizar la imagen:', error);
                           });
-                      }
-      
-                      return res.redirect('/settings/');
+                      }                      
       
                     })
                     .catch((error) => {
@@ -904,6 +898,8 @@ const settingsController = {
                 }).catch((error) => {
                   console.error('Error al buscar la categoria:', error);
                 });
+
+                return res.redirect('/settings/');      
         
               }
         
@@ -964,19 +960,17 @@ const settingsController = {
 
                   Product_image.update(
                     {
-                      url: req.body.images,
+                      url: req.file.filename,
                     },
                     {
                       where: { product_id: idProductToEdit }
                     }).then(() => {
-                        return res.redirect('/settings/');                
+                      
                     })
                     .catch((error) => {
-                      console.error('Error al actualizar el producto:', error);
+                      console.error('Error al actualizar la imagen:', error);
                     });
-                }
-
-                return res.redirect('/settings/');   
+                }                
 
               })
               .catch((error) => {
@@ -984,7 +978,9 @@ const settingsController = {
               });
           }).catch((error) => {
             console.error('Error al crear la nueva categoría:', error);
-          });            
+          });
+          
+          return res.redirect('/settings/');
   
         } else {
   
@@ -1015,19 +1011,17 @@ const settingsController = {
 
                   Product_image.update(
                     {
-                      url: req.body.images,
+                      url: req.file.filename,
                     },
                     {
                       where: { product_id: idProductToEdit }
                     }).then(() => {
-                        return res.redirect('/settings/');                
+                    
                     })
                     .catch((error) => {
-                      console.error('Error al actualizar el producto:', error);
+                      console.error('Error al actualizar la imagen:', error);
                     });
-                }
-
-                return res.redirect('/settings/');
+                }                
 
               })
               .catch((error) => {
@@ -1037,6 +1031,8 @@ const settingsController = {
           }).catch((error) => {
             console.error('Error al buscar la categoria:', error);
           });
+
+          return res.redirect('/settings/');
   
         }
   
