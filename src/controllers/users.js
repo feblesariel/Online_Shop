@@ -73,43 +73,50 @@ const usersController = {
     }
 
     User.findOne({ where: { email: req.body.email } }).then(function (user) {
+
       if (user) {
+
         return res.render("register", { errors: [{ msg: "Email ya registrado." }], old: req.body })
-      }
-    })   
 
-    User.count()
-      .then((count) => {
-        if (count === 0) {
-          userRole = "admin"
-        };
+      } else {
 
-        User.create(
-          {
-            email: req.body.email,
-            password: bcrypt.hashSync(req.body.password, 10),
-            name: req.body.name,
-            role: userRole
-          }
-        ).then(function (user) {
-    
-          Cart.create({
-            user_id: user.id
-          }).then(function () {
-            return res.redirect("/users/login");
+        User.count()
+        .then((count) => {
+          if (count === 0) {
+            userRole = "admin"
+          };
+  
+          User.create(
+            {
+              email: req.body.email,
+              password: bcrypt.hashSync(req.body.password, 10),
+              name: req.body.name,
+              role: userRole
+            }
+          ).then(function (user) {
+      
+            Cart.create({
+              user_id: user.id
+            }).then(function () {
+              return res.redirect("/users/login");
+            }).catch(function (error) {
+              console.log(error);
+              return res.status(500).json({ error: "Error al crear el carrito" });
+            });
+      
           }).catch(function (error) {
             console.log(error);
-            return res.status(500).json({ error: "Error al crear el carrito" });
+            return res.status(500).json({ error: "Error al crear el usuario" });
           });
-    
-        }).catch(function (error) {
-          console.log(error);
-          return res.status(500).json({ error: "Error al crear el usuario" });
+        })
+        .catch((error) => {
+          console.error('Error al obtener el número de usuarios:', error);
         });
-      })
-      .catch((error) => {
-        console.error('Error al obtener el número de usuarios:', error);
-      });
+
+      }
+
+    });
+
   },
 
   profile: function (req, res) {
