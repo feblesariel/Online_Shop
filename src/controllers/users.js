@@ -163,7 +163,7 @@ const usersController = {
 
     req.session.destroy();
 
-    res.redirect("/")
+    res.redirect("/users/login");
 
   },
 
