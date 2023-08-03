@@ -284,9 +284,13 @@ const settingsController = {
 
     let errors = validationResult(req);
 
+    let nameImage = null;
+
     // Validaciones de la imagen -------
 
     if (req.file) {
+
+      nameImage = 'resized-' + req.file.filename;
 
       const maxFileSizeMB = 2;
       const maxFileSizeBytes = maxFileSizeMB * (1024 * 1024);
@@ -330,8 +334,6 @@ const settingsController = {
           fs.unlinkSync(originalImagePath);
           // Actualiza el path del archivo para que apunte a la imagen redimensionada
           req.file.path = resizedImagePath;
-          // Actualiza el nombre del archivo
-          req.file.filename = 'resized-' + req.file.filename;
       });
 
       // Fin Redimension ---
@@ -397,8 +399,8 @@ const settingsController = {
                 category_id: newCategory.id,
               }).then((newProduct) => {
                 Product_image.create({
-                  url: req.file.filename,
-                  product_id: newProduct.id,
+                  url: nameImage,
+                  product_id: newProduct.id
                 }).then(() => {
                   return res.redirect('/settings/');
                 }).catch((error) => {
@@ -431,8 +433,8 @@ const settingsController = {
                 category_id: element.id,
               }).then((newProduct) => {
                 Product_image.create({
-                  url: req.file.filename,
-                  product_id: newProduct.id,
+                  url: nameImage,
+                  product_id: newProduct.id
                 }).then(() => {
                   return res.redirect('/settings/');
                 }).catch((error) => {
