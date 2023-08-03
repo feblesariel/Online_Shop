@@ -69,53 +69,57 @@ const usersController = {
     let userRole = "user";
 
     if (!errors.isEmpty()) {
-      return res.render("register", { errors: errors.array(), old: req.body })
-    }
-
-    User.findOne({ where: { email: req.body.email } }).then(function (user) {
-
-      if (user) {
-
-        return res.render("register", { errors: [{ msg: "Email ya registrado." }], old: req.body })
-
-      } else {
-
-        User.count()
-        .then((count) => {
-          if (count === 0) {
-            userRole = "admin"
-          };
-  
-          User.create(
-            {
-              email: req.body.email,
-              password: bcrypt.hashSync(req.body.password, 10),
-              name: req.body.name,
-              role: userRole
-            }
-          ).then(function (user) {
       
-            Cart.create({
-              user_id: user.id
-            }).then(function () {
-              return res.redirect("/users/login");
+      return res.render("register", { errors: errors.array(), old: req.body })
+
+    } else {
+
+      User.findOne({ where: { email: req.body.email } }).then(function (user) {
+
+        if (user) {
+  
+          return res.render("register", { errors: [{ msg: "Email ya registrado." }], old: req.body })
+  
+        } else {
+  
+          User.count()
+          .then((count) => {
+            if (count === 0) {
+              userRole = "admin"
+            };
+    
+            User.create(
+              {
+                email: req.body.email,
+                password: bcrypt.hashSync(req.body.password, 10),
+                name: req.body.name,
+                role: userRole
+              }
+            ).then(function (user) {
+        
+              Cart.create({
+                user_id: user.id
+              }).then(function () {
+                return res.redirect("/users/login");
+              }).catch(function (error) {
+                console.log(error);
+                return res.status(500).json({ error: "Error al crear el carrito" });
+              });
+        
             }).catch(function (error) {
               console.log(error);
-              return res.status(500).json({ error: "Error al crear el carrito" });
+              return res.status(500).json({ error: "Error al crear el usuario" });
             });
-      
-          }).catch(function (error) {
-            console.log(error);
-            return res.status(500).json({ error: "Error al crear el usuario" });
+          })
+          .catch((error) => {
+            console.error('Error al obtener el número de usuarios:', error);
           });
-        })
-        .catch((error) => {
-          console.error('Error al obtener el número de usuarios:', error);
-        });
+  
+        }
+  
+      });
 
-      }
-
-    });
+    }
 
   },
 
@@ -189,30 +193,47 @@ const usersController = {
     let errors = validationResult(req);
 
     if (!errors.isEmpty()) {
+
       return res.render("userEdit", { errors: errors.array(), old: req.body })
+
+    } else {
+
+      User.findOne({ where: { email: req.body.email } }).then(function (user) {
+
+        if (user.email !== old.email) {
+  
+          return res.render("register", { errors: [{ msg: "Email ya registrado." }], old: req.body })
+  
+        } else {
+
+          User.update(
+            {
+              name: req.body.name,
+              email: req.body.email,
+              password: bcrypt.hashSync(req.body.password, 10)
+            },
+            {
+              where: { id: old.id }
+            })
+            .then(() => {
+              User.findByPk(old.id).then((user) => {
+                req.session.userLogged = user;
+                return res.redirect('/users/profile')
+              }).catch(error => {
+                console.error('Error:', error);
+                // Manejo de errores
+              });
+            }).catch(error => {
+              console.error('Error:', error);
+              // Manejo de errores
+            });
+
+        }
+
+      });
+
     }
 
-    User.update(
-      {
-        name: req.body.name,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 10)
-      },
-      {
-        where: { id: old.id }
-      })
-      .then(() => {
-        User.findByPk(old.id).then((user) => {
-          req.session.userLogged = user;
-          return res.redirect('/users/profile')
-        }).catch(error => {
-          console.error('Error:', error);
-          // Manejo de errores
-        });
-      }).catch(error => {
-        console.error('Error:', error);
-        // Manejo de errores
-      });
   },
 
   userDestroy: function (req, res) {
