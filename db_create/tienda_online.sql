@@ -97,3 +97,36 @@ CREATE TABLE payments (
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (cart_id) REFERENCES carts(id)
 );
+
+-- Población de la tabla categories
+INSERT INTO categories (name) VALUES
+('Categoria 1'),
+('Categoria 2'),
+('Categoria 3'),
+('Categoria 4'),
+('Categoria 5'),
+('Categoria 6'),
+('Categoria 7'),
+('Categoria 8');
+
+-- Población de la tabla products
+INSERT INTO products (CODE, brand ,model, name ,price, description, stock, category_id) VALUES
+('P001', 'Marca 1' ,'Producto 1', 'Nombre 1' ,10.99, 'Descripción del producto 1', 100, 1),
+('P002', 'Marca 1' ,'Producto 2', 'Nombre 2' ,19.99, 'Descripción del producto 2', 50, 2),
+('P003', 'Marca 1' ,'Producto 3', 'Nombre 3' ,5.99, 'Descripción del producto 3', 200, 3),
+('P004', 'Marca 1' ,'Producto 4', 'Nombre 4' ,7.99, 'Descripción del producto 4', 150, 4),
+('P005', 'Marca 1' ,'Producto 5', 'Nombre 5' ,10.99, 'Descripción del producto 5', 100, 5),
+('P006', 'Marca 1' ,'Producto 6', 'Nombre 6' ,19.99, 'Descripción del producto 6', 50, 6),
+('P007', 'Marca 1' ,'Producto 7', 'Nombre 7' ,5.99, 'Descripción del producto 7', 200, 7),
+('P008', 'Marca 1' ,'Producto 8', 'Nombre 8' ,7.99, 'Descripción del producto 8', 150, 8);
+
+-- Población de la tabla product_images
+INSERT INTO product_images (url, product_id) VALUES
+('product-1.jpg', 1),
+('product-2.jpg', 2),
+('product-3.jpg', 3),
+('product-4.jpg', 4),
+('product-5.jpg', 5),
+('product-6.jpg', 6),
+('product-7.jpg', 7),
+('product-8.jpg', 8);
