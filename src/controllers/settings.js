@@ -749,9 +749,9 @@ const settingsController = {
       where: {
         id: idProductToEdit
       }
-    }).then((product) => {      
+    }).then((product) => {
 
-      if (product.code !== req.body.code) {
+      if (product.code !== req.body.code && req.body.code) {
 
         Product.findOne({
           where: {
@@ -780,7 +780,7 @@ const settingsController = {
 
         })        
 
-      }
+      } else {
 
       if (!errors.isEmpty()) {
 
@@ -909,10 +909,12 @@ const settingsController = {
   
       }
 
+    }
+
     }).catch(error => {
       console.error('Error al buscar el producto:', error);
     });
-    
+
   }
 
 }
