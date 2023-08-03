@@ -737,6 +737,16 @@ const settingsController = {
           req.file.path = resizedImagePath;
       });
 
+      // Elimino imagen vieja que esta en archivos
+      Product_image.findOne({
+        where: {
+          product_id: idProductToEdit
+        }
+      }).then((element) => {
+        let pathOldImage = path.join(__dirname, '../../public/img/' + element.url);
+        fs.unlinkSync(pathOldImage);
+      });
+
       hayImagen = true;
   
       // Fin Redimension ---
