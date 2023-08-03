@@ -763,19 +763,148 @@ const settingsController = {
 
             errors.errors.push({ msg: "Ya existe un producto con ese codigo." });
 
-          }
+            if (!errors.isEmpty()) {
 
-          if (!errors.isEmpty()) {
+              Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
+                .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
+                  res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
+                })
+                .catch(error => {
+                  console.error('Error:', error);
+                  // Manejo de errores
+                });
+        
+            }
 
-            Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
-              .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
-                res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
-              })
-              .catch(error => {
-                console.error('Error:', error);
-                // Manejo de errores
-              });
+          } else {
+
+            if (!errors.isEmpty()) {
+
+              Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
+                .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
+                  res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
+                })
+                .catch(error => {
+                  console.error('Error:', error);
+                  // Manejo de errores
+                });
+        
+            } else {
+        
+              // Función para convertir "on" y "off" a booleanos true o false
+              function convertToBoolean(value) {
+                return value === "on" ? true : false;
+              }
+        
+              // En tu código, antes de insertar los valores en la base de datos
+              // asegúrate de convertir los valores "on" y "off" a booleanos true o false
+              let isFeatured = convertToBoolean(req.body.is_featured);
+              let isOffer = convertToBoolean(req.body.is_offer);
+        
+              if (req.body.category === "other") {
+                Category.create({
+                  name: req.body.newCategory,
+                }).then((newCategory) => {
       
+                  Product.update(
+                    {
+                      code: req.body.code,
+                      brand: req.body.brand,
+                      model: req.body.model,
+                      name: req.body.name,
+                      price: req.body.price,
+                      description: req.body.description,
+                      stock: req.body.stock,
+                      is_featured: isFeatured,
+                      is_offer: isOffer,
+                      category_id: newCategory.id,
+                    },
+                    {
+                      where: { id: idProductToEdit }
+                    }).then(() => {
+      
+                      if (hayImagen) {
+      
+                        Product_image.update(
+                          {
+                            url: req.body.images,
+                          },
+                          {
+                            where: { product_id: idProductToEdit }
+                          }).then(() => {
+                              return res.redirect('/settings/');                
+                          })
+                          .catch((error) => {
+                            console.error('Error al actualizar el producto:', error);
+                          });
+                      }
+      
+                      return res.redirect('/settings/');   
+      
+                    })
+                    .catch((error) => {
+                      console.error('Error al actualizar el producto:', error);
+                    });
+                }).catch((error) => {
+                  console.error('Error al crear la nueva categoría:', error);
+                });            
+        
+              } else {
+        
+                Category.findOne({
+                  where: {
+                    name: req.body.category
+                  }
+                }).then((element) => {
+      
+                  Product.update(
+                    {
+                      code: req.body.code,
+                      brand: req.body.brand,
+                      model: req.body.model,
+                      name: req.body.name,
+                      price: req.body.price,
+                      description: req.body.description,
+                      stock: req.body.stock,
+                      is_featured: isFeatured,
+                      is_offer: isOffer,
+                      category_id: element.id,
+                    },
+                    {
+                      where: { id: idProductToEdit }
+                    }).then(() => {
+      
+                      if (hayImagen) {
+      
+                        Product_image.update(
+                          {
+                            url: req.body.images,
+                          },
+                          {
+                            where: { product_id: idProductToEdit }
+                          }).then(() => {
+                              return res.redirect('/settings/');                
+                          })
+                          .catch((error) => {
+                            console.error('Error al actualizar el producto:', error);
+                          });
+                      }
+      
+                      return res.redirect('/settings/');
+      
+                    })
+                    .catch((error) => {
+                      console.error('Error al actualizar el producto:', error);
+                    });
+      
+                }).catch((error) => {
+                  console.error('Error al buscar la categoria:', error);
+                });
+        
+              }
+        
+            }
+
           }          
 
         })        
