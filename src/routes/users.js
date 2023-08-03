@@ -9,21 +9,21 @@ const routesLoggedRequired = require("../middlewares/routesLoggedRequired");
 // ************ Validations ************
 
 const validationsLoginForm = [
-    body("email").isEmail().withMessage("Debes ingresar el correo electronico."),
-    body("password").notEmpty().withMessage("Debes ingresar una contraseña.").bail().isLength({ min: 8 }).withMessage("La contraseña debe tener un minimo 8 caracteres.")
+    body("email").isEmail().withMessage("Ingresar el correo electronico."),
+    body("password").notEmpty().withMessage("Ingresar una contraseña.").bail().isLength({ min: 8 }).withMessage("Contraseña 8 caracteres minimo.")
 ];
 
 const validationsRegisterForm = [
-    body("name").notEmpty().withMessage("Debes ingresar un nombre de usuario.").bail().isLength({ min: 2}).withMessage("El nombre de usuario debe tener al menos 2 caracteres."),
-    body("email").notEmpty().withMessage("Debes ingresar un correo electronico.").bail().isEmail().withMessage("Debes usar un formato valido para el correo."),
-    body("password").notEmpty().withMessage("Debes ingresar una contraseña para el usuario.").bail().isLength({ min: 8 }).withMessage("La contraseña debe tener un minimo 8 caracteres.")
+    body("name").notEmpty().withMessage("Ingresar un nombre de usuario.").bail().isLength({ min: 2}).withMessage("Usuario al menos 2 caracteres."),
+    body("email").notEmpty().withMessage("Ingresar un correo electronico.").bail().isEmail().withMessage("Formato invalido para el correo."),
+    body("password").notEmpty().withMessage("Ingresar una contraseña.").bail().isLength({ min: 8 }).withMessage("Contraseña 8 caracteres minimo.")
 
 ];
 
 const validationsEditUsersForm = [
-    body("name").notEmpty().withMessage("Debes ingresar un nombre de usuario.").bail().isLength({ min: 2}).withMessage("El nombre de usuario debe tener al menos 2 caracteres."),
-    body("email").notEmpty().withMessage("Debes ingresar un correo electronico.").bail().isEmail().withMessage("Debes usar un formato valido para el correo."),
-    body("password").notEmpty().withMessage("Debes ingresar una contraseña para el usuario.").bail().isLength({ min: 8 }).withMessage("La contraseña debe tener un minimo 8 caracteres.")
+    body("name").notEmpty().withMessage("Ingresar un nombre de usuario.").bail().isLength({ min: 2}).withMessage("Usuario al menos 2 caracteres."),
+    body("email").notEmpty().withMessage("Ingresar un correo electronico.").bail().isEmail().withMessage("Formato invalido para el correo."),
+    body("password").notEmpty().withMessage("Ingresar una contraseña.").bail().isLength({ min: 8 }).withMessage("Contraseña 8 caracteres minimo.")
 ];
 
 // ************ Controller Require ************
