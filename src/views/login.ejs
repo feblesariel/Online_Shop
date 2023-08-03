@@ -21,7 +21,7 @@
       </div>
 
       <form class="text-center" action="/users/login/" method="post">
-        
+
         <div class="mb-3">
           <input class="form-control" type="email" name="email" id="email" placeholder="Email" value="<%= locals.old && old.email ? old.email : "" %>"/>
         </div>
@@ -36,7 +36,7 @@
           <div class="small text-left" style="color: red;"><%= error.msg %></div>
         <% })} %>
 
-        <a href="/users/register"><p class="text-muted mt-3">¿No estas registrado?</p></a>
+        <a class="text-decoration-none" href="/users/register"><p class="text-muted mt-3">¿No estas registrado?</p></a>
 
       </form>
 
