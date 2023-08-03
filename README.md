@@ -1,13 +1,14 @@
 ## Descripción
 
-Aplicacion web ecommerce multirubro realizada por BA Web Studio https://bawebstudio.com/<br>
+App Web E-commerce MultiShop realizada por BA Web Studio https://bawebstudio.com/<br>
 
 Se usaron las siguientes tecnologias y librerias:
 
-Nodejs<br><br>
-HTML<br>
-CSS<br>
-JavaScript<br><br>
+nodejs<br><br>
+html<br>
+css<br>
+scss<br>
+javaScript<br><br>
 bcryptjs<br>
 ejs<br>
 express<br>
