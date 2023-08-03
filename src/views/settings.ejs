@@ -377,8 +377,12 @@
                   <input type="file" class="form-control" id="e-images" name="images">
                 </div>
 
+                <% if (locals.editOld) { %>
+
                 <img class="mb-3" src="/img/<%= locals.editOld && locals.editOld.product_images && locals.editOld.product_images.url ? locals.editOld.product_images.url : (locals.editOld && locals.editOld.view ? locals.editOld.view : '') %>" alt="..." style="height: 100px; width: 100px;">
                 
+                <% } %>
+
                 <!-- inputs invisibles para mandar info relevante al back -->
 
                 <div class="d-none">
