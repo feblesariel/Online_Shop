@@ -11,6 +11,7 @@ const productsController = require ("../controllers/products")
 
 router.get("/", productsController.products);
 router.get("/detail/:id/", productsController.detail);
+router.get("/offers/", productsController.offers);
 
 
 module.exports = router;

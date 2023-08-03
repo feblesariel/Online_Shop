@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%-include("./partials/head.ejs")%>
+
+<body>
+
+    <%-include("./partials/header.ejs")%>
+
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="/">Inicio</a>
+                    <span class="breadcrumb-item active">Ofertas</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Featured Products Start -->
+    
+    <% if (OffersProducts.length > 0 ) { %>
+
+    <div class="container-fluid pt-5 pb-3">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">ofertas</span></h2>
+        <div class="row px-xl-5">
+
+            <% OffersProducts.forEach(product => { %>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                <div class="product-item bg-light mb-4">
+                    <div class="product-img position-relative overflow-hidden">
+                        <img class="img-fluid w-100" src="img/<%= product.product_images.url %>" alt="">
+                        <div class="product-action">
+                            <a class="btn btn-outline-dark btn-square" href="/cart/<%=product.id%>"><i class="fa fa-shopping-cart"></i></a>
+                            <a class="btn btn-outline-dark btn-square" href="/products/detail/<%=product.id%>"><i class="fa fa-search"></i></a>
+                        </div>
+                    </div>
+                    <div class="text-center py-4">
+                        <a class="h6 text-decoration-none text-truncate" href="/products/detail/<%=product.id%>"><%= product.name%></a>
+                        <div class="d-flex align-items-center justify-content-center mt-2">
+                            <h5>$<%= product.price%></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <% }) %>
+
+        </div>
+    </div>    
+
+    <% } else { %>
+
+    <div class="container-fluid pt-5 pb-3">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">ofertas</span></h2>
+    </div>
+
+    <% } %>
+
+    <!-- Featured Products End -->
+
+    <!-- Products End -->
+
+    <%-include("./partials/footer.ejs")%>
+
+</body>
+
+</html>
