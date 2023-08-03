@@ -202,7 +202,7 @@ const usersController = {
 
         if (user && user.email !== old.email) {
   
-          return res.render("register", { errors: [{ msg: "Email ya registrado." }], old: req.body })
+          return res.render("userEdit", { errors: [{ msg: "Email ya registrado." }], old: req.body })
   
         } else {
 
@@ -230,6 +230,9 @@ const usersController = {
 
         }
 
+      }).catch(error => {
+        console.error('Error:', error);
+        // Manejo de errores
       });
 
     }
