@@ -744,7 +744,9 @@ const settingsController = {
         }
       }).then((element) => {
         let pathOldImage = path.join(__dirname, '../../public/img/' + element.url);
-        fs.unlinkSync(pathOldImage);
+        if (fs.existsSync(pathOldImage)) {
+          fs.unlinkSync(pathOldImage);
+        }
       });
 
       hayImagen = true;
