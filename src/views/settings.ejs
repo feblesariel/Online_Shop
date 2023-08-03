@@ -376,14 +376,20 @@
                   <label for="images" class="form-label">Cambiar imagen (jpg o png hasta 2 mb).</label>
                   <input type="file" class="form-control" id="e-images" name="images">
                 </div>
+
+                <img class="mb-3" src="/img/<%= locals.editOld && locals.editOld.product_images && locals.editOld.product_images.url ? locals.editOld.product_images.url : (locals.editOld && locals.editOld.view ? locals.editOld.view : '') %>" alt="..." style="height: 100px; width: 100px;">
                 
-                <div class="mb-3">
-                  <label for="images" class="form-label">Imagen actual</label>
-                </div>
+                <!-- inputs invisibles para mandar info relevante al back -->
+
+                <div class="d-none">
+                  <input type="text" class="form-control" id="view" name="view" readonly value="<%= locals.editOld && locals.editOld.product_images && locals.editOld.product_images.url ? locals.editOld.product_images.url : (locals.editOld && locals.editOld.view ? locals.editOld.view : '') %>">                  
+                </div>                
                 
-                <div class="mb-3 invisible">
+                <div class="d-none">
                   <input type="text" class="form-control" id="id" name="id" readonly value="<%= locals.editOld && locals.editOld.id ? locals.editOld.id : "" %>">
                 </div>
+
+                <!-- inputs invisibles para mandar info relevante al back -->
 
                 <% if (locals.editErrors) { editErrors.forEach (error=> { %>
                   <div class="small" style="color: red;"><%= error.msg %></div>
