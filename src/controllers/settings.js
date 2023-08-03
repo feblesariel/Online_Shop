@@ -682,12 +682,16 @@ const settingsController = {
     let errors = validationResult(req);
 
     let hayImagen = false;
+    
+    let nameImage = null;
 
     let idProductToEdit = req.body.id;
 
     // Validaciones de la imagen -------
 
     if (req.file) {
+
+      nameImage = 'resized-' + req.file.filename;
 
       const maxFileSizeMB = 2;
       const maxFileSizeBytes = maxFileSizeMB * (1024 * 1024);
@@ -731,8 +735,6 @@ const settingsController = {
           fs.unlinkSync(originalImagePath);
           // Actualiza el path del archivo para que apunte a la imagen redimensionada
           req.file.path = resizedImagePath;
-          // Actualiza el nombre del archivo
-          req.file.filename = 'resized-' + req.file.filename;
       });
 
       hayImagen = true;
@@ -790,6 +792,8 @@ const settingsController = {
                 });
         
             } else {
+
+              // --------------> ESCENARIO SI EL CODIGO ES DIFERENTE Y QUE LA CATEGORIA ES OTRA <-------------------
         
               // Función para convertir "on" y "off" a booleanos true o false
               function convertToBoolean(value) {
@@ -823,11 +827,11 @@ const settingsController = {
                       where: { id: idProductToEdit }
                     }).then(() => {
       
-                      if (hayImagen) {
+                      if (hayImagen) {                        
       
                         Product_image.update(
                           {
-                            url: req.file.filename,
+                            url: nameImage
                           },
                           {
                             where: { product_id: idProductToEdit }
@@ -850,6 +854,8 @@ const settingsController = {
                 return res.redirect('/settings/');
         
               } else {
+
+                // --------------> ESCENARIO SI EL CODIGO ES DIFERENTE Y QUE LA CATEGORIA ES EXISTENTE <-------------------
         
                 Category.findOne({
                   where: {
@@ -878,7 +884,7 @@ const settingsController = {
       
                         Product_image.update(
                           {
-                            url: req.file.filename,
+                            url: nameImage
                           },
                           {
                             where: { product_id: idProductToEdit }
@@ -923,6 +929,8 @@ const settingsController = {
           });
   
       } else {
+
+        // --------------> ESCENARIO SI EL CODIGO ES IGUAL Y QUE LA CATEGORIA ES OTRA <-------------------
   
         // Función para convertir "on" y "off" a booleanos true o false
         function convertToBoolean(value) {
@@ -960,7 +968,7 @@ const settingsController = {
 
                   Product_image.update(
                     {
-                      url: req.file.filename,
+                      url: nameImage
                     },
                     {
                       where: { product_id: idProductToEdit }
@@ -983,6 +991,8 @@ const settingsController = {
           return res.redirect('/settings/');
   
         } else {
+
+          // --------------> ESCENARIO SI EL CODIGO ES IGUAL Y QUE LA CATEGORIA ES EXISTENTE <-------------------
   
           Category.findOne({
             where: {
@@ -1011,7 +1021,7 @@ const settingsController = {
 
                   Product_image.update(
                     {
-                      url: req.file.filename,
+                      url: nameImage
                     },
                     {
                       where: { product_id: idProductToEdit }
