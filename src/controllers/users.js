@@ -200,7 +200,7 @@ const usersController = {
 
       User.findOne({ where: { email: req.body.email } }).then(function (user) {
 
-        if (user.email !== old.email) {
+        if (user && user.email !== old.email) {
   
           return res.render("register", { errors: [{ msg: "Email ya registrado." }], old: req.body })
   
