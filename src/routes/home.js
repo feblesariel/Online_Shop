@@ -10,6 +10,7 @@ const homeController = require ("../controllers/home")
 // ************ Rutas ************
 
 router.get("/", homeController.home);
+router.get("/contact", homeController.contact);
 
 
 module.exports = router;
