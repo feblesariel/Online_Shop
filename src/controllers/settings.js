@@ -612,15 +612,11 @@ const settingsController = {
       attributes: [
         'id',
         'name',
-        [
-          sequelize.literal('(SELECT COUNT(*) FROM products WHERE products.category_id = Category.id)'),
-          'productCount'
-        ]
-      ],
-      order: [
-        ['name', 'ASC']
-      ],
-      raw: true
+        ],
+        order: [
+          ['id', 'ASC']
+        ],
+        raw: true
     });
 
     // Calculo cuantos items hay en el carrito - navbar ----------------------------------------------
