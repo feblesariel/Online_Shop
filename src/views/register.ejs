@@ -37,12 +37,14 @@
 
         <% if (locals.errors) { errors.forEach (error=> { %>
           <div class="small text-left" style="color: red;"><%= error.msg %></div>
-        <% })} %>        
+        <% })} %>
+
+        <a class="text-decoration-none" href="/users/register"><p class="text-muted mt-3">¿Volver al home?</p></a>
 
       </form>
 
     </div>
 
   </body>
-  
+
 </html>
