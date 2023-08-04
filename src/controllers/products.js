@@ -65,6 +65,11 @@ const productsController = {
     const brandFilter = req.query.brandFilter ? JSON.parse(req.query.brandFilter) : [];
     const order = req.query.order;
 
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+    const perPage = 9; // Cantidad de productos por página
+    const offset = (page - 1) * perPage;
+    const limit = perPage;
+
     let orderOption = [];
 
     if (order === 'name') {
@@ -89,9 +94,16 @@ const productsController = {
         [Op.and]: whereClause[Op.and]
       },
       order: orderOption,
+      limit,
+      offset,
       include: [{ association: 'product_images' }]
     });
 
+    // Consulto la cantidad de productos que hay con la actual configuracion de filtrado -  paginacion
+
+    const getTotalFilteredProductCount = Product.count({
+      where: whereClause[Op.and]
+    });
 
     // Consulto las categorias y la cantidad de productos que tienen - filtro categoria ------------
 
@@ -148,9 +160,10 @@ const productsController = {
       raw: true
     });
 
-    Promise.all([getCategories, getProductCountInCart, getCategoriesWithProductCount, getTotalProductCount, getBrandProductCount, getAllProducts, getTotalProductCountBrand])
-      .then(([Categories, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts, TotalProductCountBrand]) => {
-        res.render('products', { Categories, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts, TotalProductCountBrand });
+    Promise.all([getCategories, getProductCountInCart, getCategoriesWithProductCount, getTotalProductCount, getBrandProductCount, getAllProducts, getTotalProductCountBrand, getTotalFilteredProductCount])
+      .then(([Categories, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts, TotalProductCountBrand, TotalFilteredProductCount]) => {
+        const totalPages = Math.ceil(TotalFilteredProductCount / perPage);
+        res.render('products', { Categories, ProductCountInCart, CategoriesWithProductCount, TotalProductCount, BrandProductCount, AllProducts, TotalProductCountBrand, currentPage: page, totalPages });
       })
       .catch(error => {
         console.error('Error:', error);

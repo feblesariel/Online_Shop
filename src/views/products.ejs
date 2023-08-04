@@ -109,6 +109,24 @@
                     </div>
                     <% }); %>
 
+                    <div class="col-12 pt-5">
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                                    <a class="page-link" href="?page=<%= currentPage - 1 %>">Anterior</a>
+                                </li>
+                                <% for (let i = 1; i <= totalPages; i++) { %>
+                                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                                    </li>
+                                <% } %>
+                                <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                                    <a class="page-link" href="?page=<%= currentPage + 1 %>">Siguiente</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
                 </div>
             </div>
             <!-- Shop Product End -->
@@ -117,6 +135,22 @@
     <!-- Shop End -->
 
     <%-include("./partials/footer.ejs")%>
+
+    <!-- Script de paginacion -->
+
+    <script>
+        const paginationLinks = document.querySelectorAll('.pagination .page-link');
+        
+        paginationLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                const newPage = event.target.getAttribute('href').split('?page=')[1];
+                const currentURL = new URL(window.location.href);
+                currentURL.searchParams.set('page', newPage);
+                window.location.href = currentURL;
+            });
+        });
+    </script>    
 
     <!-- Script de filtrado -->
     <script src="/js/itemsFilter.js"></script>
