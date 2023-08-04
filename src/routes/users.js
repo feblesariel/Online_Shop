@@ -23,7 +23,8 @@ const validationsRegisterForm = [
 const validationsEditUsersForm = [
     body("name").notEmpty().withMessage("Ingresar un nombre de usuario.").bail().isLength({ min: 2}).withMessage("Usuario al menos 2 caracteres."),
     body("email").notEmpty().withMessage("Ingresar un correo electronico.").bail().isEmail().withMessage("Formato invalido para el correo."),
-    body("password").notEmpty().withMessage("Ingresar una contraseña.").bail().isLength({ min: 8 }).withMessage("Contraseña 8 caracteres minimo.")
+    body("password").notEmpty().withMessage("Ingresar una contraseña.").bail().isLength({ min: 8 }).withMessage("Contraseña 8 caracteres minimo."),
+    body("rePassword").notEmpty().withMessage("Repetir contraseña.")
 ];
 
 // ************ Controller Require ************

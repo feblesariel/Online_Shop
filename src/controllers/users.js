@@ -204,6 +204,12 @@ const usersController = {
 
     } else {
 
+      if (req.body.password !== req.body.rePassword) {
+
+        return res.render("userEdit", { errors: [{ msg: "No coincide la contraseña." }], old: req.body })
+  
+      }
+
       User.findOne({ where: { email: req.body.email } }).then(function (user) {
 
         if (user && user.email !== old.email) {
