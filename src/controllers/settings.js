@@ -748,69 +748,70 @@ const settingsController = {
 
     // Fin Validaciones de la imagen -----
 
-    Product.findOne({
+    // Comienzo de las validaciones de los campos y edicion-----
+
+    const getCategoriesForExist = Category.findOne({
+      where: {
+        name: req.body.newCategory
+      }
+    });
+
+    const getProductsForExist = Product.findOne({
+      where: {
+        code: req.body.code
+      }
+    });
+
+    const getProductToEdit = Product.findOne({
       where: {
         id: idProductToEdit
       }
-    }).then((product) => {
+    });
 
-      if ((product.code !== req.body.code) && req.body.code) {
+    Promise.all([getCategories, getCategoriesModal, getProductCountInCart, getProducts, getUsers, getCategoriesForExist, getProductsForExist, getProductToEdit])
+      .then(([Categories, CategoriesModal, ProductCountInCart, Products, Users, CategoriesForExist, ProductsForExist, ProductToEdit]) => {
 
-        Product.findOne({
-          where: {
-            code: req.body.code
-          }
-        }).then((result) => {
+        if (errors.isEmpty()) {
 
-          if (result) {
 
-            errors.errors.push({ msg: "Ya existe un producto con ese codigo." });
+          if ((ProductToEdit.code !== req.body.code) && req.body.category === "other") {
 
-            if (!errors.isEmpty()) {
 
-              Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
-                .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
-                  res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
-                })
-                .catch(error => {
-                  console.error('Error:', error);
-                  // Manejo de errores
-                });
-        
+            if (ProductsForExist) {
+
+              errors.errors.push({ msg: "Ya existe un producto con ese codigo." });
+
             }
 
-          } else {
+            if (CategoriesForExist) {
+
+              errors.errors.push({ msg: "Ya existe una categoria con ese nombre." });
+
+            }
 
             if (!errors.isEmpty()) {
 
-              Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
-                .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
-                  res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
-                })
-                .catch(error => {
-                  console.error('Error:', error);
-                  // Manejo de errores
-                });
-        
+              res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
+
             } else {
 
               // --------------> ESCENARIO SI EL CODIGO ES DIFERENTE Y QUE LA CATEGORIA ES OTRA <-------------------
-        
+
               // Función para convertir "on" y "off" a booleanos true o false
               function convertToBoolean(value) {
                 return value === "on" ? true : false;
               }
-        
+
               // En tu código, antes de insertar los valores en la base de datos
               // asegúrate de convertir los valores "on" y "off" a booleanos true o false
               let isFeatured = convertToBoolean(req.body.is_featured);
               let isOffer = convertToBoolean(req.body.is_offer);
-        
+
               if (req.body.category === "other") {
                 Category.create({
                   name: req.body.newCategory,
                 }).then((newCategory) => {
-      
+
                   Product.update(
                     {
                       code: req.body.code,
@@ -827,9 +828,9 @@ const settingsController = {
                     {
                       where: { id: idProductToEdit }
                     }).then(() => {
-      
-                      if (hayImagen) {                        
-      
+
+                      if (hayImagen) {
+
                         Product_image.update(
                           {
                             url: nameImage
@@ -837,13 +838,13 @@ const settingsController = {
                           {
                             where: { product_id: idProductToEdit }
                           }).then(() => {
-                          
+
                           })
                           .catch((error) => {
                             console.error('Error al actualizar la imagen:', error);
                           });
-                      }                      
-      
+                      }
+
                     })
                     .catch((error) => {
                       console.error('Error al actualizar el producto:', error);
@@ -851,19 +852,139 @@ const settingsController = {
                 }).catch((error) => {
                   console.error('Error al crear la nueva categoría:', error);
                 });
-                
-                return res.redirect('/settings/');
-        
-              } else {
 
-                // --------------> ESCENARIO SI EL CODIGO ES DIFERENTE Y QUE LA CATEGORIA ES EXISTENTE <-------------------
-        
-                Category.findOne({
-                  where: {
-                    name: req.body.category
-                  }
-                }).then((element) => {
-      
+                return res.redirect('/settings/');
+
+              }
+
+            }
+
+          } else if (ProductToEdit.code !== req.body.code && req.body.category !== "other") {
+
+
+            if (ProductsForExist) {
+
+              errors.errors.push({ msg: "Ya existe un producto con ese codigo." });
+
+            }
+
+            if (CategoriesForExist) {
+
+              errors.errors.push({ msg: "Ya existe una categoria con ese nombre." });
+
+            }
+
+            if (!errors.isEmpty()) {
+
+              res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
+
+            } else {
+
+              // --------------> ESCENARIO SI EL CODIGO ES DIFERENTE Y QUE LA CATEGORIA ES EXISTENTE <-------------------
+
+              // Función para convertir "on" y "off" a booleanos true o false
+              function convertToBoolean(value) {
+                return value === "on" ? true : false;
+              }
+
+              // En tu código, antes de insertar los valores en la base de datos
+              // asegúrate de convertir los valores "on" y "off" a booleanos true o false
+              let isFeatured = convertToBoolean(req.body.is_featured);
+              let isOffer = convertToBoolean(req.body.is_offer);
+
+              Category.findOne({
+                where: {
+                  name: req.body.category
+                }
+              }).then((element) => {
+
+                Product.update(
+                  {
+                    code: req.body.code,
+                    brand: req.body.brand,
+                    model: req.body.model,
+                    name: req.body.name,
+                    price: req.body.price,
+                    description: req.body.description,
+                    stock: req.body.stock,
+                    is_featured: isFeatured,
+                    is_offer: isOffer,
+                    category_id: element.id,
+                  },
+                  {
+                    where: { id: idProductToEdit }
+                  }).then(() => {
+
+                    if (hayImagen) {
+
+                      Product_image.update(
+                        {
+                          url: nameImage
+                        },
+                        {
+                          where: { product_id: idProductToEdit }
+                        }).then(() => {
+
+                        })
+                        .catch((error) => {
+                          console.error('Error al actualizar la imagen:', error);
+                        });
+                    }
+
+                  })
+                  .catch((error) => {
+                    console.error('Error al actualizar el producto:', error);
+                  });
+
+              }).catch((error) => {
+                console.error('Error al buscar la categoria:', error);
+              });
+
+              return res.redirect('/settings/');
+
+            }
+
+          } else if (ProductToEdit.code === req.body.code && req.body.category === "other") {
+
+            if (ProductsForExist) {
+
+              if (req.body.code !== ProductToEdit.code ) {
+
+              errors.errors.push({ msg: "Ya existe un producto con ese codigo." });
+
+              }
+
+            }
+
+            if (CategoriesForExist) {
+
+              errors.errors.push({ msg: "Ya existe una categoria con ese nombre." });
+
+            }
+
+            if (!errors.isEmpty()) {
+
+              res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
+
+            } else {
+
+              // --------------> ESCENARIO SI EL CODIGO ES IGUAL Y QUE LA CATEGORIA ES OTRA <-------------------
+
+              // Función para convertir "on" y "off" a booleanos true o false
+              function convertToBoolean(value) {
+                return value === "on" ? true : false;
+              }
+
+              // En tu código, antes de insertar los valores en la base de datos
+              // asegúrate de convertir los valores "on" y "off" a booleanos true o false
+              let isFeatured = convertToBoolean(req.body.is_featured);
+              let isOffer = convertToBoolean(req.body.is_offer);
+
+              if (req.body.category === "other") {
+                Category.create({
+                  name: req.body.newCategory,
+                }).then((newCategory) => {
+
                   Product.update(
                     {
                       code: req.body.code,
@@ -875,14 +996,14 @@ const settingsController = {
                       stock: req.body.stock,
                       is_featured: isFeatured,
                       is_offer: isOffer,
-                      category_id: element.id,
+                      category_id: newCategory.id,
                     },
                     {
                       where: { id: idProductToEdit }
                     }).then(() => {
-      
+
                       if (hayImagen) {
-      
+
                         Product_image.update(
                           {
                             url: nameImage
@@ -890,170 +1011,128 @@ const settingsController = {
                           {
                             where: { product_id: idProductToEdit }
                           }).then(() => {
-                                      
+
                           })
                           .catch((error) => {
                             console.error('Error al actualizar la imagen:', error);
                           });
-                      }                      
-      
+                      }
+
                     })
                     .catch((error) => {
                       console.error('Error al actualizar el producto:', error);
                     });
-      
                 }).catch((error) => {
-                  console.error('Error al buscar la categoria:', error);
+                  console.error('Error al crear la nueva categoría:', error);
                 });
 
-                return res.redirect('/settings/');      
-        
+                return res.redirect('/settings/');
+
               }
-        
+
             }
 
-          }          
+          } else if (ProductToEdit.code === req.body.code && req.body.category !== "other") {            
 
-        })        
+            if (ProductsForExist) {
 
-      } else {
+              if (req.body.code !== ProductToEdit.code ) {
 
-      if (!errors.isEmpty()) {
+                errors.errors.push({ msg: "Ya existe un producto con ese codigo." });
 
-        Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
-          .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
-            res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            // Manejo de errores
-          });
-  
-      } else {
+              }
 
-        // --------------> ESCENARIO SI EL CODIGO ES IGUAL Y QUE LA CATEGORIA ES OTRA <-------------------
-  
-        // Función para convertir "on" y "off" a booleanos true o false
-        function convertToBoolean(value) {
-          return value === "on" ? true : false;
-        }
-  
-        // En tu código, antes de insertar los valores en la base de datos
-        // asegúrate de convertir los valores "on" y "off" a booleanos true o false
-        let isFeatured = convertToBoolean(req.body.is_featured);
-        let isOffer = convertToBoolean(req.body.is_offer);
-  
-        if (req.body.category === "other") {
-          Category.create({
-            name: req.body.newCategory,
-          }).then((newCategory) => {
+            }
 
-            Product.update(
-              {
-                code: req.body.code,
-                brand: req.body.brand,
-                model: req.body.model,
-                name: req.body.name,
-                price: req.body.price,
-                description: req.body.description,
-                stock: req.body.stock,
-                is_featured: isFeatured,
-                is_offer: isOffer,
-                category_id: newCategory.id,
-              },
-              {
-                where: { id: idProductToEdit }
-              }).then(() => {
+            if (CategoriesForExist) {
 
-                if (hayImagen) {
+              errors.errors.push({ msg: "Ya existe una categoria con ese nombre." });
 
-                  Product_image.update(
-                    {
-                      url: nameImage
-                    },
-                    {
-                      where: { product_id: idProductToEdit }
-                    }).then(() => {
-                      
-                    })
-                    .catch((error) => {
-                      console.error('Error al actualizar la imagen:', error);
-                    });
-                }                
+            }
 
-              })
-              .catch((error) => {
-                console.error('Error al actualizar el producto:', error);
+            if (!errors.isEmpty()) {
+
+              res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
+
+            } else {
+
+
+              // --------------> ESCENARIO SI EL CODIGO ES IGUAL Y QUE LA CATEGORIA ES EXISTENTE <-------------------
+
+              // Función para convertir "on" y "off" a booleanos true o false
+              function convertToBoolean(value) {
+                return value === "on" ? true : false;
+              }
+
+              // En tu código, antes de insertar los valores en la base de datos
+              // asegúrate de convertir los valores "on" y "off" a booleanos true o false
+              let isFeatured = convertToBoolean(req.body.is_featured);
+              let isOffer = convertToBoolean(req.body.is_offer);
+
+              Category.findOne({
+                where: {
+                  name: req.body.category
+                }
+              }).then((element) => {
+
+                Product.update(
+                  {
+                    code: req.body.code,
+                    brand: req.body.brand,
+                    model: req.body.model,
+                    name: req.body.name,
+                    price: req.body.price,
+                    description: req.body.description,
+                    stock: req.body.stock,
+                    is_featured: isFeatured,
+                    is_offer: isOffer,
+                    category_id: element.id,
+                  },
+                  {
+                    where: { id: idProductToEdit }
+                  }).then(() => {
+
+                    if (hayImagen) {
+
+                      Product_image.update(
+                        {
+                          url: nameImage
+                        },
+                        {
+                          where: { product_id: idProductToEdit }
+                        }).then(() => {
+
+                        })
+                        .catch((error) => {
+                          console.error('Error al actualizar la imagen:', error);
+                        });
+                    }
+
+                  })
+                  .catch((error) => {
+                    console.error('Error al actualizar el producto:', error);
+                  });
+
+              }).catch((error) => {
+                console.error('Error al buscar la categoria:', error);
               });
-          }).catch((error) => {
-            console.error('Error al crear la nueva categoría:', error);
-          });
-          
-          return res.redirect('/settings/');
-  
+
+              return res.redirect('/settings/');
+
+            }
+
+          }
+
         } else {
 
-          // --------------> ESCENARIO SI EL CODIGO ES IGUAL Y QUE LA CATEGORIA ES EXISTENTE <-------------------
-  
-          Category.findOne({
-            where: {
-              name: req.body.category
-            }
-          }).then((element) => {
+          res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, editErrors: errors.array(), editOld: req.body });
 
-            Product.update(
-              {
-                code: req.body.code,
-                brand: req.body.brand,
-                model: req.body.model,
-                name: req.body.name,
-                price: req.body.price,
-                description: req.body.description,
-                stock: req.body.stock,
-                is_featured: isFeatured,
-                is_offer: isOffer,
-                category_id: element.id,
-              },
-              {
-                where: { id: idProductToEdit }
-              }).then(() => {
-
-                if (hayImagen) {
-
-                  Product_image.update(
-                    {
-                      url: nameImage
-                    },
-                    {
-                      where: { product_id: idProductToEdit }
-                    }).then(() => {
-                    
-                    })
-                    .catch((error) => {
-                      console.error('Error al actualizar la imagen:', error);
-                    });
-                }                
-
-              })
-              .catch((error) => {
-                console.error('Error al actualizar el producto:', error);
-              });
-
-          }).catch((error) => {
-            console.error('Error al buscar la categoria:', error);
-          });
-
-          return res.redirect('/settings/');
-  
         }
-  
-      }
 
-    }
-
-    }).catch(error => {
-      console.error('Error al buscar el producto:', error);
-    });
+      }).catch(error => {
+        console.error('Error:', error);
+        // Manejo de errores
+      });    
 
   }
 
