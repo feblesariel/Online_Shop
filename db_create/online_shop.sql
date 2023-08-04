@@ -115,10 +115,10 @@ INSERT INTO products (code, brand ,model, name ,price, description, stock, categ
 ('P002', 'Marca 1' ,'Producto 2', 'Nombre 2' ,19.99, 'Descripción del producto 2', 50, 2, 1, 1),
 ('P003', 'Marca 1' ,'Producto 3', 'Nombre 3' ,5.99, 'Descripción del producto 3', 200, 3, 1, 1),
 ('P004', 'Marca 1' ,'Producto 4', 'Nombre 4' ,7.99, 'Descripción del producto 4', 150, 4, 1, 1),
-('P005', 'Marca 1' ,'Producto 5', 'Nombre 5' ,10.99, 'Descripción del producto 5', 100, 5, 1, 1),
-('P006', 'Marca 1' ,'Producto 6', 'Nombre 6' ,19.99, 'Descripción del producto 6', 50, 6, 1, 1),
-('P007', 'Marca 1' ,'Producto 7', 'Nombre 7' ,5.99, 'Descripción del producto 7', 200, 7, 1, 1),
-('P008', 'Marca 1' ,'Producto 8', 'Nombre 8' ,7.99, 'Descripción del producto 8', 150, 8, 1, 1);
+('P005', 'Marca 2' ,'Producto 5', 'Nombre 5' ,10.99, 'Descripción del producto 5', 100, 5, 1, 1),
+('P006', 'Marca 2' ,'Producto 6', 'Nombre 6' ,19.99, 'Descripción del producto 6', 50, 6, 1, 1),
+('P007', 'Marca 2' ,'Producto 7', 'Nombre 7' ,5.99, 'Descripción del producto 7', 200, 7, 1, 1),
+('P008', 'Marca 2' ,'Producto 8', 'Nombre 8' ,7.99, 'Descripción del producto 8', 150, 8, 1, 1);
 
 -- Población de la tabla product_images
 INSERT INTO product_images (url, product_id) VALUES
