@@ -271,8 +271,8 @@
 
                 <div class="mb-3">
                   <label for="images" class="form-label">Imágenes (jpg o png hasta 2 mb).</label>
-                  <input type="file" class="form-control" id="images" name="images">
-                </div>                
+                  <input type="file" class="form-control" id="images" name="images" accept="image/jpeg, image/png">
+                </div>
 
                 <div class="mb-3">
                   <textarea class="form-control" id="description" name="description" placeholder="Descripción"><%= locals.old && locals.old.description ? locals.old.description : "" %></textarea>
@@ -374,7 +374,7 @@
 
                 <div class="mb-3">
                   <label for="images" class="form-label">Cambiar imagen (jpg o png hasta 2 mb).</label>
-                  <input type="file" class="form-control" id="e-images" name="images">
+                  <input type="file" class="form-control" id="e-images" name="images" accept="image/jpeg, image/png">
                 </div>
 
                 <% if (locals.editOld) { %>
