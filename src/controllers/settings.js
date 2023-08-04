@@ -338,29 +338,41 @@ const settingsController = {
 
     // Fin Validaciones de la imagen -----
 
-    // Si hay algo en el campo code valido si el codigo ya existe en otro producto, si es asi, hago un push al array de errores, si no, procedo a crear el producto.
 
-    if (req.body.code) {
-      Product.findOne({
-        where: {
-          code: req.body.code
-        }
-      }).then((product) => {
+    // Comienzo de las validaciones de los campos y creacion -----
 
-        if (product) {
+    const getCategoriesForExist = Category.findOne({
+      where: {
+        name: req.body.newCategory
+      }
+    });
+
+    const getProductsForExist = Product.findOne({
+      where: {
+        code: req.body.code
+      }
+    });
+
+    Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers, getProductsForExist, getCategoriesForExist])
+    .then(([Categories, CategoriesModal, ProductCountInCart, Products, Users, ProductsForExist, CategoriesForExist]) => {
+  
+      if (errors.isEmpty()) {
+
+        if (ProductsForExist) {
+
           errors.errors.push({ msg: "Ya existe un producto con ese codigo." });
+
+        }
+
+        if (CategoriesForExist) {
+
+          errors.errors.push({ msg: "Ya existe una categoria con ese nombre." });
+
         }
 
         if (!errors.isEmpty()) {
 
-          Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
-            .then(([Categories, CategoriesModal, ProductCountInCart, Products, Users]) => {
-              res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, errors: errors.array(), old: req.body });
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              // Manejo de errores
-            });
+          res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, errors: errors.array(), old: req.body });
     
         } else {
     
@@ -441,29 +453,20 @@ const settingsController = {
     
           }
     
-        }        
-      }).catch(error => {
-        console.error('Error al buscar el producto:', error);
-      });
+        } 
 
-    // Si no hay mada en el campo code se envian los errores a la vista.
+  
+      } else {
 
-    } else {
+        res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, errors: errors.array(), old: req.body });
 
-      if (!errors.isEmpty()) {
-
-        Promise.all([getCategories, getCategoriesModal ,getProductCountInCart, getProducts, getUsers])
-          .then(([Categories, CategoriesModal ,ProductCountInCart, Products, Users]) => {
-            res.render('settings', { Categories, CategoriesModal ,ProductCountInCart, Products, Users, errors: errors.array(), old: req.body });
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            // Manejo de errores
-          });
-            
       }
-
-    }
+      
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      // Manejo de errores
+    });    
 
   },
 
