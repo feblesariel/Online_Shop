@@ -17,11 +17,11 @@ module.exports = (sequelize, dataTypes) => {
             unique: true
         },        
         model: {
-            type: dataTypes.STRING(100),
+            type: dataTypes.STRING(50),
             allowNull: false
         },
         name: {
-            type: dataTypes.STRING(100),
+            type: dataTypes.STRING(50),
             allowNull: false
         },
         price: {

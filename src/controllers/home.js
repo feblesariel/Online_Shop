@@ -13,7 +13,7 @@ const Product_image = db.Product_image;
 const Cart = db.Cart;
 const Cart_item = db.Cart_item;
 const Payment = db.Payment;
-const Shipment_cost = db.Shipping_method;
+const Shipment_cost = db.Shipment_cost;
 const Shipment = db.Shipment;
 
 // ************ Controllers ************
