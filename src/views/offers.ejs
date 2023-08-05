@@ -42,7 +42,7 @@
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="/products/detail/<%=product.id%>"><%= product.name%></a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$<%= product.price%></h5>
+                            <h5>$<%= product.price%></h5><h6 class="text-muted ml-2"><del>$<%= (product.price * 1.25).toFixed(2) %></del></h6>
                         </div>
                     </div>
                 </div>
